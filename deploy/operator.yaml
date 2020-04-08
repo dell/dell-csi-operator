@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: csi-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: csi-operator
+  template:
+    metadata:
+      labels:
+        name: csi-operator
+    spec:
+      serviceAccountName: csi-operator
+      containers:
+        - name: csi-operator
+          # Replace this with the built image name
+          image: dellemc/dell-csi-operator:v1.0.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - "--zap-level=debug"
+            - "--zap-encoder=console"
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "csi-operator"
+            - name: OPERATOR_DRIVERS
+              value: "unity,powermax,isilon,vxflexos"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config/csi-operator
+      volumes:
+        - name: config-volume
+          configMap:
+            # Provide the name of the ConfigMap containing the files you want
+            # to add to the container
+            name: config-csi-operator
+            optional: true
