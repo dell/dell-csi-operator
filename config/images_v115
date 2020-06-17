@@ -1,0 +1,8 @@
+unity-driver=dellemc/csi-unity:v1.1.0.000R
+powermax-driver=dellemc/csi-powermax:v1.2.0.000R
+isilon-driver=dellemc/csi-isilon:v1.1.0
+vxflexos-driver="dellemc/csi-vxflexos:v1.1.4.000R"
+provisioner=quay.io/k8scsi/csi-provisioner:v1.2.1
+attacher=quay.io/k8scsi/csi-attacher:v1.1.1
+registrar=quay.io/k8scsi/csi-node-driver-registrar:v1.1.0
+snapshotter=quay.io/k8scsi/csi-snapshotter:v1.2.2

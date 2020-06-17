@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: csi-operator
+  name: dell-csi-operator
 rules:
   - apiGroups:
       - ""
@@ -59,7 +59,7 @@ rules:
   - apiGroups:
       - apps
     resourceNames:
-      - csi-operator
+      - dell-csi-operator
     resources:
       - deployments/finalizers
       - '*'
@@ -83,7 +83,7 @@ rules:
     verbs: ["get", "list", "watch", "create", "update", "delete"]
   - apiGroups: ["storage.k8s.io"]
     resources: ["volumeattachments"]
-    verbs: ["get", "list", "watch", "update", "create"]
+    verbs: ["get", "list", "watch", "update", "create", "patch"]
   - apiGroups: ["storage.k8s.io"]
     resources: ["csinodes"]
     verbs: ["get", "list", "watch", "update", "create"]
@@ -106,3 +106,10 @@ rules:
     resources: ["securitycontextconstraints"]
     verbs: ["use"]
     resourceNames: ["privileged"]
+# for resizer
+  - apiGroups: [""]
+    resources: ["persistentvolumes"]
+    verbs: ["update", "patch"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims/status"]
+    verbs: ["update", "patch"]

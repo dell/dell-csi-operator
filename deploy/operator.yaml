@@ -1,23 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: csi-operator
+  name: dell-csi-operator
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: csi-operator
+      name: dell-csi-operator
   template:
     metadata:
       labels:
-        name: csi-operator
+        name: dell-csi-operator
     spec:
-      serviceAccountName: csi-operator
+      serviceAccountName: dell-csi-operator
+      initContainers:
+        - name: config-copy
+          image: busybox:latest
+          command: ['sh', '-c', 'if [ -e /configmap/config.tar.gz ]; then /bin/tar -C /etc/config/dell-csi-operator -xzvf /configmap/config.tar.gz --strip-components 1; else echo "Warning: ConfigMap not mounted"; fi']
+          volumeMounts:
+            - name: configmap-volume
+              mountPath: /configmap
+            - name: config-dir
+              mountPath: /etc/config/dell-csi-operator
       containers:
-        - name: csi-operator
+        - name: dell-csi-operator
           # Replace this with the built image name
-          image: dellemc/dell-csi-operator:v1.0.0
-          imagePullPolicy: IfNotPresent
+          image: dellemc/dell-csi-operator:v1.0.0.000R
+          imagePullPolicy: Always
           args:
             - "--zap-level=debug"
             - "--zap-encoder=console"
@@ -31,16 +40,20 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
-              value: "csi-operator"
+              value: "dell-csi-operator"
             - name: OPERATOR_DRIVERS
               value: "unity,powermax,isilon,vxflexos"
           volumeMounts:
-            - name: config-volume
-              mountPath: /etc/config/csi-operator
+            - name: configmap-volume
+              mountPath: /etc/config/configmap
+            - name: config-dir
+              mountPath: /etc/config/dell-csi-operator
       volumes:
-        - name: config-volume
+        - name: configmap-volume
           configMap:
             # Provide the name of the ConfigMap containing the files you want
             # to add to the container
-            name: config-csi-operator
+            name: config-dell-csi-operator
             optional: true
+        - name: config-dir
+          emptyDir:
