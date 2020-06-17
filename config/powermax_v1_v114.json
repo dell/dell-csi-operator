@@ -270,7 +270,6 @@
         "name": "provisioner",
         "args": [
           "--csi-address=$(ADDRESS)",
-          "--timeout=120s",
           "--volume-name-uuid-length=10",
           "--timeout=180s",
           "--worker-threads=6",
@@ -378,6 +377,9 @@
       },
       {
         "Name": "ServiceLevel"
+      },
+      {
+        "Name": "FsType"
       }
     ]
   }
