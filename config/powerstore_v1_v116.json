@@ -1,0 +1,377 @@
+{
+  "driverConfig": {
+    "driverEnvs": [
+      {
+        "Name": "CSI_ENDPOINT",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "/var/run/csi/csi.sock",
+        "DefaultValueForNode": "unix:///var/lib/kubelet/plugins/csi-powerstore.dellemc.com/csi_sock"
+      },
+      {
+        "Name": "X_CSI_POWERSTORE_ENDPOINT",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": ""
+      },
+      {
+        "Name": "X_CSI_POWERSTORE_USER",
+        "CSIEnvType": "EnvSecretReference",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "username/powerstore-creds",
+        "DefaultValueForNode": "username/powerstore-creds"
+      },
+      {
+        "Name": "X_CSI_POWERSTORE_PASSWORD",
+        "CSIEnvType": "EnvSecretReference",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "password/powerstore-creds",
+        "DefaultValueForNode": "password/powerstore-creds"
+      },
+      {
+        "Name": "X_CSI_TRANSPORT_PROTOCOL",
+        "CSIEnvType": "String",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": "auto"
+      },
+      {
+        "Name": "X_CSI_DRIVER_NAME",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "csi-powerstore.dellemc.com",
+        "DefaultValueForNode": "csi-powerstore.dellemc.com"
+      },
+      {
+        "Name": "X_CSI_POWERSTORE_TMP_DIR",
+        "CSIEnvType": "String",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": "/var/lib/kubelet/plugins/csi-powerstore.dellemc.com/tmp"
+      },
+      {
+        "Name": "X_CSI_POWERSTORE_INSECURE",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "true",
+        "DefaultValueForNode": "true"
+      },
+      {
+        "Name": "X_CSI_POWERSTORE_NODENAME",
+        "CSIEnvType": "EnvVarReferenceType",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": "v1/spec.nodeName"
+      },
+      {
+        "Name": "X_CSI_POWERSTORE_NODE_NAME_PREFIX",
+        "CSIEnvType": "String",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": "csi-node"
+      },
+      {
+        "Name": "X_CSI_POWERSTORE_NODE_ID_PATH",
+        "CSIEnvType": "String",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": "/node-id"
+      },
+      {
+        "Name": "X_CSI_POWERSTORE_NODE_CHROOT_PATH",
+        "CSIEnvType": "String",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": "/noderoot"
+      },
+      {
+        "Name": "X_CSI_FC_PORTS_FILTER_FILE_PATH",
+        "CSIEnvType": "String",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": "/etc/fc-ports-filter"
+      },
+      {
+        "Name": "X_CSI_DEBUG",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "true",
+        "DefaultValueForNode": "true"
+      },
+      {
+        "Name": "X_CSI_MODE",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "controller",
+        "DefaultValueForNode": "node"
+      }
+    ],
+    "driverNodeVolumes": [
+      {
+        "hostPath": {
+          "path": "/var/lib/kubelet/plugins_registry/",
+          "type": "DirectoryOrCreate"
+        },
+        "name": "registration-dir"
+      },
+      {
+        "hostPath": {
+          "path": "/var/lib/kubelet/plugins/csi-powerstore.dellemc.com",
+          "type": "DirectoryOrCreate"
+        },
+        "name": "driver-path"
+      },
+      {
+        "hostPath": {
+          "path": "/var/lib/kubelet/plugins/kubernetes.io/csi",
+          "type": "DirectoryOrCreate"
+        },
+        "name": "csi-path"
+      },
+      {
+        "hostPath": {
+          "path": "/var/lib/kubelet/pods",
+          "type": "Directory"
+        },
+        "name": "pods-path"
+      },
+      {
+        "hostPath": {
+          "path": "/dev",
+          "type": "Directory"
+        },
+        "name": "dev"
+      },
+      {
+        "hostPath": {
+          "path": "/sys",
+          "type": "Directory"
+        },
+        "name": "sys"
+      },
+      {
+        "hostPath": {
+          "path": "/run",
+          "type": "Directory"
+        },
+        "name": "run"
+      },
+      {
+        "hostPath": {
+          "path": "/etc/iscsi",
+          "type": "Directory"
+        },
+        "name": "etciscsi"
+      },
+      {
+        "hostPath": {
+          "path": "/",
+          "type": "Directory"
+        },
+        "name": "noderoot"
+      },
+      {
+        "hostPath": {
+          "path": "/etc/machine-id",
+          "type": "File"
+        },
+        "name": "node-id"
+      },
+      {
+        "name": "certs",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "test-powerstore-certs",
+          "optional": true
+        }
+      }
+    ],
+    "driverControllerVolumes": [
+      {
+        "emptyDir": {},
+        "name": "socket-dir"
+      },
+      {
+        "name": "certs",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "powerstore-certs",
+          "optional": true
+        }
+      }
+    ],
+    "driverControllerVolumeMounts": [
+      {
+        "mountPath": "/var/run/csi",
+        "name": "socket-dir"
+      },
+      {
+        "mountPath": "/certs",
+        "name": "certs",
+        "readOnly": true
+      }
+    ],
+    "driverNodeVolumeMounts": [
+
+      {
+        "mountPath": "/var/lib/kubelet/plugins/csi-powerstore.dellemc.com",
+        "name": "driver-path"
+      },
+      {
+        "mountPath": "/var/lib/kubelet/plugins/kubernetes.io/csi",
+        "mountPropagation": "Bidirectional",
+        "name": "csi-path"
+      },
+      {
+        "mountPath": "/var/lib/kubelet/pods",
+        "mountPropagation": "Bidirectional",
+        "name": "pods-path"
+      },
+      {
+        "mountPath": "/dev",
+        "name": "dev"
+      },
+      {
+        "mountPath": "/sys",
+        "name": "sys"
+      },
+      {
+        "mountPath": "/run",
+        "name": "run"
+      },
+      {
+        "mountPath": "/etc/iscsi",
+        "name": "etciscsi"
+      },
+      {
+        "mountPath": "/noderoot",
+        "name": "noderoot"
+      },
+      {
+        "mountPath": "/node-id",
+        "name": "node-id"
+      },
+      {
+        "mountPath": "/certs",
+        "name": "certs",
+        "readOnly": true
+      }
+    ],
+    "sidecarParams": [
+      {
+      "name": "provisioner",
+      "args": [
+        "--csi-address=$(ADDRESS)",
+        "--volume-name-uuid-length=10",
+        "--v=5",
+        "--volume-name-prefix=csi-pstore"
+      ],
+      "envs": [
+        {
+          "name": "ADDRESS",
+          "value": "/var/run/csi/csi.sock"
+        }
+      ],
+      "volumeMounts": [
+        {
+          "mountPath": "/var/run/csi",
+          "name": "socket-dir"
+        }
+      ]
+      },
+      {
+        "name": "attacher",
+        "args": [
+          "--csi-address=$(ADDRESS)",
+          "--v=5"
+        ],
+        "envs": [
+          {
+            "name": "ADDRESS",
+            "value": "/var/run/csi/csi.sock"
+          }
+        ],
+        "volumeMounts": [
+          {
+            "mountPath": "/var/run/csi",
+            "name": "socket-dir"
+          }
+        ]
+      },
+      {
+        "name": "resizer",
+        "args": [
+          "--csi-address=$(ADDRESS)",
+          "--v=5"
+        ],
+        "envs": [
+          {
+            "name": "ADDRESS",
+            "value": "/var/run/csi/csi.sock"
+          }
+        ],
+        "volumeMounts": [
+          {
+            "mountPath": "/var/run/csi",
+            "name": "socket-dir"
+          }
+        ]
+      },
+      {
+        "name": "registrar",
+        "args": [
+          "--v=5",
+          "--csi-address=$(ADDRESS)",
+          "--kubelet-registration-path=/var/lib/kubelet/plugins/csi-powerstore.dellemc.com/csi_sock"
+        ],
+        "envs": [
+          {
+            "name": "ADDRESS",
+            "value": "/csi/csi_sock"
+          },
+          {
+            "name": "KUBE_NODE_NAME",
+            "valueFrom": {
+              "fieldRef": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.nodeName"
+              }
+            }
+          }
+        ],
+        "volumeMounts": [
+          {
+            "mountPath": "/registration",
+            "name": "registration-dir"
+          },
+          {
+            "mountPath": "/csi",
+            "name": "driver-path"
+          }
+        ]
+      }
+    ],
+    "storageClassAttrs": [
+      {
+        "name": "allowVolumeExpansion",
+        "value": true
+      }
+    ]
+  }
+}

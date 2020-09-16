@@ -1,0 +1,38 @@
+apiVersion: storage.dell.com/v1
+kind: CSIUnity
+metadata:
+  name: test-unity
+  namespace: test-unity
+spec:
+  driver:
+    configVersion: v2
+    replicas: 1
+    common:
+      image: "dellemc/csi-unity:v1.3.0.000R"
+      imagePullPolicy: IfNotPresent
+      envs:
+      - name: X_CSI_UNITY_DEBUG
+        value: "true"
+    sideCars:
+      - name: provisioner
+        args: ["--volume-name-prefix=csiunity"]
+    storageClass:
+    - name: virt2016****-fc
+      default: true
+      reclaimPolicy: "Delete"
+      allowVolumeExpansion: true
+      parameters:
+        storagePool: pool_1
+        arrayId: "VIRT2016****"
+        protocol: "FC"
+    - name: virt2017****-iscsi
+      reclaimPolicy: "Delete"
+      allowVolumeExpansion: true
+      parameters:
+        storagePool: pool_1
+        arrayId: "VIRT2017****"
+        protocol: "iSCSI"
+    snapshotClass:
+      - name: test-snap
+        parameters:
+          retentionDuration: ""
