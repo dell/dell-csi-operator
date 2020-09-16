@@ -95,7 +95,7 @@ spec:
                                 description: 'Selects a field of the pod: supports
                                   metadata.name, metadata.namespace, metadata.labels,
                                   metadata.annotations, spec.nodeName, spec.serviceAccountName,
-                                  status.hostIP, status.podIP.'
+                                  status.hostIP, status.podIP, status.podIPs.'
                                 properties:
                                   apiVersion:
                                     description: Version of the schema the FieldPath
@@ -120,9 +120,13 @@ spec:
                                       optional for env vars'
                                     type: string
                                   divisor:
+                                    anyOf:
+                                    - type: integer
+                                    - type: string
                                     description: Specifies the output format of the
                                       exposed resources, defaults to "1"
-                                    type: string
+                                    pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                    x-kubernetes-int-or-string: true
                                   resource:
                                     description: 'Required: resource to select'
                                     type: string
@@ -165,6 +169,56 @@ spec:
                     name:
                       description: Name is the name of Container
                       type: string
+                    nodeSelector:
+                      additionalProperties:
+                        type: string
+                      description: NodeSelector is a selector which must be true for
+                        the pod to fit on a node. Selector which must match a node's
+                        labels for the pod to be scheduled on that node.
+                      type: object
+                    tolerations:
+                      description: Tolerations is the list of tolerations for the
+                        driver pods
+                      items:
+                        description: The pod this Toleration is attached to tolerates
+                          any taint that matches the triple <key,value,effect> using
+                          the matching operator <operator>.
+                        properties:
+                          effect:
+                            description: Effect indicates the taint effect to match.
+                              Empty means match all taint effects. When specified,
+                              allowed values are NoSchedule, PreferNoSchedule and
+                              NoExecute.
+                            type: string
+                          key:
+                            description: Key is the taint key that the toleration
+                              applies to. Empty means match all taint keys. If the
+                              key is empty, operator must be Exists; this combination
+                              means to match all values and all keys.
+                            type: string
+                          operator:
+                            description: Operator represents a key's relationship
+                              to the value. Valid operators are Exists and Equal.
+                              Defaults to Equal. Exists is equivalent to wildcard
+                              for value, so that a pod can tolerate all taints of
+                              a particular category.
+                            type: string
+                          tolerationSeconds:
+                            description: TolerationSeconds represents the period of
+                              time the toleration (which must be of effect NoExecute,
+                              otherwise this field is ignored) tolerates the taint.
+                              By default, it is not set, which means tolerate the
+                              taint forever (do not evict). Zero and negative values
+                              will be treated as 0 (evict immediately) by the system.
+                            format: int64
+                            type: integer
+                          value:
+                            description: Value is the taint value the toleration matches
+                              to. If the operator is Exists, the value should be empty,
+                              otherwise just a regular string.
+                            type: string
+                        type: object
+                      type: array
                   type: object
                 configVersion:
                   description: ConfigVersion is the configuration version of the driver
@@ -226,7 +280,7 @@ spec:
                                 description: 'Selects a field of the pod: supports
                                   metadata.name, metadata.namespace, metadata.labels,
                                   metadata.annotations, spec.nodeName, spec.serviceAccountName,
-                                  status.hostIP, status.podIP.'
+                                  status.hostIP, status.podIP, status.podIPs.'
                                 properties:
                                   apiVersion:
                                     description: Version of the schema the FieldPath
@@ -251,9 +305,13 @@ spec:
                                       optional for env vars'
                                     type: string
                                   divisor:
+                                    anyOf:
+                                    - type: integer
+                                    - type: string
                                     description: Specifies the output format of the
                                       exposed resources, defaults to "1"
-                                    type: string
+                                    pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                    x-kubernetes-int-or-string: true
                                   resource:
                                     description: 'Required: resource to select'
                                     type: string
@@ -296,6 +354,56 @@ spec:
                     name:
                       description: Name is the name of Container
                       type: string
+                    nodeSelector:
+                      additionalProperties:
+                        type: string
+                      description: NodeSelector is a selector which must be true for
+                        the pod to fit on a node. Selector which must match a node's
+                        labels for the pod to be scheduled on that node.
+                      type: object
+                    tolerations:
+                      description: Tolerations is the list of tolerations for the
+                        driver pods
+                      items:
+                        description: The pod this Toleration is attached to tolerates
+                          any taint that matches the triple <key,value,effect> using
+                          the matching operator <operator>.
+                        properties:
+                          effect:
+                            description: Effect indicates the taint effect to match.
+                              Empty means match all taint effects. When specified,
+                              allowed values are NoSchedule, PreferNoSchedule and
+                              NoExecute.
+                            type: string
+                          key:
+                            description: Key is the taint key that the toleration
+                              applies to. Empty means match all taint keys. If the
+                              key is empty, operator must be Exists; this combination
+                              means to match all values and all keys.
+                            type: string
+                          operator:
+                            description: Operator represents a key's relationship
+                              to the value. Valid operators are Exists and Equal.
+                              Defaults to Equal. Exists is equivalent to wildcard
+                              for value, so that a pod can tolerate all taints of
+                              a particular category.
+                            type: string
+                          tolerationSeconds:
+                            description: TolerationSeconds represents the period of
+                              time the toleration (which must be of effect NoExecute,
+                              otherwise this field is ignored) tolerates the taint.
+                              By default, it is not set, which means tolerate the
+                              taint forever (do not evict). Zero and negative values
+                              will be treated as 0 (evict immediately) by the system.
+                            format: int64
+                            type: integer
+                          value:
+                            description: Value is the taint value the toleration matches
+                              to. If the operator is Exists, the value should be empty,
+                              otherwise just a regular string.
+                            type: string
+                        type: object
+                      type: array
                   type: object
                 forceUpdate:
                   description: ForceUpdate is the boolean flag used to force an update
@@ -357,7 +465,7 @@ spec:
                                 description: 'Selects a field of the pod: supports
                                   metadata.name, metadata.namespace, metadata.labels,
                                   metadata.annotations, spec.nodeName, spec.serviceAccountName,
-                                  status.hostIP, status.podIP.'
+                                  status.hostIP, status.podIP, status.podIPs.'
                                 properties:
                                   apiVersion:
                                     description: Version of the schema the FieldPath
@@ -382,9 +490,13 @@ spec:
                                       optional for env vars'
                                     type: string
                                   divisor:
+                                    anyOf:
+                                    - type: integer
+                                    - type: string
                                     description: Specifies the output format of the
                                       exposed resources, defaults to "1"
-                                    type: string
+                                    pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                    x-kubernetes-int-or-string: true
                                   resource:
                                     description: 'Required: resource to select'
                                     type: string
@@ -427,6 +539,56 @@ spec:
                     name:
                       description: Name is the name of Container
                       type: string
+                    nodeSelector:
+                      additionalProperties:
+                        type: string
+                      description: NodeSelector is a selector which must be true for
+                        the pod to fit on a node. Selector which must match a node's
+                        labels for the pod to be scheduled on that node.
+                      type: object
+                    tolerations:
+                      description: Tolerations is the list of tolerations for the
+                        driver pods
+                      items:
+                        description: The pod this Toleration is attached to tolerates
+                          any taint that matches the triple <key,value,effect> using
+                          the matching operator <operator>.
+                        properties:
+                          effect:
+                            description: Effect indicates the taint effect to match.
+                              Empty means match all taint effects. When specified,
+                              allowed values are NoSchedule, PreferNoSchedule and
+                              NoExecute.
+                            type: string
+                          key:
+                            description: Key is the taint key that the toleration
+                              applies to. Empty means match all taint keys. If the
+                              key is empty, operator must be Exists; this combination
+                              means to match all values and all keys.
+                            type: string
+                          operator:
+                            description: Operator represents a key's relationship
+                              to the value. Valid operators are Exists and Equal.
+                              Defaults to Equal. Exists is equivalent to wildcard
+                              for value, so that a pod can tolerate all taints of
+                              a particular category.
+                            type: string
+                          tolerationSeconds:
+                            description: TolerationSeconds represents the period of
+                              time the toleration (which must be of effect NoExecute,
+                              otherwise this field is ignored) tolerates the taint.
+                              By default, it is not set, which means tolerate the
+                              taint forever (do not evict). Zero and negative values
+                              will be treated as 0 (evict immediately) by the system.
+                            format: int64
+                            type: integer
+                          value:
+                            description: Value is the taint value the toleration matches
+                              to. If the operator is Exists, the value should be empty,
+                              otherwise just a regular string.
+                            type: string
+                        type: object
+                      type: array
                   type: object
                 replicas:
                   description: Replicas is the count of controllers for Controller
@@ -492,7 +654,7 @@ spec:
                                   description: 'Selects a field of the pod: supports
                                     metadata.name, metadata.namespace, metadata.labels,
                                     metadata.annotations, spec.nodeName, spec.serviceAccountName,
-                                    status.hostIP, status.podIP.'
+                                    status.hostIP, status.podIP, status.podIPs.'
                                   properties:
                                     apiVersion:
                                       description: Version of the schema the FieldPath
@@ -517,9 +679,13 @@ spec:
                                         optional for env vars'
                                       type: string
                                     divisor:
+                                      anyOf:
+                                      - type: integer
+                                      - type: string
                                       description: Specifies the output format of
                                         the exposed resources, defaults to "1"
-                                      type: string
+                                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                      x-kubernetes-int-or-string: true
                                     resource:
                                       description: 'Required: resource to select'
                                       type: string
@@ -562,6 +728,56 @@ spec:
                       name:
                         description: Name is the name of Container
                         type: string
+                      nodeSelector:
+                        additionalProperties:
+                          type: string
+                        description: NodeSelector is a selector which must be true
+                          for the pod to fit on a node. Selector which must match
+                          a node's labels for the pod to be scheduled on that node.
+                        type: object
+                      tolerations:
+                        description: Tolerations is the list of tolerations for the
+                          driver pods
+                        items:
+                          description: The pod this Toleration is attached to tolerates
+                            any taint that matches the triple <key,value,effect> using
+                            the matching operator <operator>.
+                          properties:
+                            effect:
+                              description: Effect indicates the taint effect to match.
+                                Empty means match all taint effects. When specified,
+                                allowed values are NoSchedule, PreferNoSchedule and
+                                NoExecute.
+                              type: string
+                            key:
+                              description: Key is the taint key that the toleration
+                                applies to. Empty means match all taint keys. If the
+                                key is empty, operator must be Exists; this combination
+                                means to match all values and all keys.
+                              type: string
+                            operator:
+                              description: Operator represents a key's relationship
+                                to the value. Valid operators are Exists and Equal.
+                                Defaults to Equal. Exists is equivalent to wildcard
+                                for value, so that a pod can tolerate all taints of
+                                a particular category.
+                              type: string
+                            tolerationSeconds:
+                              description: TolerationSeconds represents the period
+                                of time the toleration (which must be of effect NoExecute,
+                                otherwise this field is ignored) tolerates the taint.
+                                By default, it is not set, which means tolerate the
+                                taint forever (do not evict). Zero and negative values
+                                will be treated as 0 (evict immediately) by the system.
+                              format: int64
+                              type: integer
+                            value:
+                              description: Value is the taint value the toleration
+                                matches to. If the operator is Exists, the value should
+                                be empty, otherwise just a regular string.
+                              type: string
+                          type: object
+                        type: array
                     type: object
                   type: array
                 snapshotClass:
@@ -591,6 +807,42 @@ spec:
                         description: AllowVolumeExpansion is a boolean flag which
                           indicates if volumes can be expanded
                         type: boolean
+                      allowedTopologies:
+                        description: Restrict the node topologies where volumes can
+                          be dynamically provisioned.
+                        items:
+                          description: A topology selector term represents the result
+                            of label queries. A null or empty topology selector term
+                            matches no objects. The requirements of them are ANDed.
+                            It provides a subset of functionality as NodeSelectorTerm.
+                            This is an alpha feature and may change in the future.
+                          properties:
+                            matchLabelExpressions:
+                              description: A list of topology selector requirements
+                                by labels.
+                              items:
+                                description: A topology selector requirement is a
+                                  selector that matches given label. This is an alpha
+                                  feature and may change in the future.
+                                properties:
+                                  key:
+                                    description: The label key that the selector applies
+                                      to.
+                                    type: string
+                                  values:
+                                    description: An array of string values. One value
+                                      must match the label to be selected. Each entry
+                                      in Values is ORed.
+                                    items:
+                                      type: string
+                                    type: array
+                                required:
+                                - key
+                                - values
+                                type: object
+                              type: array
+                          type: object
+                        type: array
                       default:
                         description: DefaultSc is a boolean flag to indicate if the
                           storage class is going to be marked as default

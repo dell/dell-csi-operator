@@ -25,7 +25,7 @@ spec:
       containers:
         - name: dell-csi-operator
           # Replace this with the built image name
-          image: dellemc/dell-csi-operator:v1.0.0.000R
+          image: dellemc/dell-csi-operator:v1.1.0.000R
           imagePullPolicy: Always
           args:
             - "--zap-level=debug"
@@ -42,7 +42,7 @@ spec:
             - name: OPERATOR_NAME
               value: "dell-csi-operator"
             - name: OPERATOR_DRIVERS
-              value: "unity,powermax,isilon,vxflexos"
+              value: "unity,powermax,isilon,vxflexos,powerstore"
           volumeMounts:
             - name: configmap-volume
               mountPath: /etc/config/configmap

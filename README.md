@@ -7,12 +7,17 @@ Dell CSI Operator is built using the [operator framework](https://github.com/ope
 Currently, the Dell CSI Operator can be used to deploy the following CSI drivers provided by Dell EMC
 
 * CSI Driver for Dell EMC PowerMax
-* CSI Driver for Dell EMC Isilon
+* CSI Driver for Dell EMC PowerScale
 * CSI Driver for Dell EMC Unity
-* CSI Driver for Dell EMC VxFlexOS
+* CSI Driver for Dell EMC PowerFlex (formerly VxFlex OS)
+* CSI Driver for Dell EMC PowerStore
 
 Additionally, the Dell CSI Operator can also deploy Storage Classes and Volume Snapshot Classes as part of the driver deployment.
 The Dell CSI Operator is itself installed as a Kubernetes deployment.
+
+## Support
+The Dell CSI Operator image is available on Dockerhub and is officially supported by Dell EMC.
+For any CSI operator and driver issues, questions or feedback, join the [Dell EMC Container community](https://www.dell.com/community/Containers/bd-p/Containers).
 
 ## Overview
 The major steps in installation process are:
@@ -57,10 +62,10 @@ If you had installed old CSI Operator using OLM, then please follow un-installat
 ### Pre-requisites
 Dell CSI Operator has been tested and qualified with 
 
-    * Upstream Kubernetes cluster v1.14, v1.16
-    * OpenShift Clusters 4.2, 4.3 with RHEL 7.x worker nodes
+    * Upstream Kubernetes cluster v1.17, v1.18, v1.19
+    * OpenShift Clusters 4.3, 4.4 with RHEL 7.x & RHCOS worker nodes
 
-#### OperatorHub
+#### Installation using OperatorHub
 Dell CSI Operator requires a ConfigMap to be created in the same namespace where the operator is deployed. This is an optional step but highly recommended.
 
 Please run the following commands for creating the ConfigMap
@@ -73,11 +78,28 @@ $ kubectl create configmap config-dell-csi-operator --from-file config.tar.gz -n
 ```
 
 #### Manual Installation
-There are no pre-requisites to be fulfilled before the manual installation of the operator
+For upstream k8s clusters, make sure to install
+
+    Beta VolumeSnapshot CRDs (can be installed using the Operator installation script)
+    External Volume Snapshot Controller
 
 ### Install the Operator
+
+### A note about Operator upgrade
+Dell CSI Operator v1.1 can only manage driver installations which do not support alpha VolumeSnapshots. It can only create/manage beta VolumeSnapshotClass objects.  
+This restriction is because of the breaking changes in the migration of VolumeSnapshot APIs from `v1alpha1` to `v1beta`  
+Because of these restrictions, you shouldn't upgrade the Operator from an older release.  A suggested upgrade path could be:
+
+* If you created any VolumeSnapshotClass along with your driver installation, then
+    Delete the driver installation
+* If you have any alpha VolumeSnapshot CRDs or CRs present in your cluster, delete them
+* If required, upgrade your cluster to a supported version
+* If `dell-csi-operator` was installed using OLM, then you can now upgrade it
+* Only for upstream clusters - Run `install.sh` script with the option `--upgrade`. 
+* Optionally, if you wish to install beta VolumeSnapshot CRDs, then use option `--snapshot-crd` while running the `install.sh` script
+
 #### OperatorHub
-Dell CSI Operator can be deployed via OperatorHub for both upstream Kubernetes installations and OpenShift 4.2, 4.3 clusters using OLM.
+Dell CSI Operator can be deployed via OperatorHub for both upstream Kubernetes installations and OpenShift 4.3, 4.4 clusters using OLM.
 
 OLM is bundled with OpenShift clusters and the Dell CSI Operator is available as a community operator.
 
@@ -85,28 +107,33 @@ For upstream Kubernetes installations, OLM is not available as a default compone
 Once OLM has been installed and configured, the Dell CSI Operator can be installed via OperatorHub.io
 
 #### Manual Installation
-For manual installations, an install script has been provided which will create the appropriate ServiceAccount, ClusterRole, ClusterRolebinding before deploying the operator. The operator will be deployed in the default namespace.
+For manual installations, an install script - `install.sh` has been provided which will create the appropriate ServiceAccount, ClusterRole, ClusterRolebinding before deploying the operator. The operator will be deployed in the default namespace.
 
-Note - If OLM is not configured in your upstream Kubernetes cluster, we recommend to use the manual installation method
+Note - The install script `install.sh` checks if you have any alpha VolumeSnapshot CRDs or corresponding CRs present in your cluster and fails if it finds any.  
+Make sure to completely remove all alpha VolumeSnapshot CRs and CRDs before proceeding with the installation.
+
+Note - If OLM has not configured in your upstream Kubernetes cluster, we recommend using the manual installation method
 
 ```
 # Clone this repository
 $ git clone github.com/dell/dell-csi-operator
 $ cd dell-csi-operator
 # Make sure you are at the root of the cloned dell-csi-operator repository
-$ bash scripts/deploy.sh
+$ bash scripts/install.sh
 ```
 Post the installation, the operator should be deployed successfully in the default namespace. 
 ```
 $ kubectl get deployment
 ```
 
+Note - If you wish to install the VolumeSnapshot beta CRDs (release 2.1) in the cluster, then run the command - `bash scripts/install.sh --snapshot-crd`
+
 ##### Advanced configuration
 By default, the Dell CSI Operator will deploy one Kubernetes controller to manage each type of the CSI driver it can manage. If you would like to run only specific controllers, then you can modify the environment variable **OPERATOR_DRIVERS** in deploy/operator.yaml
 
 ```
             - name: OPERATOR_DRIVERS
-              value: "unity,powermax,isilon,vxflexos"
+              value: "unity,powermax,isilon,vxflexos,powerstore"
 ```
 For e.g. - If you only want to install the unity controller as you know that you are only going to install CSI Driver for Dell EMC Unity using the operator, then remove all other storage array types.  
 Here is an example
@@ -125,6 +152,8 @@ List of CRDs which are installed in API Group `storage.dell.com`
 * csiunity
 * csivxflexos
 * csiisilon
+* csipowerstore
+* csipowermaxrevproxy
 
 ### Driver manifest examples
 
@@ -146,24 +175,20 @@ Use the correct sample manifest based on the driver, driver version and Kubernet
 
 
 For e.g.  
-*sample/powermax_v120_k8s_114.yaml* <- To install CSI PowerMax driver v1.2.0 on a Kubernetes 1.14 cluster  
-*sample/powermax_v120_ops_43.yaml* <- To install CSI PowerMax driver v1.3.0 on an OpenShift 4.3 cluster
+*sample/powermax_v140_k8s_117.yaml* <- To install CSI PowerMax driver v1.4.0 on a Kubernetes 1.17 cluster  
+*sample/powermax_v140_ops_43.yaml* <- To install CSI PowerMax driver v1.4.0 on an OpenShift 4.3 cluster
 
 
 ## Install CSI Drivers
 
 ### Full list of CSI Drivers and versions supported by the Dell CSI Operator
-| CSI Driver         | Version | ConfigVersion | Kubernetes Version | OpenShift Version |
-| ------------------ | ------  | --------------| ------------------ | ----------------- |
-| CSI PowerMax       | 1.2     | v1            | 1.14               | 4.2               |
-| CSI PowerMax       | 1.3     | v2            | 1.14, 1.16         | 4.2, 4.3          |
-| CSI VxFlexOS       | 1.3     | v1            | 1.14               | 4.2               |
-| CSI VxFlexOS       | 1.4     | v1            | 1.14, 1.16         | 4.2, 4.3          |
-| CSI Isilon         | 1.1     | v1            | 1.14               | 4.2               |
-| CSI Isilon         | 1.2     | v2            | 1.14, 1.16         | 4.2, 4.3          |
-| CSI Unity          | 1.1     | v1            | 1.14               | 4.2               |
-
-Note - CSI Driver for Dell EMC Unity v1.2 can't be installed via Dell CSI Operator
+| CSI Driver         | Version | ConfigVersion | Kubernetes Version       | OpenShift Version |
+| ------------------ | ------  | --------------| ------------------------ | ----------------- |
+| CSI PowerMax       | 1.4     | v3            | 1.17, 1.18, 1.19         | 4.3, 4.4          |
+| CSI PowerFlex      | 1.2     | v2            | 1.17, 1.18, 1.19         | 4.3, 4.4          |
+| CSI PowerScale     | 1.3     | v3            | 1.17, 1.18, 1.19         | 4.3, 4.4          |
+| CSI Unity          | 1.3     | v2            | 1.17, 1.18, 1.19         | 4.3, 4.4          |
+| CSI PowerStore     | 1.1     | v1            | 1.17, 1.18, 1.19         | 4.3, 4.4          |
 
 For installing any CSI Driver, follow these steps in general   
 (Steps specific to each driver have been documented in each of the driver sections)
@@ -187,7 +212,7 @@ Below is a list of all the mandatory and optional fields in the Custom Resource 
 **replicas**  - Number of replicas for controller plugin - Must be set to 1 for all drivers  
 **common**  
 This field is mandatory and is used to specify common properties for both controller and the node plugin
-* image - driver image
+* image - driver container image
 * imagePullPolicy - Image Pull Policy of the driver image
 * envs - List of environment variables and their values
 #### Optional fields
@@ -204,6 +229,9 @@ List of Storage Class specification
    3. reclaimPolicy - Sets the PersistentVolumeReclaim Policy for the PVCs. Defaults to Delete if not specified
    4. parameters - driver specific parameters. Refer individual driver section for more details
    5. allowVolumeExpansion - Set to true for allowing volume expansion for PVC
+   6. allowedTopologies - Sets the topology keys and values which allows the pods/and volumes to be scheduled on nodes that have access to the storage. Use this only with the CSI PowerFlex driver as rest of the drivers do not support the VOLUME_ACCESSIBILITY_CONSTRAINTS capability
+
+Note: The volumeBindingMode for all storage classes created for the CSI PowerFlex driver will be set to `WaitForFirstConsumer`
 
 **snapshotclass**  
 List of Snapshot Class specifications  
@@ -214,6 +242,12 @@ List of Snapshot Class specifications
 **forceUpdate**  
 Boolean value which can be set to `true` in order to force update the status of the CSI Driver 
 
+**tolerations**
+List of tolerations which should be applied to the driver StatefulSet and DaemonSet  
+It should be set separately in the controller and node sections if you want separate set of tolerations for them
+
+**nodeSelector**
+Used to specify node selectors for the driver StatefulSet and DaemonSet  
 
 Here is a sample specification with annotated comments to explain each field
 ```
@@ -225,19 +259,17 @@ metadata:
 spec:
   driver:
     # Used to specify configuration version
-    configVersion: v1 <- Refer the table containing the full list of supported drivers to find the appropriate config version 
+    configVersion: v3 <- Refer the table containing the full list of supported drivers to find the appropriate config version 
     replicas: 1 <- Always set to 1 for all drivers
     forceUpdate: false <- Set to true in case you want to force an update of driver status
     common: <- All common specification
-      image: "dellemc/csi-powermax:v1.2.0.000R" <- driver image
+      image: "dellemc/csi-powermax:v1.4.0.000R" <- driver image for a particular release
       imagePullPolicy: IfNotPresent
       envs:
         - name: X_CSI_POWERMAX_ENDPOINT
           value: "https://0.0.0.0:8443/"
         - name: X_CSI_K8S_CLUSTER_PREFIX
           value: "XYZ"
-    sideCars:
-      - name: snapshotter <- Installs snapshotter sidecar
     storageClass:
       - name: bronze
         default: true
@@ -247,6 +279,10 @@ spec:
           SRP: DEFAULT_SRP
           ServiceLevel: Bronze
 ```
+
+Note - The `image` field should point to the correct image tag for version of the driver you are installing.  
+For e.g. - If you wish to install v1.4 of the CSI PowerMax driver, use the image tag `dellemc/csi-powermax:v1.4.0.000R`
+
 Note - The name of the Storage Class or the Volume Snapshot Class (which are created in the Kubernetes/OpenShift cluster) is created using the name of the driver and the name provided for these classes in the manifest. This is done in order to ensure that these names are unique if there are multiple drivers installed in the same cluster.
 For e.g. - With the above sample manifest, the name of the storage class which is created in the cluster will be `test-powermax-bronze`.  
 You can get the name of the StorageClass and SnapshotClass created by the operator by running the commands - `kubectl get storageclass` and `kubectl get volumesnapshotclass`
@@ -255,10 +291,8 @@ You can get the name of the StorageClass and SnapshotClass created by the operat
 Although the sidecars field in the driver specification is optional, it is **strongly** recommended to not modify any details related to sidecars provided (if present) in the sample manifests. Any modifications to this should be only done after consulting with Dell EMC support.
 
 #### Snapshotter sidecar
-All the CSI Drivers which can be installed by the Dell CSI Operator don't support creating VolumeSnapshots in an OpenShift cluster because the Snapshot feature is still in Technical Preview in OpenShift 4.2 & 4.3 clusters.
-Because of this, the snapshotter sidecar details are missing from the sample manifests for OpenShift. Make sure the snapshotter sidecar name (and any other arguments) is not present in the driver manifest before installation in an OpenShift cluster.
-
-Similarly, in an upstream Kubernetes cluster, the snapshotter sidecar must be present in the driver manifest in order to use the snapshot functionality of the driver.
+Snapshotter sidecar will not be deployed as part of any driver installation on OpenShift 4.3 clusters. Volume Snapshots are a Technology Preview feature in OpenShift 4.3 and are not officially supported.  
+Any attempt to create VolumeSnapshotClass (alpha) as part of the driver installation on OpenShift 4.3 cluster would fail.
 
 ### Create Custom Resource manifest using example manifests
 #### OperatorHub
@@ -268,7 +302,7 @@ Use the OperatorHub GUI to create a new manifest using the example manifest prov
 Copy the example manifest provided in the dell-csi-operator repository and use this to install the driver
 For e.g. – Copy the PowerMax example manifest file
 ```
-$ cp dell-csi-operator/sample/powermax_v130_k8s_v116.yaml .
+$ cp dell-csi-operator/sample/powermax_v140_k8s_v117.yaml .
 ```
 ##### Modify the driver specification
 * Choose the correct configVersion. Refer the table containing the full list of supported drivers and versions.
@@ -281,10 +315,15 @@ $ cp dell-csi-operator/sample/powermax_v130_k8s_v116.yaml .
 #### OperatorHub
 Use the OperatorHub GUI to create the Custom Resource once you have created the CR manifest
 
+   Or
+   
+Use one of the sample files in the samples folder and follow the instructions below to install the driver using `kubectl`
+
+
 #### Manual installation
 Create the custom resource using the following command
 ```
-$ kubectl create -f powermax_v130_k8s_v116.yaml
+$ kubectl create -f powermax_v140_k8s_v117.yaml
 ```
 
 ### Verification
@@ -319,25 +358,28 @@ spec:
         value: https://0.0.0.0:8443/
       - name: X_CSI_K8S_CLUSTER_PREFIX
         value: XYZ
-      image: dellemc/csi-powermax:v1.3.0.000R
+      image: dellemc/csi-powermax:v1.4.0.000R
       imagePullPolicy: IfNotPresent
     configVersion: v2
     controller: {}
     node: {}
     replicas: 1
     sideCars:
-    - image: quay.io/k8scsi/csi-snapshotter:v1.2.2
+    - image: quay.io/k8scsi/csi-snapshotter:v2.1.1
       imagePullPolicy: IfNotPresent
       name: snapshotter
-    - image: quay.io/k8scsi/csi-provisioner:v1.2.1
+    - image: quay.io/k8scsi/csi-provisioner:v1.6.0
       imagePullPolicy: IfNotPresent
       name: provisioner
-    - image: quay.io/k8scsi/csi-attacher:v1.1.1
+    - image: quay.io/k8scsi/csi-attacher:v2.2.0
       imagePullPolicy: IfNotPresent
       name: attacher
-    - image: quay.io/k8scsi/csi-node-driver-registrar:v1.1.0
+    - image: quay.io/k8scsi/csi-node-driver-registrar:v1.2.0
       imagePullPolicy: IfNotPresent
       name: registrar
+    - image: quay.io/k8scsi/csi-resizer:v0.5.0
+      imagePullPolicy: IfNotPresent
+      name: resizer
     snapshotClass:
     - name: powermax-snapclass
     storageClass:
@@ -355,7 +397,7 @@ status:
   driverHash: 3166303568
   lastUpdate:
     condition: Running
-    time: "2020-06-04T01:53:01Z"
+    time: "2020-09-05T01:53:01Z"
   nodeStatus:
     available:
     - powermax-node-kphlf
@@ -404,7 +446,7 @@ Note – Any attempt to rename a storage class or snapshot class will result in 
 For uninstalling any CSI drivers deployed the Dell CSI Operator, just delete the respective Custom Resources.  
 This can be done using OperatorHub GUI by deleting the CR or via kubectl.
     
-For e.g. – To uninstall a VxFlexOS driver installed via the operator, delete the Custom Resource(CR)
+For e.g. – To uninstall a PowerFlex driver installed via the operator, delete the Custom Resource(CR)
 
 ```
 # Replace driver-name and driver-namespace with their respective values
@@ -443,10 +485,10 @@ the Custom Resource forcefully by setting forceUpdate to true. If all the driver
 
 
 # Driver details
-## CSI Isilon
+## CSI PowerScale
 ### Pre-requisites
-#### Create secret to store Isilon credentials
-Create a secret named `isilon-creds`, in the namespace where the CSI Isilon driver will be installed, using the following manifest
+#### Create secret to store PowerScale credentials
+Create a secret named `isilon-creds`, in the namespace where the CSI PowerScale driver will be installed, using the following manifest
 ```
 apiVersion: v1
 kind: Secret
@@ -469,13 +511,13 @@ echo -n "myusername" | base64
 echo -n "mypassword" | base64
 ```
 #### Optional - Create secret for client side TLS verification
-Create a secret named `isilon-certs` in the namespace where the CSI Isilon driver will be installed. This is an optional step and is only required if you are setting the env variable `X_CSI_ISI_INSECURE` to `false`. Please refer detailed documentation on how to create this secret in the Product Guide [here](https://github.com/dell/csi-isilon)
+Create a secret named `isilon-certs` in the namespace where the CSI PowerScale driver will be installed. This is an optional step and is only required if you are setting the env variable `X_CSI_ISI_INSECURE` to `false`. Please refer detailed documentation on how to create this secret in the Product Guide [here](https://github.com/dell/csi-isilon)
 
 ### Set the following *Mandatory* Environment variables
 | Variable name      | Section | Description | Example |
 | ------------------ | ------ | ----------- | ------- |
-| X_CSI_ISI_ENDPOINT | common    | HTTPS endpoint of the Isilon OneFS API server | 1.1.1.1 |
-| X_CSI_ISI_PORT     | common    | HTTPS port number of the Isilon OneFS API server (string) | 8080 |
+| X_CSI_ISI_ENDPOINT | common    | HTTPS endpoint of the PowerScale OneFS API server | 1.1.1.1 |
+| X_CSI_ISI_PORT     | common    | HTTPS port number of the PowerScale OneFS API server (string) | 8080 |
 
 ### Modify/Set the following *optional* environment variables
 | Variable name      | Section    | Description | Example |
@@ -512,58 +554,93 @@ Create a secret named `isilon-certs` in the namespace where the CSI Isilon drive
 ## CSI Unity
 ### Pre-requisites
 #### Create secret to store Unity credentials
+Create a namespace called unity (it can be any user-defined name; But commands in this section assumes that the namespace is unity)
+Prepare the secret.json for driver configuration.
+The following table lists driver configuration parameters for multiple storage arrays.
 
-Create a secret named `unity-creds`, in the namespace where the CSI Unity driver will be installed, using the following manifest
+| Parameter | Description | Required | Default |
+| --------- | ----------- | -------- |-------- |   
+| username | Username for accessing unity system  | true | - |
+| password | Password for accessing unity system  | true | - |
+| restGateway | REST API gateway HTTPS endpoint Unity system| true | - |
+| arrayId | ArrayID for unity system | true | - |
+| insecure | "unityInsecure" determines if the driver is going to validate unisphere certs while connecting to the Unisphere REST API interface If it is set to false, then a secret unity-certs has to be created with a X.509 certificate of CA which signed the Unisphere certificate | true | true |
+| isDefaultArray | An array having isDefaultArray=true is for backward compatibility. This parameter should occur once in the list. | false | false |
 
+Ex: secret.json
+
+```json5
+
+   {
+     "storageArrayList": [
+       {
+         "username": "user",
+         "password": "password",
+         "restGateway": "https://10.1.1.1",
+         "arrayId": "APM00******1",
+         "insecure": true,
+         "isDefaultArray": true
+       },
+       {
+         "username": "user",
+         "password": "password",
+         "restGateway": "https://10.1.1.2",
+         "arrayId": "APM00******2",
+         "insecure": true
+       }
+     ]
+   }
+  
 ```
-apiVersion: v1
-kind: Secret
-metadata:
-  name: unity-creds
-  # Replace driver-namespace with the namespace where driver is being deployed
-  namespace: <driver-namespace>
-type: Opaque
-data:
-  # set username to the base64 encoded username
-  username: <base64 username>
-  # set password to the base64 encoded password
-  password: <base64 password>
-```
-The base64 username and password can be obtained by running the following commands
-```
-# If myusername is the username
-echo -n "myusername" | base64
-# If mypassword is the password
-echo -n "mypassword" | base64
-```
+
+`kubectl create secret generic unity-creds -n unity --from-file=config=secret.json`
+
+Use the following command to replace or update the secret
+
+`kubectl create secret generic unity-creds -n unity --from-file=config=secret.json -o yaml --dry-run | kubectl replace -f -`
+
+**Note**: The user needs to validate the JSON syntax and array related key/values while replacing the unity-creds secret.
+The driver will continue to use previous values in case of an error found in the JSON file.
+
 #### Optional - Create secret for client side TLS verification
-Create a secret named `unity-certs` in the namespace where the CSI Unity driver will be installed. This is an optional step and is only required if you are setting the env variable `X_CSI_UNITY_INSECURE` to `false`. Please refer detailed documentation on how to create this secret in the Product Guide [here](https://github.com/dell/csi-unity)
 
+Create an empty secret. Ex: empty-secret.yaml
 
-### Set the following *Mandatory* Environment variables
+```
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: unity-certs-0
+    namespace: unity
+  type: Opaque
+  data:
+    cert-0: ""
+```
 
-| Variable name      | Section | Description | Example |
-| ------------------ | ------ | ----------- | ------- |
-| X_CSI_UNITY_ENDPOINT | common | Must provide a UNITY HTTPS unisphere url | https://127.0.0.1:443 |
+Please refer detailed documentation on how to create this secret in the Product Guide [here](https://github.com/dell/csi-unity#certificate-validation-for-unisphere-rest-api-calls)
 
 ### Modify/Set the following *optional* environment variables
 
 | Variable name      | Section    | Description | Default |
 | ------------------ | ---------- | ----------- | ------- |
 | X_CSI_DEBUG | common | To enable debug mode | false |
-| X_CSI_UNITY_INSECURE | common | Specifies that the Unity's hostname and certificate chain | true |
-| GOUNITY_DEBUG | common | To enable debug mode for gounity library | false |
+| X_CSI_UNITY_SYNC_NODEINFO_INTERVAL | node |  Time interval to add node info to array. Default 15 minutes. Minimum value should be 1.  If your specifies 0, then time is set to default value. | true |
+| X_CSI_UNITY_DEBUG | common | To enable debug logging mode  | false |
+
 
 ### StorageClass Parameters
-Following parameters are not present in values.yaml in the Helm based installer
-
+        
 | Parameter | Description | Required | Default |
 | --------- | ----------- | -------- |-------- |
-| FsType | To set File system type. Possible values are ext3,ext4,xfs | false | ext4 |
-| volumeThinProvisioned | To set volume thinProvisioned | false | true |
-| isVolumeDataReductionEnabled | To set volume data reduction | false | false |
+| storagePool | Unity Storage Pool CLI ID to use with in the Kubernetes storage class | true | - |
+| thinProvisioned | To set volume thinProvisioned | false | "true" |    
+| isDataReductionEnabled | To set volume data reduction | false | "false" |
 | volumeTieringPolicy | To set volume tiering policy | false | 0 |
-| hostIOLimitName | To set unity host IO limit | false | "" |
+| FsType | Block volume related parameter. To set File system type. Possible values are ext3,ext4,xfs. Supported for FC/iSCSI protocol only. | false | ext4 |
+| hostIOLimitName | Block volume related parameter.  To set unity host IO limit. Supported for FC/iSCSI protocol only. | false | "" |    
+| nasServer | NFS related parameter. NAS Server CLI ID for filesystem creation. | true | "" |
+| hostIoSize | NFS related parameter. To set filesystem host IO Size. | false | "8192" |
+| reclaimPolicy | What should happen when a volume is removed | false | Delete |
 
 ### SnapshotClass parameters
 Following parameters are not present in values.yaml in the Helm based installer
@@ -572,11 +649,11 @@ Following parameters are not present in values.yaml in the Helm based installer
 | --------- | ----------- | -------- |-------- |
 | snapshotRetentionDuration | TO set snapshot retention duration. Format:"1:23:52:50" (number of days:hours:minutes:sec)| false | "" |
 
-## CSI VxFlexOS
+## CSI PowerFlex
 ### Pre-requisites
 
-#### Create secret to store VxFlexOS credentials
-Create a secret named `vxflexos-creds`,  in the namespace where the CSI VxFlexOS driver will be installed, using the following manifest
+#### Create secret to store PowerFlex credentials
+Create a secret named `vxflexos-creds`,  in the namespace where the CSI PowerFlex driver will be installed, using the following manifest
 ```
 apiVersion: v1
 kind: Secret
@@ -599,26 +676,26 @@ echo -n "myusername" | base64
 echo -n "mypassword" | base64
 ```
 
-#### Install VxFlex OS Storage Data Client
-Install the VxFlex OS Storage Data Client (SDC) on all Kubernetes nodes.  
-For detailed VxFlex OS installation procedure, and current version of the driver see the [Dell EMC VxFlex OS Deployment Guide.](https://github.com/dell/csi-vxflexos/blob/master/CSI%20Driver%20for%20VxFlex%20OS%20Product%20Guide.pdf)
+#### Install PowerFlex Storage Data Client
+Install the PowerFlex Storage Data Client (SDC) on all Kubernetes nodes.  
+For detailed PowerFlex installation procedure, and current version of the driver see the [Dell EMC PowerFlex Deployment Guide.](https://github.com/dell/csi-vxflexos/blob/master/CSI%20Driver%20for%20VxFlex%20OS%20Product%20Guide.pdf)
 
 
 Procedure:
-1. Download the VxFlex OS SDC from Dell EMC Online support. The filename is EMC-ScaleIO-sdc-*.rpm, where * is the SDC name corresponding to the VxFlex OS installation version.
+1. Download the PowerFlex SDC from Dell EMC Online support. The filename is EMC-ScaleIO-sdc-*.rpm, where * is the SDC name corresponding to the PowerFlex installation version.
 2. Export the shell variable MDM_IP in a comma-separated list. This list contains the IP addresses of the MDMs.
     export MDM_IP=xx.xxx.xx.xx,xx.xxx.xx.xx, where xxx represents the actual IP address in your environment variable.
 3. Install the SDC using the following commands:
-l For Red Hat Enterprise Linux and Cent OS, run rpm -iv ./EMC-ScaleIO-sdc-*.x86_64.rpm, where * is the SDC name corresponding to the VxFlex OS installation version.
+l For Red Hat Enterprise Linux and Cent OS, run rpm -iv ./EMC-ScaleIO-sdc-*.x86_64.rpm, where * is the SDC name corresponding to the PowerFlex installation version.
 l For Ubuntu, run EMC-ScaleIO-sdc-3.0-0.769.Ubuntu.18.04.x86_64.deb.
 
 ### Set the following *Mandatory* Environment variables
 
 | Variable name      | Section | Description | Example |
 | ------------------ | ------ | ----------- | ------- |
-| X_CSI_VXFLEXOS_SYSTEMNAME | common | defines the name of the VxFlex OS system from which volumes will be provisioned. This must either be set to the VxFlex OS system name or system ID | systemname |
-| X_CSI_VXFLEXOS_ENDPOINT | common | defines the VxFlex OS REST API endpoint, with full URL, typically leveraging HTTPS. You must set this for your VxFlex OS installations REST gateway | https://127.0.0.1 |
-|
+| X_CSI_VXFLEXOS_SYSTEMNAME | common | defines the name of the PowerFlex system from which volumes will be provisioned. This must either be set to the PowerFlex system name or system ID | systemname |
+| X_CSI_VXFLEXOS_ENDPOINT | common | defines the PowerFlex REST API endpoint, with full URL, typically leveraging HTTPS. You must set this for your PowerFlex installations REST gateway | https://127.0.0.1 |
+
 
 ### Modify/Set the following **optional environment variables**
 
@@ -633,8 +710,11 @@ l For Ubuntu, run EMC-ScaleIO-sdc-3.0-0.769.Ubuntu.18.04.x86_64.deb.
 
 | Name | Mandatory | Description | Example |
 | ---- | :-------: | ----------- | ------- |
-| storagePool | yes | defines the VxFlex OS storage pool from which this driver will provision volumes. You must set this for the primary storage pool to be used | sp |
+| storagePool | yes | defines the PowerFlex storage pool from which this driver will provision volumes. You must set this for the primary storage pool to be used | sp |
 | FsType | No  | To set File system type. Possible values are ext3,ext4,xfs | xfs |
+| allowedTopologies | no | Once the allowed topology is modified in storage class, pods/and volumes will always be scheduled on nodes that have access to the storage | allowedTopology: key: xxx/xx value: xxx |
+
+Note:  key : csi-vxflexos.dellemc.com/X_CSI_VXFLEXOS_SYSTEMNAME , change the X_CSI_VXFLEXOS_SYSTEMNAME parameter in allowed topology to it's value(System name) 
 
 ## CSI PowerMax
 ### Pre-requisites
@@ -691,8 +771,12 @@ Choose the Product Guide for the version you are installing by selecting the cor
 | X_CSI_ENABLE_BLOCK | common | enable Block Volume capability which is in experimental phase | "true" | |
 | X_CSI_POWERMAX_ISCSI_ENABLE_CHAP | node | enable ISCSI CHAP authentication | "true" | Only supported from v1.3.0 onwards |
 | X_CSI_POWERMAX_DRIVER_NAME | common | Custom CSI driver name | "csi-powermax" | Only supported from v1.3.0 onwards |
+| X_CSI_IG_NODENAME_TEMPLATE | common | Template used for creating Hosts on PowerMax | "a-b-c-%foo%-xyz" | The text between % symbols(foo) is replaced by actual host name |
+| X_CSI_IG_MODIFY_HOSTNAME | node | determines if node plugin can rename any existing Host on PowerMax array | "true" | Use it along with node name template to rename existing Hosts |
+| X_CSI_POWERMAX_PROXY_SERVICE_NAME | common | Name of CSI PowerMax ReverseProxy service | "powermax-reverseproxy" | Leave blank if not using reverse proxy |
+| X_CSI_GRPC_MAX_THREADS | common | Number of concurrent grpc requests allowed per client | "4" | Set to a higher number (<50) when using reverse proxy |
 
-Note -  Please refer the Product guide for CSI PowerMax v1.3.0 for detailed instructions before setting X_CSI_POWERMAX_ISCSI_ENABLE_CHAP & X_CSI_POWERMAX_DRIVER_NAME
+Note -  Please refer the Product guide for CSI PowerMax v1.4.0 for detailed instructions before setting X_CSI_POWERMAX_ISCSI_ENABLE_CHAP & X_CSI_POWERMAX_DRIVER_NAME
 
 ### StorageClass parameters
 
@@ -705,3 +789,124 @@ Note -  Please refer the Product guide for CSI PowerMax v1.3.0 for detailed inst
 
 ### SnapshotClass parameters
 No parameters have to be specified for Volume Snapshot Class for PowerMax
+
+## CSI PowerStore
+### Pre-requisites
+#### Create secret to store PowerStore API credentials
+
+Create a secret named `powerstore-creds`, in the namespace where the CSI PowerStore driver will be installed, using the following manifest
+
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: powerstore-creds
+  # Replace driver-namespace with the namespace where driver is being deployed
+  namespace: <driver-namespace>
+type: Opaque
+data:
+  # set username to the base64 encoded username
+  username: <base64 username>
+  # set password to the base64 encoded password
+  password: <base64 password>
+```
+The base64 username and password can be obtained by running the following commands
+```
+# If myusername is the username
+echo -n "myusername" | base64
+# If mypassword is the password
+echo -n "mypassword" | base64
+```
+
+### Set the following *Mandatory* Environment variables
+
+| Variable name      | Section | Description | Example |
+| ------------------ | ------ | ----------- | ------- |
+| X_CSI_POWERSTORE_ENDPOINT | common | Must provide a PowerStore HTTPS API url | https://127.0.0.1/api/rest |
+| X_CSI_TRANSPORT_PROTOCOL | node | Choose what transport protocol to use (`ISCSI`, `FC`, `auto` or `None`) | auto |
+| X_CSI_POWERSTORE_NODE_NAME_PREFIX | node | Prefix to add to each node registered by the CSI driver | `"csi-node"` |
+
+### Modify/Set the following *optional* environment variables
+
+| Variable name      | Section    | Description | Default |
+| ------------------ | ---------- | ----------- | ------- |
+| X_CSI_DEBUG | common | To enable debug mode | true |
+| X_CSI_POWERSTORE_INSECURE | common | To enable insecure mode without client side verification of certificates | true |
+| X_CSI_FC_PORTS_FILTER_FILE_PATH | node | To set path to the file which provide list of WWPN which should be used by the driver for FC connection on this node | `"/etc/fc-ports-filter"`
+
+### StorageClass Parameters
+
+| Parameter | Description | Required | Default |
+| --------- | ----------- | -------- |-------- |
+| FsType | To set File system type. Possible values are ext3,ext4,xfs,nfs | false | ext4 |
+| nasName | To set what NAS Server to use for NFS | false | "" |
+
+### SnapshotClass parameters
+No parameters have to be specified for Volume Snapshot Class for PowerStore
+
+## CSI PowerMax ReverseProxy
+Starting v1.1 of 'dell-csi-operator', you can install the new CSI PowerMax ReverseProxy service using the `dell-csi-operator`
+CSI PowerMax ReverseProxy is a new optional component which can be installed along with the CSI PowerMax driver  
+Please refer CSI PowerMax product guide [here](https://github.com/dell/csi-powermax "CSI PowerMax")  for more details.
+
+When you install CSI PowerMax ReverseProxy, `dell-csi-operator` is going to create a `Deployment` and `ClusterIP` service as part of the installation
+
+Note - If you wish to use the ReverseProxy with CSI PowerMax driver, the ReverseProxy service should be created before you install the CSIPowerMax driver 
+
+### Pre-requisites
+Create a TLS secret which holds a SSL certificate & a private key which is required by the reverse proxy server. 
+Use a tool like `openssl` to generate this secret using the example below:
+
+```
+    openssl genrsa -out tls.key 2048
+    openssl req -new -x509 -sha256 -key tls.key -out tls.crt -days 3650
+    kubectl create secret -n powermax tls revproxy-certs --cert=tls.crt --key=tls.key
+```
+
+### Set the following parameters in the CSI PowerMaxReverseProxy Spec
+**tlsSecret** : Provide the name of the TLS secret. If using the above example, it should be set to `revproxy-certs`  
+**config** : This section contains the details of the Reverse Proxy configuration  
+**mode** : This value is set to `Linked` by default. Don't change this value  
+**linkConfig** : This section contains the configuration of the `Linked` mode  
+**primary** : This section holds details for the primary Unisphere which the Reverse Proxy will connect to
+**backup** : This optional section holds details for a backup Unisphere which the Reverse Proxy can connect to if Primary Unisphere is unreachable  
+**url** : URL of the Unisphere server
+**skipCertificateValidation**: This setting determines if the client side Unisphere certificate validation is required
+**certSecret**: Secret name which holds the CA certificates which was used to sign Unisphere SSL certificates. Mandatory if skipCertificateValidation is set to `false`
+
+Here is a sample manifest with each field annotated. A copy of this manifest is provided in the `samples` folder
+```
+apiVersion: storage.dell.com/v1
+kind: CSIPowerMaxRevProxy
+metadata:
+  name: powermax-reverseproxy # <- Name of the CSIPowerMaxRevProxy object
+  namespace: test-powermax # <- Set the namespace to where you will install the CSI PowerMax driver
+spec:
+  # Image for CSI PowerMax ReverseProxy
+  image: dellemc/csipowermax-reverseproxy:v1.0.0.000R # <- CSI PowerMax Reverse Proxy image 
+  imagePullPolicy: Always
+  # TLS secret which contains SSL certificate and private key for the Reverse Proxy server
+  tlsSecret: csirevproxy-tls-secret
+  config:
+    # Mode for the proxy - only supported mode for now is "Linked"
+    mode: Linked
+    linkConfig:
+      primary:
+        url: https://0.0.0.0:8443 #Unisphere URL
+        skipCertificateValidation: true # This setting determines if client side Unisphere certificate validation is to be skipped
+        certSecret: "" # Provide this value if skipCertificateValidation is set to false
+      backup: # This is an optional field and lets you configure a backup unisphere which can be used by proxy server
+        url: https://0.0.0.0:8443 #Unisphere URL
+        skipCertificateValidation: true
+```
+
+### Installation
+Copy the sample file - `powermax_reverseproxy.yaml` from the `samples` folder or use the sample available in the `OperatorHub` GUI  
+Edit and input all required parameters and then use the `OperatorHub` GUI or run the following command to install the CSI PowerMax Reverse Proxy service
+
+    kubectl create -f powermax_reverseproxy.yaml
+
+You can query for the deployment and service created as part of the installation using the following commands:
+  
+    kubectl get deployment -n <namespace>
+    kubectl get svc -n <namespace>
