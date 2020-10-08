@@ -66,7 +66,7 @@ Dell CSI Operator has been tested and qualified with
     * OpenShift Clusters 4.3, 4.4 with RHEL 7.x & RHCOS worker nodes
 
 #### Installation using OperatorHub
-Dell CSI Operator requires a ConfigMap to be created in the same namespace where the operator is deployed. This is an optional step but highly recommended.
+Dell CSI Operator requires a ConfigMap to be created in the same namespace where the operator is deployed.
 
 Please run the following commands for creating the ConfigMap
 ```
