@@ -13,9 +13,9 @@
         "Name": "X_CSI_VXFLEXOS_INSECURE",
         "CSIEnvType": "Boolean",
         "SetForController": true,
-        "SetForNode": false,
+        "SetForNode": true,
         "DefaultValueForController": "true",
-        "DefaultValueForNode": ""
+        "DefaultValueForNode": "true"
       },
       {
         "Name": "X_CSI_VXFLEXOS_ENDPOINT",

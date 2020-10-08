@@ -353,6 +353,12 @@
           }
         ]
       }
+    ],
+    "storageClassAttrs": [
+      {
+        "name": "allowVolumeExpansion",
+        "value": true
+      }
     ]
   }
 }

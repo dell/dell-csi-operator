@@ -32,3 +32,12 @@ spec:
         storagePool: pool_1
         arrayId: "VIRT2017****"
         protocol: "iSCSI"
+    - name: virt2017****-nfs
+      reclaimPolicy: "Delete"
+      allowVolumeExpansion: true
+      parameters:
+        storagePool: pool_1
+        arrayId: "VIRT2017****"
+        protocol: "NFS"
+        hostIoSize: "8192"
+        nasServer: nas_1
