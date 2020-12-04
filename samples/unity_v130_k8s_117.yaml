@@ -16,6 +16,8 @@ spec:
     sideCars:
       - name: provisioner
         args: ["--volume-name-prefix=csiunity"]
+      - name: snapshotter
+        args: ["--snapshot-name-prefix=csiunitysnap"]
     storageClass:
     - name: virt2016****-fc
       default: true

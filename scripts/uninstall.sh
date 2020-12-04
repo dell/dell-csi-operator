@@ -1,16 +1,14 @@
 #!/bin/bash
-echo "Deleting the Operator Deployment"
-echo "kubectl delete -f deploy/operator.yaml"
+echo "** Deleting the Operator Deployment **"
+echo
+echo kubectl delete -f deploy/operator.yaml
 kubectl delete -f deploy/operator.yaml
-echo "Deleting the ConfigMap"
-echo "kubectl delete configmap config-dell-csi-operator"
-kubectl delete configmap config-dell-csi-operator
-echo "Deleting the ClusterRoleBinding"
-echo "kubectl delete -f deploy/role_binding.yaml"
-kubectl delete -f deploy/role_binding.yaml
-echo "Deleting the ClusterRole"
-echo "kubectl delete -f deploy/role.yaml"
-kubectl delete -f deploy/role.yaml
-echo "Deleting the ServiceAccount"
-echo "kubectl delete -f deploy/service_account.yaml"
-kubectl delete -f deploy/service_account.yaml
+echo
+echo "** Deleting ConfigMap **"
+echo
+echo kubectl delete configmap dell-csi-operator-config
+kubectl delete configmap dell-csi-operator-config
+echo
+echo "Removing temporary archive"
+echo rm -f config.tar.gz
+rm -f config.tar.gz

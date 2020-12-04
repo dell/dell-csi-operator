@@ -9,7 +9,7 @@ spec:
     replicas: 1
     forceUpdate: false
     common:
-      image: "dellemc/csi-vxflexos:v1.2.0.000R"
+      image: "dellemc/csi-vxflexos:v1.2.1"
       imagePullPolicy: IfNotPresent
       envs:
         - name: X_CSI_VXFLEXOS_SYSTEMNAME
@@ -22,6 +22,7 @@ spec:
           value: "false"
         - name: X_CSI_DEBUG
           value: "true"
+
     storageClass:
       - name: vxflexos
         default: true

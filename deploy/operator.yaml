@@ -1,59 +1,435 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    control-plane: controller-manager
+  name: dell-csi-operator-manager-service-account
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: dell-csi-operator-leader-election-role
+  namespace: default
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - configmaps/status
+  verbs:
+  - get
+  - update
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: dell-csi-operator-manager-role
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - endpoints
+  - events
+  - persistentvolumeclaims
+  - pods
+  - secrets
+  - serviceaccounts
+  - services
+  - services/finalizers
+  verbs:
+  - '*'
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  verbs:
+  - create
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - persistentvolumeclaims/status
+  verbs:
+  - patch
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - persistentvolumes
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apiextensions.k8s.io
+  resources:
+  - customresourcedefinitions
+  verbs:
+  - create
+  - delete
+  - list
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - daemonsets
+  - deployments
+  - replicasets
+  - statefulsets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - update
+  - watch
+- apiGroups:
+  - apps
+  resourceNames:
+  - dell-csi-operator-controller-manager
+  resources:
+  - deployments/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - update
+  - watch
+- apiGroups:
+  - monitoring.coreos.com
+  resources:
+  - servicemonitors
+  verbs:
+  - create
+  - get
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - clusterrolebindings
+  - clusterroles
+  - replicasets
+  - rolebindings
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - update
+  - watch
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - roles
+  verbs:
+  - create
+  - get
+  - list
+  - update
+  - watch
+- apiGroups:
+  - security.openshift.io
+  resourceNames:
+  - privileged
+  resources:
+  - securitycontextconstraints
+  verbs:
+  - use
+- apiGroups:
+  - snapshot.storage.k8s.io
+  resources:
+  - volumesnapshotclasses
+  - volumesnapshotcontents
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - update
+  - watch
+- apiGroups:
+  - snapshot.storage.k8s.io
+  resources:
+  - volumesnapshotcontents/status
+  verbs:
+  - update
+- apiGroups:
+  - snapshot.storage.k8s.io
+  resources:
+  - volumesnapshots
+  - volumesnapshots/status
+  verbs:
+  - get
+  - list
+  - update
+  - watch
+- apiGroups:
+  - storage.dell.com
+  resources:
+  - csiisilons
+  - csiisilons/finalizers
+  - csiisilons/status
+  verbs:
+  - '*'
+- apiGroups:
+  - storage.dell.com
+  resources:
+  - csipowermaxes
+  - csipowermaxes/finalizers
+  - csipowermaxes/status
+  verbs:
+  - '*'
+- apiGroups:
+  - storage.dell.com
+  resources:
+  - csipowermaxrevproxies
+  - csipowermaxrevproxies/finalizers
+  - csipowermaxrevproxies/status
+  verbs:
+  - '*'
+- apiGroups:
+  - storage.dell.com
+  resources:
+  - csipowerstores
+  - csipowerstores/finalizers
+  - csipowerstores/status
+  verbs:
+  - '*'
+- apiGroups:
+  - storage.dell.com
+  resources:
+  - csiunities
+  - csiunities/finalizers
+  - csiunities/status
+  verbs:
+  - '*'
+- apiGroups:
+  - storage.dell.com
+  resources:
+  - csivxflexoses
+  - csivxflexoses/finalizers
+  - csivxflexoses/status
+  verbs:
+  - '*'
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - csidrivers
+  verbs:
+  - create
+  - get
+  - list
+  - update
+  - watch
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - csinodes
+  verbs:
+  - create
+  - get
+  - list
+  - update
+  - watch
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - storageclasses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - update
+  - watch
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - volumeattachments
+  verbs:
+  - create
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - volumeattachments/status
+  verbs:
+  - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: dell-csi-operator-proxy-role
+rules:
+- apiGroups:
+  - authentication.k8s.io
+  resources:
+  - tokenreviews
+  verbs:
+  - create
+- apiGroups:
+  - authorization.k8s.io
+  resources:
+  - subjectaccessreviews
+  verbs:
+  - create
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: dell-csi-operator-metrics-reader
+rules:
+- nonResourceURLs:
+  - /metrics
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dell-csi-operator-leader-election-rolebinding
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: dell-csi-operator-leader-election-role
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: dell-csi-operator-manager-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: dell-csi-operator-manager-role
+subjects:
+- kind: ServiceAccount
+  name: dell-csi-operator-manager-service-account
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: dell-csi-operator-proxy-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: dell-csi-operator-proxy-role
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    control-plane: controller-manager
+  name: dell-csi-operator-controller-manager-metrics-service
+  namespace: default
+spec:
+  ports:
+  - name: https
+    port: 8443
+    targetPort: https
+  selector:
+    control-plane: controller-manager
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dell-csi-operator
+  labels:
+    control-plane: controller-manager
+  name: dell-csi-operator-controller-manager
+  namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: dell-csi-operator
+      control-plane: controller-manager
   template:
     metadata:
       labels:
-        name: dell-csi-operator
+        control-plane: controller-manager
     spec:
-      serviceAccountName: dell-csi-operator
-      initContainers:
-        - name: config-copy
-          image: busybox:latest
-          command: ['sh', '-c', 'if [ -e /configmap/config.tar.gz ]; then /bin/tar -C /etc/config/dell-csi-operator -xzvf /configmap/config.tar.gz --strip-components 1; else echo "Warning: ConfigMap not mounted"; fi']
-          volumeMounts:
-            - name: configmap-volume
-              mountPath: /configmap
-            - name: config-dir
-              mountPath: /etc/config/dell-csi-operator
       containers:
-        - name: dell-csi-operator
-          # Replace this with the built image name
-          image: dellemc/dell-csi-operator:v1.1.0.000R
-          imagePullPolicy: Always
-          args:
-            - "--zap-level=debug"
-            - "--zap-encoder=console"
-          env:
-            - name: WATCH_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-            - name: POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: OPERATOR_NAME
-              value: "dell-csi-operator"
-            - name: OPERATOR_DRIVERS
-              value: "unity,powermax,isilon,vxflexos,powerstore"
-          volumeMounts:
-            - name: configmap-volume
-              mountPath: /etc/config/configmap
-            - name: config-dir
-              mountPath: /etc/config/dell-csi-operator
+      - args:
+        - --enable-leader-election
+        command:
+        - /manager
+        env:
+        - name: OPERATOR_DRIVERS
+          value: unity,powermax,isilon,vxflexos,powerstore
+        image: dellemc/dell-csi-operator:v1.2.0.000R
+        imagePullPolicy: Always
+        name: dell-csi-operator-controller
+        volumeMounts:
+        - mountPath: /etc/config/configmap
+          name: configmap-volume
+        - mountPath: /etc/config/dell-csi-operator
+          name: config-dir
+      initContainers:
+      - command:
+        - sh
+        - -c
+        - 'if [ -e /configmap/config.tar.gz ]; then /bin/tar -C /etc/config/dell-csi-operator -xzvf /configmap/config.tar.gz --strip-components 1; else echo "Warning: ConfigMap not mounted"; fi'
+        image: docker.io/busybox:1.32.0
+        name: config-copy
+        volumeMounts:
+        - mountPath: /configmap
+          name: configmap-volume
+        - mountPath: /etc/config/dell-csi-operator
+          name: config-dir
+      serviceAccountName: dell-csi-operator-manager-service-account
+      terminationGracePeriodSeconds: 10
       volumes:
-        - name: configmap-volume
-          configMap:
-            # Provide the name of the ConfigMap containing the files you want
-            # to add to the container
-            name: config-dell-csi-operator
-            optional: true
-        - name: config-dir
-          emptyDir:
+      - configMap:
+          name: dell-csi-operator-config
+          optional: true
+        name: configmap-volume
+      - emptyDir: null
+        name: config-dir

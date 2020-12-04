@@ -1,7 +1,6 @@
 #!/bin/bash
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-k8s16=16
 
 skip_beta_crd_flag=""
 if [ $# -ne 0 ]; then
@@ -37,13 +36,6 @@ function verify_min_k8s_version() {
 		RESULT_K8S_MIN_VER="Failed"
     AddError "Kubernetes version, ${kMajorVersion}.${kMinorVersion}, is too old. Minimum required version is: ${1}.${2}"
   fi
-  # Following check is temporary as we still support OpenShift 4.3
-  if [[ "${kMinorVersion}" -eq "${k8s16}" ]]; then
-    if ! "$isOpenShift43"; then
-		  RESULT_K8S_MIN_VER="Failed"
-      AddError "Upstream Kubernetes version, ${kMajorVersion}.${kMinorVersion}, is too old. Minimum required version is: 17"
-    fi
-  fi
 	if [ $RESULT_K8S_MIN_VER == "Failed" ]; then
 	  log step_failure
 	else
@@ -68,32 +60,6 @@ function verify_max_k8s_version() {
 	else
 	  log step_success
 	fi
-}
-
-# verify that the alpha snap CRDs are not installed
-verify_alpha_snap_crds() {
-	# check for the alpha snapshot CRDs. These shouldn't be present for installation to proceed with
-  CRDS=("VolumeSnapshotClasses" "VolumeSnapshotContents" "VolumeSnapshots")
-  for C in "${CRDS[@]}"; do
-    log step "Checking for alpha $C CRD"
-    # Verify that alpha snapshot related CRDs/CRs are not there on the system.
-    kubectl explain ${C} 2> /dev/null | grep "^VERSION.*v1alpha1$" --quiet
-    if [ $? -eq 0 ]; then
-      AddError "The alpha CRD for ${C} is installed. Please uninstall it"
-      RESULT_ALPHA_SNAP_CRDS="Failed"
-      log step_failure
-      log step "Checking for Custom Resources of alpha $C CRD"
-      if [[ $(kubectl get ${C} -A --no-headers 2>/dev/null | wc -l) -ne 0 ]]; then
-        AddError "Found Custom Resource for alpha CRD ${C}. Please delete it before continuing with installation"
-        RESULT_ALPHA_SNAP_CRDS="Failed"
-        log step_failure
-      else
-        log step_success
-      fi
-    else
-      log step_success
-    fi
-  done
 }
 
 # verify that the alpha snap CRDs are not installed
@@ -221,21 +187,11 @@ source $SCRIPTDIR/common.bash
 
 header
 log separator
-verify_min_k8s_version "1" "16"
-verify_max_k8s_version "1" "19"
+verify_min_k8s_version "1" "17"
+verify_max_k8s_version "1" "20"
 log separator
 
-if [[ "$kMinorVersion" -gt 16 ]]; then
-  verify_alpha_snap_crds
-  verify_beta_snap_crds
-  verify_beta_snapshot_controller
-fi
-
 summary
-
-if [ ${RESULT_ALPHA_SNAP_CRDS} == "Failed" ]; then
-  echo "Please uninstall alpha CRDs for Volume Snapshots before continuing."
-fi
 
 if [ ${RESULT_BETA_SNAP_CRDS} == "Failed" ]; then
   echo "Please install CSI VolumeSnapshot Beta CRDs before continuing."

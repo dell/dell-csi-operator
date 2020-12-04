@@ -1,3 +1,87 @@
+- [Dell CSI Operator](#dell-csi-operator)
+  - [Support](#support)
+  - [Supported Platforms](#supported-platforms)
+  - [Installation](#installation)
+    - [Before you begin](#before-you-begin)
+    - [Overview](#overview)
+    - [Using Install script](#using-install-script)
+    - [Using Operator Lifecycle Manager](#using-operator-lifecycle-manager)
+      - [Pre-Requisite](#pre-requisite)
+      - [Red Hat OpenShift Clusters](#red-hat-openshift-clusters)
+      - [Upstream Kubernetes](#upstream-kubernetes)
+    - [Offline Installation](#offline-installation)
+  - [Upgrading Dell CSI Operator](#upgrading-dell-csi-operator)
+    - [Using Installation Script](#using-installation-script)
+    - [Using OLM](#using-olm)
+  - [Custom Resource Definitions](#custom-resource-definitions)
+  - [Installation of CSI Drivers](#installation-of-csi-drivers)
+    - [Full list of CSI Drivers and versions supported by the Dell CSI Operator](#full-list-of-csi-drivers-and-versions-supported-by-the-dell-csi-operator)
+    - [Pre-Requisites for installation of the CSI Drivers](#pre-requisites-for-installation-of-the-csi-drivers)
+    - [Pre-requisites for upstream Kubernetes Clusters](#pre-requisites-for-upstream-kubernetes-clusters)
+    - [Pre-requisites for Red Hat OpenShift Clusters](#pre-requisites-for-red-hat-openshift-clusters)
+      - [iSCSI](#iscsi)
+      - [MultiPath](#multipath)
+    - [Install CSI Drivers](#install-csi-drivers)
+    - [Verifying the installation](#verifying-the-installation)
+    - [Changes in installation for latest CSI drivers](#changes-in-installation-for-latest-csi-drivers)
+  - [Update CSI Drivers](#update-csi-drivers)
+    - [Supported modifications](#supported-modifications)
+    - [Unsupported modifications](#unsupported-modifications)
+  - [Uninstall CSI Drivers](#uninstall-csi-drivers)
+  - [Limitations](#limitations)
+  - [Custom Resource Specification](#custom-resource-specification)
+    - [Mandatory fields](#mandatory-fields)
+    - [Optional fields](#optional-fields)
+    - [SideCars](#sidecars)
+      - [Snapshotter sidecar](#snapshotter-sidecar)
+    - [Modify the driver specification](#modify-the-driver-specification)
+  - [Troubleshooting](#troubleshooting)
+- [Driver details](#driver-details)
+  - [CSI PowerScale](#csi-powerscale)
+    - [Pre-requisites](#pre-requisites)
+      - [Create secret to store PowerScale credentials](#create-secret-to-store-powerscale-credentials)
+      - [Optional - Create secret for client side TLS verification](#optional---create-secret-for-client-side-tls-verification)
+    - [Set the following *Mandatory* Environment variables](#set-the-following-mandatory-environment-variables)
+    - [Modify/Set the following *optional* environment variables](#modifyset-the-following-optional-environment-variables)
+    - [StorageClass attributes](#storageclass-attributes)
+    - [StorageClass parameters](#storageclass-parameters)
+    - [SnapshotClass parameters](#snapshotclass-parameters)
+  - [CSI Unity](#csi-unity)
+    - [Pre-requisites](#pre-requisites-1)
+      - [Create secret to store Unity credentials](#create-secret-to-store-unity-credentials)
+      - [Optional - Create secret for client side TLS verification](#optional---create-secret-for-client-side-tls-verification-1)
+    - [Modify/Set the following *optional* environment variables](#modifyset-the-following-optional-environment-variables-1)
+    - [StorageClass Parameters](#storageclass-parameters-1)
+    - [SnapshotClass parameters](#snapshotclass-parameters-1)
+  - [CSI PowerFlex](#csi-powerflex)
+    - [Pre-requisites](#pre-requisites-2)
+      - [Create secret to store PowerFlex credentials](#create-secret-to-store-powerflex-credentials)
+      - [Install PowerFlex Storage Data Client](#install-powerflex-storage-data-client)
+    - [Set the following *Mandatory* Environment variables](#set-the-following-mandatory-environment-variables-1)
+    - [Modify/Set the following **optional environment variables**](#modifyset-the-following-optional-environment-variables-2)
+    - [StorageClass parameters](#storageclass-parameters-2)
+  - [CSI PowerMax](#csi-powermax)
+    - [Pre-requisites](#pre-requisites-3)
+      - [Create secret to store Unisphere for PowerMax credentials](#create-secret-to-store-unisphere-for-powermax-credentials)
+      - [Optional - Create secret for client side TLS verification](#optional---create-secret-for-client-side-tls-verification-2)
+      - [Node requirements](#node-requirements)
+    - [Set the following *Mandatory* Environment variables](#set-the-following-mandatory-environment-variables-2)
+    - [Modify/Set the following *Optional* environment variables](#modifyset-the-following-optional-environment-variables-3)
+    - [StorageClass parameters](#storageclass-parameters-3)
+    - [SnapshotClass parameters](#snapshotclass-parameters-2)
+  - [CSI PowerStore](#csi-powerstore)
+    - [Pre-requisites](#pre-requisites-4)
+      - [Create secret to store PowerStore API credentials](#create-secret-to-store-powerstore-api-credentials)
+    - [Set the following *Mandatory* Environment variables](#set-the-following-mandatory-environment-variables-3)
+    - [Modify/Set the following *optional* environment variables](#modifyset-the-following-optional-environment-variables-4)
+    - [StorageClass Parameters](#storageclass-parameters-4)
+    - [SnapshotClass parameters](#snapshotclass-parameters-3)
+  - [CSI PowerMax ReverseProxy](#csi-powermax-reverseproxy)
+    - [Pre-requisites](#pre-requisites-5)
+    - [Set the following parameters in the CSI PowerMaxReverseProxy Spec](#set-the-following-parameters-in-the-csi-powermaxreverseproxy-spec)
+    - [Installation](#installation-1)
+  - [Replacing CSI Operator with Dell CSI Operator](#replacing-csi-operator-with-dell-csi-operator)
+  - [Upgrade Operator from version older than v1.1.0 to v1.2.0](#upgrade-operator-from-version-older-than-v110-to-v120)
 # Dell CSI Operator
 Dell CSI Operator is a Kubernetes native application which helps in installing and managing CSI Drivers provided by Dell EMC for its various storage platforms. 
 Dell CSI Operator uses Kubernetes CRDs (Custom Resource Definitions) to define a manifest that describes the deployment specifications for each driver to be deployed. Multiple CSI drivers provided by Dell EMC and multiple instances of each driver can be deployed by the operator by defining a manifest for each deployment.
@@ -15,105 +99,41 @@ Currently, the Dell CSI Operator can be used to deploy the following CSI drivers
 Additionally, the Dell CSI Operator can also deploy Storage Classes and Volume Snapshot Classes as part of the driver deployment.
 The Dell CSI Operator is itself installed as a Kubernetes deployment.
 
+**NOTE**: You can refer to additional information about the Dell CSI Operator on the new documentation website [here](https://dell.github.io/storage-plugin-docs/docs/installation/operator/)
+
 ## Support
 The Dell CSI Operator image is available on Dockerhub and is officially supported by Dell EMC.
 For any CSI operator and driver issues, questions or feedback, join the [Dell EMC Container community](https://www.dell.com/community/Containers/bd-p/Containers).
 
-## Overview
+## Supported Platforms
+Dell CSI Operator has been tested and qualified with 
+
+    * Upstream Kubernetes cluster v1.17, v1.18, v1.19
+    * OpenShift Clusters 4.4, 4.5, 4.6 with RHEL 7.x & RHCOS worker nodes
+
+## Installation
+Dell CSI Operator can be installed via:
+
+* Installation script
+* Red Hat Certified Operators
+* Upstream Community Operators (Operatorhub.io)
+
+>Note: Until release v1.1.0, Dell CSI Operator was also available for installation in Red Hat OpenShift Clusters as a community operator
+
+### Before you begin
+If you have installed an old version of the `dell-csi-operator` which was available with the name _CSI Operator_, please refer this [section](#replacing-csi-operator-with-dell-csi-operator) before continuing.
+
+### Overview
 The major steps in installation process are:
 
 1. Installing the Operator from OperatorHub or manually using the installation scripts provided in this repository.
 2. Ensure pre-requisites for the drivers are met. For e.g. - creation of namespace, secrets, installation of packages.
 3. Configuring the driver manifest and then install the driver using the manifest.
 
-## Before Installation
-`Dell CSI Operator` was previously available, with the name `CSI Operator`, for both manual and OLM installation.  
-`CSI Operator` has been discontinued and has been renamed to `Dell CSI Operator`.  This is just a name change and as a result,
-the Kubernetes resources created as part of the Operator deployment will use the name `dell-csi-operator` instead of `csi-operator`.
+### Using Install script
+`dell-csi-operator` can be installed via the install script - `install.sh` which is present in the `scripts` directory. The installation script creates a `ConfigMap` along with the Operator `Deployment` in the default namespace.
 
-Before proceeding with the installation of the new `Dell CSI Operator`, any existing `CSI Operator` installation has to be completely 
-removed from the cluster.
-
-Note - This **doesn't** impact any of the CSI Drivers which have been installed in the cluster
-
-If the old `CSI Operator` was installed manually, then run the following command from the root of the repository which was used 
-originally for installation
-
-    bash scripts/undeploy.sh
-
-If you don't have the original repository available, then run the following commands
-
-    git clone https://github.com/dell/dell-csi-operator.git
-    cd dell-csi-operator
-    git checkout csi-operator-v1.0.0
-    bash scripts/undeploy.sh
-
-Note - Once you have removed the old `CSI Operator`, then for installing the new `Dell CSI Operator`, you will need to pull/checkout the latest code
-
-If you had installed old CSI Operator using OLM, then please follow un-installation instructions provided by OperatorHub. This will mostly involve:
-
-    * Deleting the CSI Operator Subscription  
-    * Deleting the CSI Operator CSV  
-
-## Installation
-`Dell CSI Operator` is available on OperatorHub on upstream Kubernetes as well as OpenShift clusters and can be installed using OLM (Operator Lifecycle Manager). It can also be deployed manually using the installation and configuration files available in this repository
-
-
-### Pre-requisites
-Dell CSI Operator has been tested and qualified with 
-
-    * Upstream Kubernetes cluster v1.17, v1.18, v1.19
-    * OpenShift Clusters 4.3, 4.4 with RHEL 7.x & RHCOS worker nodes
-
-#### Installation using OperatorHub
-Dell CSI Operator requires a ConfigMap to be created in the same namespace where the operator is deployed.
-
-Please run the following commands for creating the ConfigMap
-```
-$ git clone github.com/dell/dell-csi-operator
-$ cd dell-csi-operator
-$ tar -czf config.tar.gz config/
-# Replace operator-namespace in the below command with the actual namespace where the operator is being deployed
-$ kubectl create configmap config-dell-csi-operator --from-file config.tar.gz -n <operator-namespace>
-```
-
-#### Manual Installation
-For upstream k8s clusters, make sure to install
-
-    Beta VolumeSnapshot CRDs (can be installed using the Operator installation script)
-    External Volume Snapshot Controller
-
-### Install the Operator
-
-### A note about Operator upgrade
-Dell CSI Operator v1.1 can only manage driver installations which do not support alpha VolumeSnapshots. It can only create/manage beta VolumeSnapshotClass objects.  
-This restriction is because of the breaking changes in the migration of VolumeSnapshot APIs from `v1alpha1` to `v1beta`  
-Because of these restrictions, you shouldn't upgrade the Operator from an older release.  A suggested upgrade path could be:
-
-* If you created any VolumeSnapshotClass along with your driver installation, then
-    Delete the driver installation
-* If you have any alpha VolumeSnapshot CRDs or CRs present in your cluster, delete them
-* If required, upgrade your cluster to a supported version
-* If `dell-csi-operator` was installed using OLM, then you can now upgrade it
-* Only for upstream clusters - Run `install.sh` script with the option `--upgrade`. 
-* Optionally, if you wish to install beta VolumeSnapshot CRDs, then use option `--snapshot-crd` while running the `install.sh` script
-
-#### OperatorHub
-Dell CSI Operator can be deployed via OperatorHub for both upstream Kubernetes installations and OpenShift 4.3, 4.4 clusters using OLM.
-
-OLM is bundled with OpenShift clusters and the Dell CSI Operator is available as a community operator.
-
-For upstream Kubernetes installations, OLM is not available as a default component. Please follow the [instructions](https://github.com/operator-framework/operator-lifecycle-manager/blob/master/doc/install/install.md) on how to add OLM to your upstream Kubernetes cluster.  
-Once OLM has been installed and configured, the Dell CSI Operator can be installed via OperatorHub.io
-
-#### Manual Installation
-For manual installations, an install script - `install.sh` has been provided which will create the appropriate ServiceAccount, ClusterRole, ClusterRolebinding before deploying the operator. The operator will be deployed in the default namespace.
-
-Note - The install script `install.sh` checks if you have any alpha VolumeSnapshot CRDs or corresponding CRs present in your cluster and fails if it finds any.  
-Make sure to completely remove all alpha VolumeSnapshot CRs and CRDs before proceeding with the installation.
-
-Note - If OLM has not configured in your upstream Kubernetes cluster, we recommend using the manual installation method
-
+Please follow the steps given below, to install the `dell-csi-operator`
 ```
 # Clone this repository
 $ git clone github.com/dell/dell-csi-operator
@@ -121,31 +141,56 @@ $ cd dell-csi-operator
 # Make sure you are at the root of the cloned dell-csi-operator repository
 $ bash scripts/install.sh
 ```
-Post the installation, the operator should be deployed successfully in the default namespace. 
+
+>Note - The install script `install.sh` checks if you have any alpha VolumeSnapshot CRDs or corresponding CRs present in your cluster and fails if it finds any. Make sure to completely remove all alpha VolumeSnapshot CRs and CRDs before proceeding with the installation.
+
+### Using Operator Lifecycle Manager
+`dell-csi-operator` can be installed using Operator Lifecycle Manager (OLM) on upstream Kubernetes clusters & Red Hat OpenShift Clusters.  
+The installation process involves creation of a `Subscription` object either via the _OperatorHub_ UI or using `kubectl/oc`. While creating the `Subscription` you can set the Approval strategy for the `InstallPlan` for the Operator to - 
+* _Automatic_ - If you want the Operator to be automatically installed or upgraded (once an upgrade becomes available)
+* _Manual_ - If you want a Cluster Administrator to manually review and approve the `InstallPlan` for installation/upgrades
+
+#### Pre-Requisite
+Please run the following commands for creating the required `ConfigMap` before installing the `dell-csi-operator` using OLM.  
 ```
-$ kubectl get deployment
+$ git clone github.com/dell/dell-csi-operator
+$ cd dell-csi-operator
+$ tar -czf config.tar.gz driverconfig/
+# Replace operator-namespace in the below command with the actual namespace where the operator will be deployed by OLM
+$ kubectl create configmap dell-csi-operator-config --from-file config.tar.gz -n <operator-namespace>
 ```
 
-Note - If you wish to install the VolumeSnapshot beta CRDs (release 2.1) in the cluster, then run the command - `bash scripts/install.sh --snapshot-crd`
+#### Red Hat OpenShift Clusters
+Dell CSI Operator is available as a certified Operator in the Red Hat Certified Operator Registry. Please use the embedded OperatorHub UI in the Red Hat OpenShift clusters for installing the Operator. 
 
-##### Advanced configuration
-By default, the Dell CSI Operator will deploy one Kubernetes controller to manage each type of the CSI driver it can manage. If you would like to run only specific controllers, then you can modify the environment variable **OPERATOR_DRIVERS** in deploy/operator.yaml
+For installing the certified Operator, create a subscription for the package `dell-csi-operator-certified`.
 
-```
-            - name: OPERATOR_DRIVERS
-              value: "unity,powermax,isilon,vxflexos,powerstore"
-```
-For e.g. - If you only want to install the unity controller as you know that you are only going to install CSI Driver for Dell EMC Unity using the operator, then remove all other storage array types.  
-Here is an example
-```
-            - name: OPERATOR_DRIVERS
-              value: "unity"
-```
-Note - The above configuration is only supported in the manual installation method and you can't configure specific controllers in an OperatorHub installation. 
+>Note: An older version of the Operator(v1.1.0) is also available for installation in Red Hat OpenShift Clusters via the Community Operators Registry. Please make sure that you are installing the latest certified Operator.
 
-Once this configuration has been changed then the only way to add any more controllers for any specific storage array type is by redeploying the operator.
+#### Upstream Kubernetes
+Dell CSI Operator is available for installation(using OLM) in upstream Kubernetes Clusters via `OperatorHub.io`. 
+For installing the Operator in upstream Kubernetes clusters, create a subscription for the package `dell-csi-operator`.
 
-### Custom Resource Definitions
+>Note: OLM is not available as a default component in upstream Kubernetes installation. Please follow the [instructions](https://github.com/operator-framework/operator-lifecycle-manager/blob/master/doc/install/install.md) on how to add OLM to your upstream Kubernetes cluster.
+
+### Offline Installation
+If you wish to perform an offline installation of the Dell CSI Operators & the CSI drivers on sites with restricted networks,
+please follow the detailed instructions documented [here](scripts/csi-offline-bundle.md)
+
+## Upgrading Dell CSI Operator
+If you are upgrading the Dell CSI Operator from v1.1.0 to v1.2.0, then follow the instructions below. If you are trying to upgrade the Operator from an older version, please refer the instructions [here](#upgrade-operator-from-version-older-than-v110-to-v120)
+
+### Using Installation Script
+Run the following command to upgrade the operator from v1.1.0 release
+```
+$ bash scripts/install.sh --upgrade
+```
+
+### Using OLM
+The upgrade of the Dell CSI Operator is done via Operator Lifecycle Manager.
+If the `InstallPlan` for the Operator subscription is set to `Automatic`, the operator will be automatically upgraded to the new version. If the `InstallPlan` is set to `Manual`, then a Cluster Administrator would need to approve the upgrade.
+
+## Custom Resource Definitions
 As part of the Dell CSI Operator installation, a CRD representing each driver installation is also installed.  
 List of CRDs which are installed in API Group `storage.dell.com`
 * csipowermax
@@ -155,178 +200,152 @@ List of CRDs which are installed in API Group `storage.dell.com`
 * csipowerstore
 * csipowermaxrevproxy
 
-### Driver manifest examples
+For installation of the supported drivers, a `CustomResource` has to be created in your cluster.
 
-#### OperatorHub
-An example manifest for each driver is available in OperatorHub GUI after the operator has been installed.  
-They can be accessed while trying to create a Custom Resource (CR)
-
-#### Manual Installation
-A lot of sample manifest files have been provided in the samples folder to help with the installation of various CSI Drivers  
-They follow the naming convention
-
-    {driver name}_{driver version}_k8s_{k8 version}.yaml
-
-Or
-
-    {driver name}_{driver version}_ops_{OpenShift version}.yaml
-
-Use the correct sample manifest based on the driver, driver version and Kubernetes/OpenShift version
-
-
-For e.g.  
-*sample/powermax_v140_k8s_117.yaml* <- To install CSI PowerMax driver v1.4.0 on a Kubernetes 1.17 cluster  
-*sample/powermax_v140_ops_43.yaml* <- To install CSI PowerMax driver v1.4.0 on an OpenShift 4.3 cluster
-
-
-## Install CSI Drivers
+## Installation of CSI Drivers
 
 ### Full list of CSI Drivers and versions supported by the Dell CSI Operator
 | CSI Driver         | Version | ConfigVersion | Kubernetes Version       | OpenShift Version |
 | ------------------ | ------  | --------------| ------------------------ | ----------------- |
 | CSI PowerMax       | 1.4     | v3            | 1.17, 1.18, 1.19         | 4.3, 4.4          |
+| CSI PowerMax       | 1.5     | v4            | 1.17, 1.18, 1.19         | 4.4, 4.5, 4.6     |
 | CSI PowerFlex      | 1.2     | v2            | 1.17, 1.18, 1.19         | 4.3, 4.4          |
+| CSI PowerFlex      | 1.3     | v3            | 1.17, 1.18, 1.19         | 4.4, 4.5, 4.6     |
 | CSI PowerScale     | 1.3     | v3            | 1.17, 1.18, 1.19         | 4.3, 4.4          |
+| CSI PowerScale     | 1.4     | v4            | 1.17, 1.18, 1.19         | 4.4, 4.5, 4.6     |
 | CSI Unity          | 1.3     | v2            | 1.17, 1.18, 1.19         | 4.3, 4.4          |
+| CSI Unity          | 1.4     | v3            | 1.17, 1.18, 1.19         | 4.4, 4.5, 4.6     |
 | CSI PowerStore     | 1.1     | v1            | 1.17, 1.18, 1.19         | 4.3, 4.4          |
+| CSI PowerStore     | 1.2     | v2            | 1.17, 1.18, 1.19         | 4.5, 4.6          |
+
 
 For installing any CSI Driver, follow these steps in general   
 (Steps specific to each driver have been documented in each of the driver sections)
 
-### Fulfill any pre-requisites for the driver installation
+### Pre-Requisites for installation of the CSI Drivers
 These typically include (but not limited to) -
 * Create a namespace for the driver installation
 * Create a secret containing credentials for the storage array’s management interface
 * Install any packages on nodes (if required)
 
-Please follow the driver specific instructions to fulfill these requirements
+Please follow the driver specific [instructions](#driver-details) to fulfill these requirements.
 
-### Custom Resource Specification
-Each CSI Driver installation is represented by a Custom Resource.  
+### Pre-requisites for upstream Kubernetes Clusters
+On upstream Kubernetes clusters, make sure to install
+* Beta VolumeSnapshot CRDs (can be installed using the Operator installation script)
+* External Volume Snapshot Controller
 
-The specification for the Custom Resource is the same for all the drivers.   
-Below is a list of all the mandatory and optional fields in the Custom Resource specification
+### Pre-requisites for Red Hat OpenShift Clusters
+#### iSCSI
+If you are installing a CSI driver which is going to use iSCSI as the transport protocol, please follow the following instructions.  
+In Red Hat OpenShift clusters, you can create a `MachineConfig` object using the console or `oc` to ensure that the iSCSI daemon starts on all the Red Hat CoreOS nodes. Here is an example of a `MachineConfig` object:
 
-#### Mandatory fields
-**configVersion** - Configuration version  - Refer full list of supported driver for finding out the appropriate config version
-**replicas**  - Number of replicas for controller plugin - Must be set to 1 for all drivers  
-**common**  
-This field is mandatory and is used to specify common properties for both controller and the node plugin
-* image - driver container image
-* imagePullPolicy - Image Pull Policy of the driver image
-* envs - List of environment variables and their values
-#### Optional fields
-**controller** - List of environment variables and values which are applicable only for controller  
-**node** - List of environment variables and values which are applicable only for node  
-**sideCars** - Specification for CSI sidecar containers.  
-**authSecret** - Name of the secret holding credentials for use by the driver. If not specified, the default secret *-creds must exist in the same namespace as driver  
-**tlsCertSecret** - Name of the TLS cert secret for use by the driver. If not specified, a secret *-certs must exist in the namespace as driver
-**storageclass**  
-List of Storage Class specification
-
-   1. name - name of the Storage Class
-   2. default - Used to specify if the storage class will be marked as default (only set one storage class as default in a cluster)
-   3. reclaimPolicy - Sets the PersistentVolumeReclaim Policy for the PVCs. Defaults to Delete if not specified
-   4. parameters - driver specific parameters. Refer individual driver section for more details
-   5. allowVolumeExpansion - Set to true for allowing volume expansion for PVC
-   6. allowedTopologies - Sets the topology keys and values which allows the pods/and volumes to be scheduled on nodes that have access to the storage. Use this only with the CSI PowerFlex driver as rest of the drivers do not support the VOLUME_ACCESSIBILITY_CONSTRAINTS capability
-
-Note: The volumeBindingMode for all storage classes created for the CSI PowerFlex driver will be set to `WaitForFirstConsumer`
-
-**snapshotclass**  
-List of Snapshot Class specifications  
-
-   1. name - name of the snapshot class
-   2. parameters - driver specific parameters. Refer individual driver section for more details
-
-**forceUpdate**  
-Boolean value which can be set to `true` in order to force update the status of the CSI Driver 
-
-**tolerations**
-List of tolerations which should be applied to the driver StatefulSet and DaemonSet  
-It should be set separately in the controller and node sections if you want separate set of tolerations for them
-
-**nodeSelector**
-Used to specify node selectors for the driver StatefulSet and DaemonSet  
-
-Here is a sample specification with annotated comments to explain each field
 ```
-apiVersion: storage.dell.com/v1
-kind: CSIPowerMax <- Type of the driver
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
 metadata:
-  name: test-powermax <- Name of the driver
-  namespace: test-powermax <- Namespace where driver is installed
+  name: 99-iscsid
+  labels:
+    machineconfiguration.openshift.io/role: worker
 spec:
-  driver:
-    # Used to specify configuration version
-    configVersion: v3 <- Refer the table containing the full list of supported drivers to find the appropriate config version 
-    replicas: 1 <- Always set to 1 for all drivers
-    forceUpdate: false <- Set to true in case you want to force an update of driver status
-    common: <- All common specification
-      image: "dellemc/csi-powermax:v1.4.0.000R" <- driver image for a particular release
-      imagePullPolicy: IfNotPresent
-      envs:
-        - name: X_CSI_POWERMAX_ENDPOINT
-          value: "https://0.0.0.0:8443/"
-        - name: X_CSI_K8S_CLUSTER_PREFIX
-          value: "XYZ"
-    storageClass:
-      - name: bronze
-        default: true
-        reclaimPolicy: Delete
-        parameters:
-          SYMID: "000000000001"
-          SRP: DEFAULT_SRP
-          ServiceLevel: Bronze
+  config:
+    ignition:
+      version: 2.2.0  
+    systemd:
+      units:
+      - name: "iscsid.service"
+        enabled: true
+```
+Once the `MachineConfig` object has been deployed, CoreOS will ensure that `iscsid.service` starts automatically.
+
+Alternatively, you can check the status of iSCSI service by entering the following command on each worker node in the cluster:
+
+`sudo systemctl status iscsid`
+
+The service should be up and running (i.e. should be in active state).
+
+If the `iscsid.service` is not running, then perform the following steps on each worker node in the cluster
+1. `Login` to worker node.
+2. Check the value of InitiatorName in the file /etc/iscsi/initiatorname.iscsi.
+3. If iqn is valid, then restart iscsid service (if it is not running) with `sudo systemctl restart iscsid`.
+4. If the InitiatorName name is valid, then attempt to restart the iSCSI service by running the command `sudo systemctl restart iscsid`.
+5. If the InitiatorName name is missing from the file or if the file is empty, create an InitiatorName(IQN) in the correct format and add it to the file. The file contents should be `InitiatorName=<insert-your-generated-iqn>`
+6. Once you have updated the file, restart iscsi service by running the command `sudo systemctl restart iscsid`
+7. Run the command - `sudo systemtcl status iscsid` to ensure ISCSI service is active and running.
+8. `Logout` from worker node.
+   Note: If your worker nodes are running on Red Hat CoreOS , you can refer the URL https://coreos.com/os/docs/latest/iscsi.html#enable-automatic-iscsi-login-at-boot for additional information.
+
+#### MultiPath
+If you are installing a CSI Driver which requires the installation of the Linux native Multipath software - _multipathd_, please follow the below instructions
+
+To enable multipathd on RedHat CoreOS nodes you need to prepare a working configuration encoded in base64.
+
+`echo 'defaults {
+user_friendly_names yes
+find_multipaths yes
+}
+blacklist {
+}' | base64 -w0`
+
+Use the base64 encoded string output in the following `MachineConfig` yaml file (under source section)
+```
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  name: workers-multipath-conf-default
+  labels:
+    machineconfiguration.openshift.io/role: worker
+spec:
+  config:
+    ignition:
+      version: 2.2.0
+    storage:
+      files:
+      - contents:
+          source: data:text/plain;charset=utf-8;base64,ZGVmYXVsdHMgewp1c2VyX2ZyaWVuZGx5X25hbWVzIHllcwpmaW5kX211bHRpcGF0aHMgeWVzCn0KCmJsYWNrbGlzdCB7Cn0K
+          verification: {}
+        filesystem: root
+        mode: 400
+        path: /etc/multipath.conf
+```
+After deploying this`MachineConfig` object, CoreOS will start multipath service automatically.  
+Alternatively you can check the status of multipath service by entering the following command in each worker nodes.  
+`sudo multipath -ll`
+
+If the above command is not successful, ensure that the /etc/multipath.conf file is present and configured properly. Once the file has been configured correctly, enable the multipath service by running the following command: 
+`sudo /sbin/mpathconf –-enable --with_multipathd y`
+
+Finally , you have to restart the service by providing the command
+`sudo systemctl restart multipathd`
+
+For additional information refer official documentation of multipath configuration.
+
+### Install CSI Drivers
+CSI Drivers can be installed by creating a `CustomResource` object in your cluster.
+
+Sample manifest files for each driver `CustomResourceDefintion` have been provided in the `samples` folder to help with the installation of the drivers.
+These files follow the naming convention
+
+    {driver name}_{driver version}_k8s_{k8 version}.yaml
+Or
+
+    {driver name}_{driver version}_ops_{OpenShift version}.yaml
+For e.g.
+* sample/powermax_v140_k8s_117.yaml* <- To install CSI PowerMax driver v1.4.0 on a Kubernetes 1.17 cluster  
+* sample/powermax_v140_ops_46.yaml* <- To install CSI PowerMax driver v1.4.0 on an OpenShift 4.6 cluster
+
+Copy the correct sample file and edit the mandatory & any optional parameters specific to your driver installation by following the instructions [here](#Modify-the-driver-specification)  
+>NOTE: A detailed explanation of the various mandatory and optional fields in the CustomResource is available [here](#custom-resource-specification). Please make sure to read through and understand the various fields.
+
+Run the following command to install the CSI driver.
+```
+kubectl create -f <driver-manifest.yaml>
 ```
 
-Note - The `image` field should point to the correct image tag for version of the driver you are installing.  
-For e.g. - If you wish to install v1.4 of the CSI PowerMax driver, use the image tag `dellemc/csi-powermax:v1.4.0.000R`
+**Note**: If you are using an OLM based installation, the example manifests are available in the `OperatorHub` UI.
+You can edit these manifests and install the driver using the `OperatorHub` UI.
 
-Note - The name of the Storage Class or the Volume Snapshot Class (which are created in the Kubernetes/OpenShift cluster) is created using the name of the driver and the name provided for these classes in the manifest. This is done in order to ensure that these names are unique if there are multiple drivers installed in the same cluster.
-For e.g. - With the above sample manifest, the name of the storage class which is created in the cluster will be `test-powermax-bronze`.  
-You can get the name of the StorageClass and SnapshotClass created by the operator by running the commands - `kubectl get storageclass` and `kubectl get volumesnapshotclass`
-
-### SideCars
-Although the sidecars field in the driver specification is optional, it is **strongly** recommended to not modify any details related to sidecars provided (if present) in the sample manifests. Any modifications to this should be only done after consulting with Dell EMC support.
-
-#### Snapshotter sidecar
-Snapshotter sidecar will not be deployed as part of any driver installation on OpenShift 4.3 clusters. Volume Snapshots are a Technology Preview feature in OpenShift 4.3 and are not officially supported.  
-Any attempt to create VolumeSnapshotClass (alpha) as part of the driver installation on OpenShift 4.3 cluster would fail.
-
-### Create Custom Resource manifest using example manifests
-#### OperatorHub
-Use the OperatorHub GUI to create a new manifest using the example manifest provided for the driver you wish to install
-
-#### Manual installation
-Copy the example manifest provided in the dell-csi-operator repository and use this to install the driver
-For e.g. – Copy the PowerMax example manifest file
-```
-$ cp dell-csi-operator/sample/powermax_v140_k8s_v117.yaml .
-```
-##### Modify the driver specification
-* Choose the correct configVersion. Refer the table containing the full list of supported drivers and versions.
-* Provide the namespace (in metadata section) where you want to install the driver.
-* Provide a name (in metadata section) for the driver. This will be the name of the Custom Resource.
-* Edit the values for mandatory configuration parameters specific to your installation.
-* Edit/Add any values for optional configuration parameters to customize your installation.
-
-### Create Custom Resource
-#### OperatorHub
-Use the OperatorHub GUI to create the Custom Resource once you have created the CR manifest
-
-   Or
-   
-Use one of the sample files in the samples folder and follow the instructions below to install the driver using `kubectl`
-
-
-#### Manual installation
-Create the custom resource using the following command
-```
-$ kubectl create -f powermax_v140_k8s_v117.yaml
-```
-
-### Verification
+### Verifying the installation
 Once the driver Custom Resource has been created, you can verify the installation
 
 *  Check if Driver CR got created successfully
@@ -337,7 +356,7 @@ Once the driver Custom Resource has been created, you can verify the installatio
     ```
 * Check the status of the Custom Resource to verify if the driver installation was successful
 
-If the driver-namespace was set to test-powermax, and the name of the driver is powermax, then run the command `kubectl get csipowermax/powermax -n test-powermax -o yaml` to get the details of the Custom Resource.  
+If the driver-namespace was set to _test-powermax_, and the name of the driver is _powermax_, then run the command `kubectl get csipowermax/powermax -n test-powermax -o yaml` to get the details of the Custom Resource.  
 Here is a sample output of the above command
 ```
 apiVersion: storage.dell.com/v1
@@ -360,7 +379,7 @@ spec:
         value: XYZ
       image: dellemc/csi-powermax:v1.4.0.000R
       imagePullPolicy: IfNotPresent
-    configVersion: v2
+    configVersion: v3
     controller: {}
     node: {}
     replicas: 1
@@ -407,22 +426,15 @@ status:
   state: Running
 ```
 
-* Driver statefulset & daemonset are created in the same namespace automatically by the Operator
-    ```
-    $ kubectl get statefulset -n <driver-namespace>
-    $ kubectl get daemonset -n <driver-namespace>
-    ```
-## Update CSI Drivers
+Note: If the _state_ of the `CustomResource` is _Running_ then all the driver pods have been successfully installed. If the _state_ is _SuccessFul_, then it means the driver deployment was successful but some driver pods may not be in a _Running_ state.
+Please refer to the _Troubleshooting_ section [here](#Troubleshooting) if you encounter any issues during installation.
 
+### Changes in installation for latest CSI drivers
+If you are installing the latest versions of the CSI drivers, the driver controller will be installed as a Kubernetes `Deployment` instead of a `Statefulset`. These installations can also run multiple replicas for the driver controller pods(not supported for StatefulSets) to support High Availability for the Controller.
+
+## Update CSI Drivers
 The CSI Drivers installed by the Dell CSI Operator can be updated like any Kubernetes resource. This can be achieved in various ways which include –
 
-* Modifying the original CR manifest file (used to deploy the driver) and running a `kubectl apply` command
-
-    For e.g. - Modify the unity.yaml used to install the Unity driver and run
-
-    ```
-    $ kubectl apply -f unity.yaml
-    ```
 * Modifying the installation directly via `kubectl edit`
     For e.g. - If the name of the installed unity driver is unity, then run
     ```
@@ -432,6 +444,10 @@ The CSI Drivers installed by the Dell CSI Operator can be updated like any Kuber
     and modify the installation
 * Modify the API object in-place via `kubectl patch`
 
+**NOTE**: If you are trying to upgrade the CSI driver from an older version, make sure to modify the _configVersion_ field if required.
+
+**NOTE**: Do not try to update the operator by modifying the original `CustomResource` manifest file and running the `kubectl apply -f` command. As part of the driver installation, the Operator sets some annotations on the `CustomResource` object which are further utilized in some workflows (like detecting upgrade of drivers). If you run the `kubectl apply -f` command to update the driver, these annotations are overwritten and this may lead to failures.
+
 ### Supported modifications
 * Changing environment variable values for driver
 * Adding (supported) environment variables
@@ -440,14 +456,13 @@ The CSI Drivers installed by the Dell CSI Operator can be updated like any Kuber
 ### Unsupported modifications
 Kubernetes doesn’t allow to update a storage class once it has been created. Any attempt to update a storage class will result in a failure.
 
-Note – Any attempt to rename a storage class or snapshot class will result in the deletion of older class and creation of a new class.
+>Note – Any attempt to rename a storage class or snapshot class will result in the deletion of older class and creation of a new class.
 
 ## Uninstall CSI Drivers
 For uninstalling any CSI drivers deployed the Dell CSI Operator, just delete the respective Custom Resources.  
 This can be done using OperatorHub GUI by deleting the CR or via kubectl.
     
 For e.g. – To uninstall a PowerFlex driver installed via the operator, delete the Custom Resource(CR)
-
 ```
 # Replace driver-name and driver-namespace with their respective values
 $ kubectl delete vxflexos/<driver-name> -n <driver-namespace>
@@ -459,6 +474,108 @@ $ kubectl delete vxflexos/<driver-name> -n <driver-namespace>
 * The Dell CSI Operator is not fully compliant with the OperatorHub React UI elements and some of the Custom Resource fields may show up as invalid or unsupported in the OperatorHub GUI. To get around this problem, use kubectl/oc commands to get details about the Custom Resource(CR). This issue will be fixed in the upcoming releases of the Dell CSI Operator
 
 
+## Custom Resource Specification
+Each CSI Driver installation is represented by a Custom Resource.  
+
+The specification for the Custom Resource is the same for all the drivers.   
+Below is a list of all the mandatory and optional fields in the Custom Resource specification
+
+### Mandatory fields
+**configVersion** - Configuration version  - Refer full list of supported driver for finding out the appropriate config version
+**replicas**  - Number of replicas for controller plugin - Must be set to 1 for all drivers  
+**common**  
+This field is mandatory and is used to specify common properties for both controller and the node plugin
+* image - driver container image
+* imagePullPolicy - Image Pull Policy of the driver image
+* envs - List of environment variables and their values
+### Optional fields
+**controller** - List of environment variables and values which are applicable only for controller  
+**node** - List of environment variables and values which are applicable only for node  
+**sideCars** - Specification for CSI sidecar containers.  
+**authSecret** - Name of the secret holding credentials for use by the driver. If not specified, the default secret *-creds must exist in the same namespace as driver  
+**tlsCertSecret** - Name of the TLS cert secret for use by the driver. If not specified, a secret *-certs must exist in the namespace as driver
+
+**storageclass**  
+List of Storage Class fields
+
+   1. name - name of the Storage Class
+   2. default - Used to specify if the storage class will be marked as default (only set one storage class as default in a cluster)
+   3. reclaimPolicy - Sets the PersistentVolumeReclaim Policy for the PVCs. Defaults to Delete if not specified
+   4. parameters - driver specific parameters. Refer individual driver section for more details
+   5. allowVolumeExpansion - Set to true for allowing volume expansion for PVC
+   6. volumeBindingMode - Sets the VolumeBindingMode in the Storage Class. If left blank, it will be set to the default value for the driver version you are installing
+   7. allowedTopologies - Sets the topology keys and values which allows the pods/and volumes to be scheduled on nodes that have access to the storage. 
+
+**snapshotclass**  
+List of Snapshot Class specifications  
+
+   1. name - name of the snapshot class
+   2. parameters - driver specific parameters. Refer individual driver section for more details
+
+**forceUpdate**  
+Boolean value which can be set to `true` in order to force update the status of the CSI Driver 
+
+**tolerations**
+List of tolerations which should be applied to the driver StatefulSet/Deployment and DaemonSet  
+It should be set separately in the controller and node sections if you want separate set of tolerations for them
+
+**nodeSelector**
+Used to specify node selectors for the driver StatefulSet/Deployment and DaemonSet  
+
+Here is a sample specification annotated with comments to explain each field
+```
+apiVersion: storage.dell.com/v1
+kind: CSIPowerMax <- Type of the driver
+metadata:
+  name: test-powermax <- Name of the driver
+  namespace: test-powermax <- Namespace where driver is installed
+spec:
+  driver:
+    # Used to specify configuration version
+    configVersion: v3 <- Refer the table containing the full list of supported drivers to find the appropriate config version 
+    replicas: 1
+    forceUpdate: false <- Set to true in case you want to force an update of driver status
+    common: <- All common specification
+      image: "dellemc/csi-powermax:v1.4.0.000R" <- driver image for a particular release
+      imagePullPolicy: IfNotPresent
+      envs:
+        - name: X_CSI_POWERMAX_ENDPOINT
+          value: "https://0.0.0.0:8443/"
+        - name: X_CSI_K8S_CLUSTER_PREFIX
+          value: "XYZ"
+    storageClass:
+      - name: bronze
+        default: true
+        reclaimPolicy: Delete
+        parameters:
+          SYMID: "000000000001"
+          SRP: DEFAULT_SRP
+          ServiceLevel: Bronze
+```
+You can set the field ***replicas*** to a higher number than `1` for the latest driver versions.
+
+Note - The `image` field should point to the correct image tag for version of the driver you are installing.  
+For e.g. - If you wish to install v1.4 of the CSI PowerMax driver, use the image tag `dellemc/csi-powermax:v1.4.0.000R`
+
+Note - The name of the Storage Class or the Volume Snapshot Class (which are created in the Kubernetes/OpenShift cluster) is created using the name of the driver and the name provided for these classes in the manifest. This is done in order to ensure that these names are unique if there are multiple drivers installed in the same cluster.  
+For e.g. - With the above sample manifest, the name of the storage class which is created in the cluster will be `test-powermax-bronze`.  
+You can get the name of the StorageClass and SnapshotClass created by the operator by running the commands - `kubectl get storageclass` and `kubectl get volumesnapshotclass`
+
+### SideCars
+Although the sidecars field in the driver specification is optional, it is **strongly** recommended to not modify any details related to sidecars provided (if present) in the sample manifests. Any modifications to this should be only done after consulting with Dell EMC support.
+
+#### Snapshotter sidecar
+Snapshotter sidecar will not be deployed as part of any driver installation on OpenShift 4.3 clusters. Volume Snapshots are a Technology Preview feature in OpenShift 4.3 and are not officially supported.  
+Any attempt to create VolumeSnapshotClass (alpha) as part of the driver installation on OpenShift 4.3 cluster would fail.
+
+### Modify the driver specification
+* Choose the correct configVersion. Refer the table containing the full list of supported drivers and versions.
+* Provide the namespace (in metadata section) where you want to install the driver.
+* Provide a name (in metadata section) for the driver. This will be the name of the Custom Resource.
+* Edit the values for mandatory configuration parameters specific to your installation.
+* Edit/Add any values for optional configuration parameters to customize your installation.
+* If you are installing the latest versions of the CSI drivers, the default number of replicas is set to 2. You can increase/decrease this value.
+
 ## Troubleshooting
 * Before installing the drivers, Dell CSI Operator tries to validate the Custom Resource being created. If some mandatory environment variables are missing or there is a type mismatch, then the Operator will report an error during the reconciliation attempts.  
 Because of this, the status of the Custom Resource will change to "Failed" and the error captured in the "ErrorMessage" field in the status.  
@@ -469,7 +586,7 @@ If there was an error while installing the driver, then you would see a status l
     status:
       errorMessage: mandatory Env - X_CSI_K8S_CLUSTER_PREFIX not specified in user spec
       state: Failed
-  ```  
+  ```
 
     The state of the Custom Resource can also change to `Failed` because of any other prohibited updates or any failure while installing the driver. In order to recover from this failure, 
     fix the error in the manifest and update/patch the Custom Resource
@@ -477,12 +594,11 @@ If there was an error while installing the driver, then you would see a status l
 * After an update to the driver, the controller pod may not have the latest desired specification  
 The above happens when the controller pod was in a failed state before applying the update. Even though the Dell CSI Operator updates the pod template specification for the StatefulSet, the StatefulSet controller does not apply the update to the pod. This happens because of the unique nature of StatefulSets where the controller tries to retain the last known working state. 
 
-    To get around this problem, the Dell CSI Operator forces an update of the pod specification by deleting the older pod. In case the Dell CSI Operator fails to do so, delete the controller pod to force an update of the controller pod specification
+  To get around this problem, the Dell CSI Operator forces an update of the pod specification by deleting the older pod. In case the Dell CSI Operator fails to do so, delete the controller pod to force an update of the controller pod specification
 
 * The Status of the CSI Driver Custom Resource shows the state of the driver pods after installation. This state will not be updated automatically if there are any changes to the driver pods outside any Operator operations
 At times because of inconsistencies in fetching data from the Kubernetes cache, state of some driver pods may not be updated correctly in the status. To force an update of the state, you can update
 the Custom Resource forcefully by setting forceUpdate to true. If all the driver pods are in `Available` State, then the state of the Custom Resource will be updated as `Running`
-
 
 # Driver details
 ## CSI PowerScale
@@ -559,7 +675,7 @@ Prepare the secret.json for driver configuration.
 The following table lists driver configuration parameters for multiple storage arrays.
 
 | Parameter | Description | Required | Default |
-| --------- | ----------- | -------- |-------- |   
+| --------- | ----------- | -------- |-------- |
 | username | Username for accessing unity system  | true | - |
 | password | Password for accessing unity system  | true | - |
 | restGateway | REST API gateway HTTPS endpoint Unity system| true | - |
@@ -629,15 +745,15 @@ Please refer detailed documentation on how to create this secret in the Product 
 
 
 ### StorageClass Parameters
-        
+
 | Parameter | Description | Required | Default |
 | --------- | ----------- | -------- |-------- |
 | storagePool | Unity Storage Pool CLI ID to use with in the Kubernetes storage class | true | - |
-| thinProvisioned | To set volume thinProvisioned | false | "true" |    
+| thinProvisioned | To set volume thinProvisioned | false | "true" |
 | isDataReductionEnabled | To set volume data reduction | false | "false" |
 | volumeTieringPolicy | To set volume tiering policy | false | 0 |
 | FsType | Block volume related parameter. To set File system type. Possible values are ext3,ext4,xfs. Supported for FC/iSCSI protocol only. | false | ext4 |
-| hostIOLimitName | Block volume related parameter.  To set unity host IO limit. Supported for FC/iSCSI protocol only. | false | "" |    
+| hostIOLimitName | Block volume related parameter.  To set unity host IO limit. Supported for FC/iSCSI protocol only. | false | "" |
 | nasServer | NFS related parameter. NAS Server CLI ID for filesystem creation. | true | "" |
 | hostIoSize | NFS related parameter. To set filesystem host IO Size. | false | "8192" |
 | reclaimPolicy | What should happen when a volume is removed | false | Delete |
@@ -907,6 +1023,48 @@ Edit and input all required parameters and then use the `OperatorHub` GUI or run
     kubectl create -f powermax_reverseproxy.yaml
 
 You can query for the deployment and service created as part of the installation using the following commands:
-  
+
     kubectl get deployment -n <namespace>
     kubectl get svc -n <namespace>
+
+## Replacing CSI Operator with Dell CSI Operator
+`Dell CSI Operator` was previously available, with the name `CSI Operator`, for both manual and OLM installation.  
+`CSI Operator` has been discontinued and has been renamed to `Dell CSI Operator`.  This is just a name change and as a result,
+the Kubernetes resources created as part of the Operator deployment will use the name `dell-csi-operator` instead of `csi-operator`.
+
+Before proceeding with the installation of the new `Dell CSI Operator`, any existing `CSI Operator` installation has to be completely 
+removed from the cluster.
+
+Note - This **doesn't** impact any of the CSI Drivers which have been installed in the cluster
+
+If the old `CSI Operator` was installed manually, then run the following command from the root of the repository which was used 
+originally for installation
+
+    bash scripts/undeploy.sh
+
+If you don't have the original repository available, then run the following commands
+
+    git clone https://github.com/dell/dell-csi-operator.git
+    cd dell-csi-operator
+    git checkout csi-operator-v1.0.0
+    bash scripts/undeploy.sh
+
+Note - Once you have removed the old `CSI Operator`, then for installing the new `Dell CSI Operator`, you will need to pull/checkout the latest code
+
+If you had installed old CSI Operator using OLM, then please follow un-installation instructions provided by OperatorHub. This will mostly involve:
+
+    * Deleting the CSI Operator Subscription  
+    * Deleting the CSI Operator CSV  
+
+## Upgrade Operator from version older than v1.1.0 to v1.2.0
+Dell CSI Operator v1.2.0 can only manage driver installations which do not support alpha VolumeSnapshots. It can only create/manage beta VolumeSnapshotClass objects.  
+This restriction is because of the breaking changes in the migration of VolumeSnapshot APIs from `v1alpha1` to `v1beta`  
+Because of these restrictions, you shouldn't upgrade the Operator from an older release before v1.1.0. A suggested upgrade path could be:
+
+* If you created any VolumeSnapshotClass along with your driver installation, then delete the driver installation
+* If you have any alpha VolumeSnapshot CRDs or CRs present in your cluster, delete them
+* Uninstall the old version of the Operator
+* If required, upgrade your cluster to a supported version
+* Follow the installation instructions to install the v1.2.0 of the Operator
+
+>Note - If you wish to install the VolumeSnapshot beta CRDs (release 2.1) in your upstream Kubernetes cluster, then run the command - `bash scripts/install.sh --snapshot-crd`
