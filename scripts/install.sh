@@ -6,6 +6,7 @@ PROG="${0}"
 ROOTDIR="$(dirname "$SCRIPTDIR")"
 SNAPCLASSDIR="$ROOTDIR/deploy/beta-snapshot-crds"
 DEPLOYDIR="$ROOTDIR/deploy"
+CONFIGDIR="$ROOTDIR/config"
 POWERMAX_CRD="csipowermaxes.storage.dell.com"
 POWERMAX_REVPROXY_CRD="csipowermaxrevproxies.storage.dell.com"
 ISILON_CRD="csiisilons.storage.dell.com"
@@ -76,9 +77,9 @@ function verify_kubernetes() {
     log error "Unable to locate ${VERIFYSCRIPT} script in ${SCRIPTDIR}"
   fi
   if [ "$INSTALL_CRD" == "yes" ]; then
-    sh "${SCRIPTDIR}/${VERIFYSCRIPT}" --skip-betacrd-validation
+    bash "${SCRIPTDIR}/${VERIFYSCRIPT}" --skip-betacrd-validation
   else
-    sh "${SCRIPTDIR}/${VERIFYSCRIPT}"
+    bash "${SCRIPTDIR}/${VERIFYSCRIPT}"
   fi
   case $? in
   0) ;;
@@ -103,6 +104,14 @@ function check_for_kubectl() {
   fi
 }
 
+function delete_old_deployment() {
+  kubectl delete deployment dell-csi-operator 2>&1 >/dev/null
+  kubectl delete clusterrolebinding dell-csi-operator 2>&1 >/dev/null
+  kubectl delete clusterrole dell-csi-operator 2>&1 >/dev/null
+  kubectl delete serviceaccount dell-csi-operator 2>&1 >/dev/null
+  kubectl delete configmap config-dell-csi-operator 2>&1 >/dev/null
+}
+
 function check_for_operator() {
   log step "Checking for existing installations"
   kubectl get pods -n default | grep "dell-csi-operator" --quiet
@@ -118,6 +127,10 @@ function check_for_operator() {
     log step_warning
     log warning "Found existing installation of Operator in default namespace"
     echo "Attempting to upgrade the Operator as --upgrade option was specified"
+    kubectl get deployment dell-csi-operator | grep "dell-csi-operator" --quiet
+    if [[ $? -eq 0 ]]; then
+      delete_old_deployment
+    fi
   elif [ "$operator_in_default_namespace" = true ]; then
     log step_failure
     log warning "Found existing installation of dell-csi-operator in default namespace"
@@ -166,40 +179,24 @@ function install_beta_snapshot_crd() {
   sleep 3s
 }
 
-function kubectl_create_or_apply() {
-  for CRD in "${@}"; do
-    kubectl get crd | grep $CRD --quiet
-    if [ $? -ne 0 ]; then
-      log step "Installing CRD: $CRD"
-      kubectl create -f "${DEPLOYDIR}/crds/${CRD}.crd.yaml" > /dev/null 2>&1
-      if [ $? -ne 0 ]; then
-        log error "Failed to install $CRD"
-      fi
-    else
-      log step "Updating CRD: $CRD"
-      kubectl apply -f "${DEPLOYDIR}/crds/${CRD}.crd.yaml" > /dev/null 2>&1
-      if [ $? -ne 0 ]; then
-        log error "Failed to update $CRD"
-      fi
-    fi
-    log step_success
-  done
-}
-
 function install_or_update_driver_crd() {
-
-  kubectl_create_or_apply $POWERMAX_CRD $POWERMAX_REVPROXY_CRD $ISILON_CRD $UNITY_CRD $VXFLEXOS_CRD $POWERSTORE_CRD
+  log step "Install/Update CRDs"
+  kubectl apply -f ${DEPLOYDIR}/crds/storage.dell.com.crds.all.yaml 2>&1 >/dev/null
+  if [ $? -ne 0 ]; then
+    log error "Failed to create cluster role binding for operator"
+  fi
+  log step_success
 }
 
 function create_or_update_configmap() {
   log step "Create temporary archive"
-  (cd "$ROOTDIR" && tar -czf config.tar.gz config/ 2>&1 >/dev/null)
+  (cd "$ROOTDIR" && tar -cf - driverconfig/* | gzip > config.tar.gz)
   if [ $? -ne 0 ]; then
     log error "Failed to create temporary archive for operator"
   fi
   log step_success
   log step "Create/Update ConfigMap"
-  kubectl create configmap config-dell-csi-operator --from-file "$ROOTDIR/config.tar.gz" -o yaml --dry-run | kubectl apply -f - > /dev/null 2>&1
+  kubectl create configmap dell-csi-operator-config --from-file "$ROOTDIR/config.tar.gz" -o yaml --dry-run | kubectl apply -f - > /dev/null 2>&1
   if [ $? -ne 0 ]; then
     log error "Failed to create/update ConfigMap for operator"
   fi
@@ -214,35 +211,8 @@ function create_or_update_configmap() {
   fi
 }
 
-function create_service_account() {
-  log step "Create Service Account for Operator"
-  kubectl apply -f ${DEPLOYDIR}/service_account.yaml 2>&1 >/dev/null
-  if [ $? -ne 0 ]; then
-    log error "Failed to create service account for operator"
-  fi
-  log step_success
-}
-
-function create_cluster_role() {
-  log step "Create Cluster Role for Operator"
-  kubectl apply -f ${DEPLOYDIR}/role.yaml 2>&1 >/dev/null
-  if [ $? -ne 0 ]; then
-    log error "Failed to create cluster role for operator"
-  fi
-  log step_success
-}
-
-function create_cluster_role_binding() {
-  log step "Create Cluster Role binding for Operator"
-  kubectl apply -f ${DEPLOYDIR}/role_binding.yaml 2>&1 >/dev/null
-  if [ $? -ne 0 ]; then
-    log error "Failed to create cluster role binding for operator"
-  fi
-  log step_success
-}
-
 function create_operator_deployment() {
-  log step "Create Operator Deployment"
+  log step "Install Operator"
   kubectl apply -f ${DEPLOYDIR}/operator.yaml 2>&1 >/dev/null
   if [ $? -ne 0 ]; then
     log error "Failed to create cluster role binding for operator"
@@ -257,16 +227,14 @@ function install_operator() {
   install_or_update_driver_crd
   log separator
   create_or_update_configmap
-  create_service_account
-  create_cluster_role
-  create_cluster_role_binding
   create_operator_deployment
   log separator
 }
 
 function check_progress() {
+  # find out the deployment name
   # wait for the deployment to finish, use the default timeout
-  waitOnRunning "${NAMESPACE}" "deployment dell-csi-operator"
+  waitOnRunning "${NAMESPACE}" "deployment dell-csi-operator-controller-manager"
   if [ $? -eq 1 ]; then
     warning "Timed out waiting for installation of the operator to complete." \
       "This does not indicate a fatal error, pods may take a while to start." \

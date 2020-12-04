@@ -1,0 +1,58 @@
+apiVersion: storage.dell.com/v1
+kind: CSIPowerStore
+metadata:
+  name: test-powerstore
+  namespace: test-powerstore
+spec:
+  driver:
+    # Config version for CSI PowerStore v1.2 driver
+    configVersion: v2
+    # Controller count
+    replicas: 2
+    forceUpdate: false
+    common:
+      # Image for CSI PowerStore driver v1.2
+      image: "dellemc/csi-powerstore:v1.2.0.000R"
+      imagePullPolicy: IfNotPresent
+      envs:
+        # PowerStore Manager IP
+        - name: X_CSI_POWERSTORE_ENDPOINT
+          value: "https://127.0.0.1/api/rest"
+        - name: X_CSI_POWERSTORE_NODE_NAME_PREFIX
+          value: "csi"
+        # Either "ISCSI", "FC", "auto" or "None"
+        - name: X_CSI_TRANSPORT_PROTOCOL
+          value: "ISCSI"
+        - name: X_CSI_FC_PORTS_FILTER_FILE_PATH
+          value: "/etc/fc-ports-filter"
+    node:
+      envs:
+        # Set to "true" to enable ISCSI CHAP Authentication
+        # Be sure that you have chapuser and chapsecret set in powerstore-creds in that case
+        - name: "X_CSI_POWERSTORE_ENABLE_CHAP"
+          value: "true"
+    storageClass:
+      - name: powerstore
+        default: true
+        reclaimPolicy: "Delete"
+        parameters:
+          csi.storage.k8s.io/fstype: ext4
+      - name: powerstore-xfs
+        reclaimPolicy: "Delete"
+        parameters:
+          csi.storage.k8s.io/fstype: xfs
+      - name: powerstore-nfs
+        reclaimPolicy: "Delete"
+        parameters:
+          csi.storage.k8s.io/fstype: nfs
+          nasName: nas-server
+        # Copy to other storage classes if you want to configure topology constraints for them
+        allowedTopologies:
+          - matchLabelExpressions:
+              # Replace 127.0.0.1 with PowerStore endpoint IP with its value
+              # And append -nfs, -fc or -iscsi at the end of it
+              - key: csi-powerstore.dellemc.com/127.0.0.1-nfs
+                values:
+                  - "true"
+    snapshotClass:
+      - name: powerstore-snapshot

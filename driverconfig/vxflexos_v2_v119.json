@@ -1,0 +1,348 @@
+{
+    "driverConfig": {
+      "driverEnvs": [
+        {
+          "Name": "CSI_ENDPOINT",
+          "CSIEnvType": "String",
+          "SetForController": true,
+          "SetForNode": true,
+          "DefaultValueForController": "/var/run/csi/csi.sock",
+          "DefaultValueForNode": "unix:///var/lib/kubelet/plugins/vxflexos.emc.dell.com/csi_sock"
+        },
+        {
+          "Name": "X_CSI_VXFLEXOS_INSECURE",
+          "CSIEnvType": "Boolean",
+          "SetForController": true,
+          "SetForNode": false,
+          "DefaultValueForController": "true",
+          "DefaultValueForNode": ""
+        },
+        {
+          "Name": "X_CSI_VXFLEXOS_ENDPOINT",
+          "Mandatory": true,
+          "CSIEnvType": "String",
+          "SetForController": true,
+          "SetForNode": true,
+          "DefaultValueForController": "",
+          "DefaultValueForNode": ""
+        },
+        {
+          "Name": "X_CSI_VXFLEXOS_SYSTEMNAME",
+          "Mandatory": true,
+          "CSIEnvType": "String",
+          "SetForController": true,
+          "SetForNode": true,
+          "DefaultValueForController": "",
+          "DefaultValueForNode": ""
+        },
+        {
+          "Name": "X_CSI_DEBUG",
+          "CSIEnvType": "Boolean",
+          "SetForController": true,
+          "SetForNode": true,
+          "DefaultValueForController": "true",
+          "DefaultValueForNode": "true"
+        },
+        {
+          "Name": "X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE",
+          "CSIEnvType": "Boolean",
+          "SetForController": true,
+          "SetForNode": false,
+          "DefaultValueForController": "false",
+          "DefaultValueForNode": ""
+        },
+        {
+          "Name": "X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT",
+          "CSIEnvType": "Boolean",
+          "SetForController": true,
+          "SetForNode": false,
+          "DefaultValueForController": "false",
+          "DefaultValueForNode": ""
+        },
+        {
+          "Name": "X_CSI_MODE",
+          "CSIEnvType": "String",
+          "SetForController": true,
+          "SetForNode": true,
+          "DefaultValueForController": "controller",
+          "DefaultValueForNode": "node"
+        },
+        {
+          "Name": "X_CSI_VXFLEXOS_USER",
+          "CSIEnvType": "EnvSecretReference",
+          "SetForController": true,
+          "SetForNode": true,
+          "DefaultValueForController": "username/vxflexos-creds",
+          "DefaultValueForNode": "username/vxflexos-creds"
+        },
+        {
+          "Name": "X_CSI_VXFLEXOS_PASSWORD",
+          "CSIEnvType": "EnvSecretReference",
+          "SetForController": true,
+          "SetForNode": true,
+          "DefaultValueForController": "password/vxflexos-creds",
+          "DefaultValueForNode": "password/vxflexos-creds"
+        },
+        {
+          "Name": "X_CSI_PRIVATE_MOUNT_DIR",
+          "CSIEnvType": "String",
+          "SetForController": false,
+          "SetForNode": true,
+          "DefaultValueForController": "",
+          "DefaultValueForNode": "/var/lib/kubelet/plugins/vxflexos.emc.dell.com/disks"
+        }
+  
+        ],
+      "driverNodeVolumes": [
+        {
+            "hostPath": {
+                "path": "/var/lib/kubelet/plugins_registry/",
+                "type": "DirectoryOrCreate"
+            },
+            "name": "registration-dir"
+        },
+        {
+            "hostPath": {
+                "path": "/var/lib/kubelet/plugins/vxflexos.emc.dell.com",
+                "type": "DirectoryOrCreate"
+            },
+            "name": "driver-path"
+        },
+        {
+            "hostPath": {
+                "path": "/var/lib/kubelet/plugins/kubernetes.io/csi/volumeDevices",
+                "type": "DirectoryOrCreate"
+            },
+            "name": "volumedevices-path"
+        },
+        {
+            "hostPath": {
+                "path": "/var/lib/kubelet/pods",
+                "type": "Directory"
+            },
+            "name": "pods-path"
+        },
+        {
+            "hostPath": {
+                "path": "/dev",
+                "type": "Directory"
+            },
+            "name": "dev"
+        },
+        {
+            "hostPath": {
+                "path": "/opt/emc/scaleio/sdc/bin",
+                "type": "Directory"
+            },
+            "name": "scaleio-path-opt"
+        },
+        {
+            "hostPath": {
+                "path": "/bin/emc",
+                "type": "Directory"
+            },
+            "name": "scaleio-path-bin"
+        },
+        {
+            "name": "certs",
+            "secret": {
+                "defaultMode": 420,
+                "secretName": "vxflexos-certs",
+                "optional": true
+            }
+        }
+      ],
+      "driverControllerVolumes": [
+        {
+          "emptyDir": {},
+          "name": "socket-dir"
+        },
+        {
+            "name": "certs",
+            "secret": {
+                "defaultMode": 420,
+                "secretName": "vxflexos-certs",
+                "optional": true
+            }
+        }
+      ],
+      "driverControllerVolumeMounts": [
+        {
+          "mountPath": "/var/run/csi",
+          "name": "socket-dir"
+        },
+        {
+          "mountPath": "/certs",
+          "name": "certs",
+          "readOnly": true
+        }
+      ],
+      "driverNodeVolumeMounts": [
+        {
+          "mountPath": "/var/lib/kubelet/plugins/vxflexos.emc.dell.com",
+          "name": "driver-path"
+        },
+        {
+          "mountPath": "/var/lib/kubelet/plugins/kubernetes.io/csi/volumeDevices",
+          "mountPropagation": "Bidirectional",
+          "name": "volumedevices-path"
+        },
+        {
+          "mountPath": "/var/lib/kubelet/pods",
+          "mountPropagation": "Bidirectional",
+          "name": "pods-path"
+        },
+        {
+          "mountPath": "/dev",
+          "name": "dev"
+        },
+        {
+          "mountPath": "/opt/emc/scaleio/sdc/bin",
+          "name": "scaleio-path-opt"
+        },
+        {
+          "mountPath": "/bin/emc",
+          "name": "scaleio-path-bin"
+        },
+        {
+          "mountPath": "/certs",
+          "name": "certs",
+          "readOnly": true
+        }
+      ],
+      "sidecarParams": [
+        {
+          "name": "provisioner",
+          "args": [
+            "--csi-address=$(ADDRESS)",
+            "--timeout=120s",
+            "--volume-name-uuid-length=10",
+            "--timeout=180s",
+            "--worker-threads=6",
+            "--v=5"
+          ],
+          "envs": [
+            {
+              "name": "ADDRESS",
+              "value": "/var/run/csi/csi.sock"
+            }
+          ],
+          "volumeMounts": [
+            {
+              "mountPath": "/var/run/csi",
+              "name": "socket-dir"
+            }
+          ]
+        },
+        {
+          "name": "attacher",
+          "args": [
+            "--csi-address=$(ADDRESS)",
+            "--v=5",
+            "--timeout=180s"
+          ],
+          "envs": [
+            {
+              "name": "ADDRESS",
+              "value": "/var/run/csi/csi.sock"
+            }
+          ],
+          "volumeMounts": [
+            {
+              "mountPath": "/var/run/csi",
+              "name": "socket-dir"
+            }
+          ]
+        },
+        {
+          "name": "snapshotter",
+          "args": [
+            "--csi-address=$(ADDRESS)",
+            "--timeout=120s",
+            "--v=5"
+          ],
+          "envs": [
+            {
+              "name": "ADDRESS",
+              "value": "/var/run/csi/csi.sock"
+            }
+          ],
+          "volumeMounts": [
+            {
+              "mountPath": "/var/run/csi",
+              "name": "socket-dir"
+            }
+          ]
+        },
+        {
+          "name": "registrar",
+          "args": [
+            "--v=5",
+            "--csi-address=$(ADDRESS)",
+            "--kubelet-registration-path=/var/lib/kubelet/plugins/vxflexos.emc.dell.com/csi_sock"
+          ],
+          "envs": [
+            {
+              "name": "ADDRESS",
+              "value": "/csi/csi_sock"
+            },
+            {
+              "name": "KUBE_NODE_NAME",
+              "valueFrom": {
+                "fieldRef": {
+                  "apiVersion": "v1",
+                  "fieldPath": "spec.nodeName"
+                }
+              }
+            }
+          ],
+          "volumeMounts": [
+            {
+              "mountPath": "/registration",
+              "name": "registration-dir"
+            },
+            {
+              "mountPath": "/csi",
+              "name": "driver-path"
+            }
+          ]
+        },
+        {
+          "name": "resizer",
+          "args": [
+            "--csi-address=$(ADDRESS)",
+            "--v=5"
+          ],
+          "envs": [
+            {
+              "name": "ADDRESS",
+              "value": "/var/run/csi/csi.sock"
+            }
+          ],
+          "volumeMounts": [
+            {
+              "mountPath": "/var/run/csi",
+              "name": "socket-dir"
+            }
+          ]
+        }
+      ],
+      "storageClassParams": [
+        {
+          "Name": "storagepool",
+          "Mandatory": true
+        }
+      ],
+      "storageClassAttrs": [
+        {
+          "name": "allowVolumeExpansion",
+          "value": true
+        },
+        {
+          "name": "volumeBindingMode",
+          "value": "WaitForFirstConsumer"
+        }
+      ] 
+    } 
+}
+  

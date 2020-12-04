@@ -93,11 +93,7 @@ kMajorVersion=$(kubectl version | grep 'Server Version' | sed -e 's/^.*Major:"//
 kMinorVersion=$(kubectl version | grep 'Server Version' | sed -e 's/^.*Minor:"//' -e 's/[^0-9].*//g')
 kubectl get crd | grep securitycontextconstraints.security.openshift.io --quiet
 if [ $? -ne 0 ]; then
-  isOpenShift43=false
   isOpenShift=false
 else
-  ifOpenShift=true
-  if [[ "$kMinorVersion" == 16 ]]; then
-    isOpenShift43=true
-  fi
+  isOpenShift=true
 fi
