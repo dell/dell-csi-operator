@@ -1,0 +1,74 @@
+apiVersion: storage.dell.com/v1
+kind: CSIIsilon
+metadata:
+  name: isilon
+  namespace: test-isilon
+spec:
+  driver:
+    # Config version for CSI PowerScale v1.5.0 driver
+    configVersion: v5
+    replicas: 2
+    forceUpdate: false
+    common:
+      # Image for CSI PowerScale driver v1.5.0
+      image: "dellemc/csi-isilon:v1.5.0"
+      imagePullPolicy: IfNotPresent
+      envs:
+        - name: X_CSI_VERBOSE
+          value: "1"
+        - name: X_CSI_ISI_PORT
+          value: "8080"
+        - name: X_CSI_ISI_PATH
+          value: "/ifs/data/csi"
+        - name: X_CSI_ISILON_NO_PROBE_ON_START
+          value: "false"
+        - name: X_CSI_ISI_AUTOPROBE
+          value: "true"
+        - name: X_CSI_ISI_INSECURE
+          value: "true"
+        - name: X_CSI_DEBUG
+          value: "true"
+        - name: X_CSI_CUSTOM_TOPOLOGY_ENABLED
+          value: "false"
+    controller:
+      envs:
+      - name: X_CSI_ISI_QUOTA_ENABLED
+        value: "true"
+      - name: X_CSI_ISI_ACCESS_ZONE
+        value: "System"
+    node:
+      envs:
+      - name: X_CSI_ISILON_NFS_V3
+        value: "false"
+      # Provide them in the following format: "[net1, net2]"
+      # CIDR format should be used
+      # eg: 192.168.1.0/24
+      - name: X_CSI_ALLOWED_NETWORKS
+        value: ""
+    sideCars:
+      - name: provisioner
+        args: ["--volume-name-prefix=csipscale"]
+    storageClass:
+      # The storageClass name will have a prefix "isilon"
+      - name: storageclass
+        reclaimPolicy: "Delete"
+        allowVolumeExpansion: true
+        default: true
+        volumeBindingMode: WaitForFirstConsumer
+        # If X_CSI_CUSTOM_TOPOLOGY_ENABLED is set to True, please comment out the below
+        # section related to allowed Topologies.
+        allowedTopologies:
+          - matchLabelExpressions:
+              - key: csi-isilon.dellemc.com/1.1.1.1
+                values:
+                  - "csi-isilon.dellemc.com"
+        parameters:
+          AccessZone: "System"
+          IsiPath: "/ifs/data/csi"
+          AzServiceIP: 1.1.1.1
+          RootClientEnabled: "false"
+    snapshotClass:
+      # The volumeSnapshotClass name will have a prefix "isilon"
+      - name: volumesnapshotclass
+        parameters:
+          IsiPath: "/ifs/data/csi"

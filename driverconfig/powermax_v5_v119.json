@@ -1,15 +1,57 @@
 {
   "driverConfig": {
-    "controllerHA": true,
-    "enableEphemeralVolumes": true,
+    "controllerHA" : true,
+    "nodeTolerations": [
+      {
+        "effect": "NoExecute",
+        "key": "node.kubernetes.io/memory-pressure",
+        "operator": "Exists"
+      },
+      {
+        "effect": "NoExecute",
+        "key": "node.kubernetes.io/disk-pressure",
+        "operator": "Exists"
+      },
+      {
+        "effect": "NoExecute",
+        "key": "node.kubernetes.io/network-unavailable",
+        "operator": "Exists"
+      }
+    ],
     "driverEnvs": [
+      {
+        "Name": "X_CSI_POWERMAX_DRIVER_NAME",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "csi-powermax.dellemc.com",
+        "DefaultValueForNode": "csi-powermax.dellemc.com"
+      },
       {
         "Name": "CSI_ENDPOINT",
         "CSIEnvType": "String",
         "SetForController": true,
         "SetForNode": true,
         "DefaultValueForController": "/var/run/csi/csi.sock",
-        "DefaultValueForNode": "unix:///var/lib/kubelet/plugins/unity.emc.dell.com/csi_sock"
+        "DefaultValueForNode": "unix:///var/lib/kubelet/plugins/powermax.emc.dell.com/csi_sock"
+      },
+      {
+        "Name": "X_CSI_POWERMAX_ENDPOINT",
+        "Mandatory": true,
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": ""
+      },
+      {
+        "Name": "X_CSI_K8S_CLUSTER_PREFIX",
+        "Mandatory": true,
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": ""
       },
       {
         "Name": "X_CSI_MODE",
@@ -20,14 +62,6 @@
         "DefaultValueForNode": "node"
       },
       {
-        "Name": "X_CSI_UNITY_AUTOPROBE",
-        "CSIEnvType": "Boolean",
-        "SetForController": true,
-        "SetForNode": true,
-        "DefaultValueForController": "true",
-        "DefaultValueForNode": "true"
-      },
-      {
         "Name": "X_CSI_DEBUG",
         "CSIEnvType": "Boolean",
         "SetForController": true,
@@ -36,7 +70,39 @@
         "DefaultValueForNode": "true"
       },
       {
-        "Name": "GOUNITY_DEBUG",
+        "Name": "X_CSI_POWERMAX_SKIP_CERTIFICATE_VALIDATION",
+        "CSIEnvType": "Boolean",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "true",
+        "DefaultValueForNode": "true"
+      },
+      {
+        "Name": "X_CSI_POWERMAX_USER",
+        "CSIEnvType": "EnvSecretReference",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "username/powermax-creds",
+        "DefaultValueForNode": "username/powermax-creds"
+      },
+      {
+        "Name": "X_CSI_POWERMAX_PASSWORD",
+        "CSIEnvType": "EnvSecretReference",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "password/powermax-creds",
+        "DefaultValueForNode": "password/powermax-creds"
+      },
+      {
+        "Name": "X_CSI_POWERMAX_ISCSI_CHAP_PASSWORD",
+        "CSIEnvType": "EnvSecretReference",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": "chapsecret/powermax-creds"
+      },
+      {
+        "Name": "X_CSI_POWERMAX_DEBUG",
         "CSIEnvType": "Boolean",
         "SetForController": true,
         "SetForNode": true,
@@ -44,20 +110,12 @@
         "DefaultValueForNode": "false"
       },
       {
-        "Name": "X_CSI_PRIVATE_MOUNT_DIR",
-        "CSIEnvType": "String",
-        "SetForController": false,
-        "SetForNode": true,
+        "Name": "X_CSI_POWERMAX_PORTGROUPS",
+        "CSIEnvType": "List",
+        "SetForController": true,
+        "SetForNode": false,
         "DefaultValueForController": "",
-        "DefaultValueForNode": "/var/lib/kubelet/plugins/unity.emc.dell.com/disks"
-      },
-      {
-        "Name": "X_CSI_EPHEMERAL_STAGING_PATH",
-        "CSIEnvType": "String",
-        "SetForController": false,
-        "SetForNode": true,
-        "DefaultValueForController": "",
-        "DefaultValueForNode": "/var/lib/kubelet/plugins/kubernetes.io/csi/pv/"
+        "DefaultValueForNode": ""
       },
       {
         "Name": "X_CSI_ISCSI_CHROOT",
@@ -68,7 +126,39 @@
         "DefaultValueForNode": "/noderoot"
       },
       {
-        "Name": "X_CSI_UNITY_NODENAME",
+        "Name": "X_CSI_POWERMAX_ARRAYS",
+        "CSIEnvType": "List",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": ""
+      },
+      {
+        "Name": "X_CSI_GRPC_MAX_THREADS",
+        "CSIEnvType": "Int",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "4",
+        "DefaultValueForNode": "4"
+      },
+      {
+        "Name": "X_CSI_ENABLE_BLOCK",
+        "CSIEnvType": "Boolean",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "true",
+        "DefaultValueForNode": "true"
+      },
+      {
+        "Name": "X_CSI_TRANSPORT_PROTOCOL",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": ""
+      },
+      {
+        "Name": "X_CSI_POWERMAX_NODENAME",
         "CSIEnvType": "EnvVarReferenceType",
         "SetForController": false,
         "SetForNode": true,
@@ -76,12 +166,20 @@
         "DefaultValueForNode": "v1/spec.nodeName"
       },
       {
-        "Name": "X_CSI_UNITY_NODENAME_PREFIX",
+        "Name": "X_CSI_PRIVATE_MOUNT_DIR",
         "CSIEnvType": "String",
         "SetForController": false,
         "SetForNode": true,
         "DefaultValueForController": "",
-        "DefaultValueForNode": "csi-node"
+        "DefaultValueForNode": "/var/lib/kubelet/plugins/powermax.emc.dell.com/disks"
+      },
+      {
+        "Name": "X_CSI_POWERMAX_ISCSI_ENABLE_CHAP",
+        "CSIEnvType": "Boolean",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": "false"
       },
       {
         "Name": "SSL_CERT_DIR",
@@ -92,17 +190,45 @@
         "DefaultValueForNode": "/certs"
       },
       {
-        "Name": "X_CSI_UNITY_SYNC_NODEINFO_INTERVAL",
+        "Name": "X_CSI_IG_NODENAME_TEMPLATE",
         "CSIEnvType": "String",
-        "SetForController": false,
+        "SetForController": true,
         "SetForNode": true,
         "DefaultValueForController": "",
-        "DefaultValueForNode": "15"
+        "DefaultValueForNode": ""
+      },
+      {
+        "Name": "X_CSI_IG_MODIFY_HOSTNAME",
+        "CSIEnvType": "Boolean",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "false",
+        "DefaultValueForNode": "false"
+      },
+      {
+        "Name": "X_CSI_POWERMAX_PROXY_SERVICE_NAME",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "none",
+        "DefaultValueForNode": "none"
+      },
+      {
+        "Name": "X_CSI_ReplicationContextPrefix",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": false,
+        "DefaultValueForController": "powermax/",
+        "DefaultValueForNode": ""
+      },
+      {
+        "Name": "X_CSI_ReplicationPrefix",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": false,
+        "DefaultValueForController": "replication.storage.dell.com/",
+        "DefaultValueForNode": ""
       }
-    ],
-    "driverArgs": [
-      "--driver-name=csi-unity.dellemc.com",
-      "--driver-config=/unity-config/config"
     ],
     "driverNodeVolumes": [
       {
@@ -114,14 +240,14 @@
       },
       {
         "hostPath": {
-          "path": "/var/lib/kubelet/plugins/unity.emc.dell.com",
+          "path": "/var/lib/kubelet/plugins/powermax.emc.dell.com",
           "type": "DirectoryOrCreate"
         },
         "name": "driver-path"
       },
       {
         "hostPath": {
-          "path": "/var/lib/kubelet/plugins/kubernetes.io/csi",
+          "path": "/var/lib/kubelet/plugins/kubernetes.io/csi/volumeDevices",
           "type": "DirectoryOrCreate"
         },
         "name": "volumedevices-path"
@@ -142,6 +268,13 @@
       },
       {
         "hostPath": {
+          "path": "/sys",
+          "type": "Directory"
+        },
+        "name": "sys"
+      },
+      {
+        "hostPath": {
           "path": "/",
           "type": "Directory"
         },
@@ -151,16 +284,15 @@
         "name": "certs",
         "secret": {
           "defaultMode": 420,
-          "secretName": "unity-certs",
+          "secretName": "powermax-certs",
           "optional": true
         }
       },
       {
-        "name": "unity-config",
-        "secret": {
-          "defaultMode": 420,
-          "secretName": "unity-creds",
-          "optional": true
+        "name": "dbus-socket",
+        "hostPath": {
+          "path": "/run/dbus/system_bus_socket",
+          "type": "Socket"
         }
       }
     ],
@@ -173,15 +305,7 @@
         "name": "certs",
         "secret": {
           "defaultMode": 420,
-          "secretName": "unity-certs",
-          "optional": true
-        }
-      },
-      {
-        "name": "unity-config",
-        "secret": {
-          "defaultMode": 420,
-          "secretName": "unity-creds",
+          "secretName": "powermax-certs",
           "optional": true
         }
       }
@@ -195,20 +319,15 @@
         "mountPath": "/certs",
         "name": "certs",
         "readOnly": true
-      },
-      {
-        "mountPath": "/unity-config",
-        "name": "unity-config",
-        "readOnly": true
       }
     ],
     "driverNodeVolumeMounts": [
       {
-        "mountPath": "/var/lib/kubelet/plugins/unity.emc.dell.com",
+        "mountPath": "/var/lib/kubelet/plugins/powermax.emc.dell.com",
         "name": "driver-path"
       },
       {
-        "mountPath": "/var/lib/kubelet/plugins/kubernetes.io/csi",
+        "mountPath": "/var/lib/kubelet/plugins/kubernetes.io/csi/volumeDevices",
         "mountPropagation": "Bidirectional",
         "name": "volumedevices-path"
       },
@@ -222,6 +341,10 @@
         "name": "dev"
       },
       {
+        "mountPath": "/sys",
+        "name": "sys"
+      },
+      {
         "mountPath": "/noderoot",
         "name": "noderoot"
       },
@@ -231,9 +354,8 @@
         "readOnly": true
       },
       {
-        "mountPath": "/unity-config",
-        "name": "unity-config",
-        "readOnly": true
+        "name": "dbus-socket",
+        "mountPath": "/run/dbus/system_bus_socket"
       }
     ],
     "sidecarParams": [
@@ -241,13 +363,15 @@
         "name": "provisioner",
         "args": [
           "--csi-address=$(ADDRESS)",
-          "--timeout=120s",
           "--volume-name-uuid-length=10",
           "--timeout=180s",
           "--worker-threads=6",
           "--v=5",
-          "--volume-name-prefix=csiunity",
-          "--leader-election"
+          "--volume-name-prefix=pmax",
+          "--default-fstype=ext4",
+          "--leader-election",
+          "--extra-create-metadata",
+          "--feature-gates=Topology=true"
         ],
         "envs": [
           {
@@ -268,6 +392,7 @@
           "--csi-address=$(ADDRESS)",
           "--v=5",
           "--timeout=180s",
+          "--worker-threads=6",
           "--leader-election"
         ],
         "envs": [
@@ -288,9 +413,30 @@
         "args": [
           "--v=5",
           "--snapshot-name-uuid-length=10",
-          "--timeout=360s",
+          "--timeout=180s",
+          "--snapshot-name-prefix=pmsn",
           "--csi-address=$(ADDRESS)",
-          "--snapshot-name-prefix=csi-snap",
+          "--leader-election"
+        ],
+        "envs": [
+          {
+            "name": "ADDRESS",
+            "value": "/var/run/csi/csi.sock"
+          }
+        ],
+        "volumeMounts": [
+          {
+            "mountPath": "/var/run/csi",
+            "name": "socket-dir"
+          }
+        ]
+      },
+      {
+        "name": "resizer",
+        "args": [
+          "--csi-address=$(ADDRESS)",
+          "--v=5",
+          "--timeout=180s",
           "--leader-election"
         ],
         "envs": [
@@ -311,7 +457,7 @@
         "args": [
           "--v=5",
           "--csi-address=$(ADDRESS)",
-          "--kubelet-registration-path=/var/lib/kubelet/plugins/unity.emc.dell.com/csi_sock"
+          "--kubelet-registration-path=/var/lib/kubelet/plugins/powermax.emc.dell.com/csi_sock"
         ],
         "envs": [
           {
@@ -338,56 +484,22 @@
             "name": "driver-path"
           }
         ]
-      },
-      {
-        "name": "resizer",
-        "args": [
-          "--csi-address=$(ADDRESS)",
-          "--v=5",
-          "--leader-election"
-        ],
-        "envs": [
-          {
-            "name": "ADDRESS",
-            "value": "/var/run/csi/csi.sock"
-          }
-        ],
-        "volumeMounts": [
-          {
-            "mountPath": "/var/run/csi",
-            "name": "socket-dir"
-          }
-        ]
       }
     ],
     "storageClassParams": [
       {
-        "Name": "storagePool",
+        "Name": "SYMID",
         "Mandatory": true
       },
       {
-        "Name": "arrayId",
+        "Name": "SRP",
         "Mandatory": true
       },
       {
-        "Name": "FsType",
-        "Mandatory": false
+        "Name": "ServiceLevel"
       },
       {
-        "Name": "thinProvisioned"
-      },
-      {
-        "Name": "isDataReductionEnabled"
-      },
-      {
-        "Name": "tieringPolicy"
-      },
-      {
-        "Name": "hostIOLimitName"
-      },
-      {
-        "Name": "hostIoSize",
-        "Mandatory": false
+        "Name": "FsType"
       }
     ],
     "storageClassAttrs": [
@@ -397,7 +509,7 @@
       },
       {
         "name": "volumeBindingMode",
-        "value": "Immediate"
+        "value": "WaitForFirstConsumer"
       }
     ]
   }

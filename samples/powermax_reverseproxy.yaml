@@ -5,8 +5,8 @@ metadata:
   namespace: test-powermax
 spec:
   # Image for CSI PowerMax ReverseProxy
-  image: dellemc/csipowermax-reverseproxy:v1.1.0.000R
-  imagePullPolicy: Always
+  image: dellemc/csipowermax-reverseproxy:v1.2.0
+  imagePullPolicy: IfNotPresent
   # TLS secret which contains SSL certificate and private key for the Reverse Proxy server
   tlsSecret: csirevproxy-tls-secret
   config:

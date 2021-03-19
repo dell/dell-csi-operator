@@ -2,19 +2,6 @@
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-skip_beta_crd_flag=""
-if [ $# -ne 0 ]; then
-  skip_beta_crd_flag=$1
-fi
-
-if [ "$skip_beta_crd_flag" == "--skip-betacrd-validation" ]; then
-  skip_beta_crd_validation=true
-fi
-
-VOLUMESNAPSHOTCLASSCRD="volumesnapshotclasses.snapshot.storage.k8s.io"
-VOLUMESNAPSHOTCONTENTCRD="volumesnapshotcontents.snapshot.storage.k8s.io"
-VOLUMESNAPSHOTSCRD="volumesnapshots.snapshot.storage.k8s.io"
-
 # print header information
 function header() {
 	echo
@@ -35,7 +22,7 @@ function verify_min_k8s_version() {
 	if [[ "${2}" -gt "${kMinorVersion}" ]]; then
 		RESULT_K8S_MIN_VER="Failed"
     AddError "Kubernetes version, ${kMajorVersion}.${kMinorVersion}, is too old. Minimum required version is: ${1}.${2}"
-  fi
+    fi
 	if [ $RESULT_K8S_MIN_VER == "Failed" ]; then
 	  log step_failure
 	else
@@ -62,40 +49,37 @@ function verify_max_k8s_version() {
 	fi
 }
 
-# verify that the alpha snap CRDs are not installed
-verify_beta_snap_crds() {
-	# check for the beta snapshot CRDs. These shouldn't be present for installation to proceed with
-	if [ "$skip_beta_crd_validation" == true ]; then
-	  echo "Skipping check to see if beta snapshot CRDs are installed"
-	else
+# verify that the snap CRDs are installed
+function verify_snap_crds() {
+	# check for the snapshot CRDs.
     CRDS=("VolumeSnapshotClasses" "VolumeSnapshotContents" "VolumeSnapshots")
     for C in "${CRDS[@]}"; do
-      log step "Checking for beta $C CRD"
-      # Verify that beta snapshot related CRDs/CRs are not there on the system.
-      kubectl explain ${C} 2> /dev/null | grep "^VERSION.*v1beta1$" --quiet
+      log step "Checking $C CRD"
+      # Verify that snapshot related CRDs/CRs exist on the system.
+      kubectl explain ${C} > /dev/null 2>&1
       if [ $? -ne 0 ]; then
-        AddError "The beta CRD for ${C} is not installed. Please install it"
-        RESULT_BETA_SNAP_CRDS="Failed"
+        AddError "The CRD for ${C} is not Found. These need to be installed by the Kubernetes administrator"
+        RESULT_SNAP_CRDS="Failed"
         log step_failure
       else
         log step_success
       fi
     done
-  fi
 }
 
-function verify_beta_snapshot_controller() {
+function verify_snapshot_controller() {
   log step "Checking if snapshot controller is deployed"
   # check for the snapshot-controller. These are strongly suggested but not required
 	kubectl get pods -A | grep snapshot-controller --quiet
 	if [ $? -ne 0 ]; then
-		AddWarning "The Snapshot Controller does not seem to be deployed"
-		RESULT_BETA_SNAP_CONTROLLER="Failed"
+		AddWarning "The Snapshot Controller was not found on the system. These need to be installed by the Kubernetes administrator."
+		RESULT_SNAP_CONTROLLER="Failed"
 		log step_failure
 	else
 	  log step_success
 	fi
 }
+
 
 # error, installation will not continue
 function AddError() {
@@ -144,17 +128,10 @@ function summary() {
 	log step "Kubernetes Max version:"
 	log ${RESULT_K8S_MAX_VER}
 
-	if [[ "$kMinorVersion" -gt 16 ]]; then
-	  log step "Beta Snapshot CRDs:"
-	  if [ "$skip_beta_crd_validation" == true ]; then
-      log step_warning
-      log warning "Skipped because of user request"
-    else
-      log ${RESULT_BETA_SNAP_CRDS}
-    fi
-    log step "Beta Snapshot Controller:"
-    log ${RESULT_BETA_SNAP_CONTROLLER}
-  fi
+    log step "Snapshot CRDs:"
+    log ${RESULT_SNAP_CRDS}
+    log step "Snapshot Controller:"
+    log ${RESULT_SNAP_CONTROLLER}
 
 	echo
 }
@@ -165,9 +142,8 @@ function summary() {
 # default values
 RESULT_K8S_MIN_VER="Passed"
 RESULT_K8S_MAX_VER="Passed"
-RESULT_ALPHA_SNAP_CRDS="Passed"
-RESULT_BETA_SNAP_CRDS="Passed"
-RESULT_BETA_SNAP_CONTROLLER="Passed"
+RESULT_SNAP_CRDS="Passed"
+RESULT_SNAP_CONTROLLER="Passed"
 
 # exit codes
 EXIT_SUCCESS=0
@@ -189,13 +165,14 @@ header
 log separator
 verify_min_k8s_version "1" "17"
 verify_max_k8s_version "1" "20"
+verify_snap_crds
+verify_snapshot_controller
 log separator
 
 summary
 
-if [ ${RESULT_BETA_SNAP_CRDS} == "Failed" ]; then
-  echo "Please install CSI VolumeSnapshot Beta CRDs before continuing."
-  echo "Run the install script with the option --snapshot-crd to install the beta snapshot CRD"
+if [ ${RESULT_SNAP_CRDS} == "Failed" ]; then
+  echo "Some of the CRDs are not found on the system. These need to be installed by the Kubernetes administrator."
 fi
 echo
 exit $RC

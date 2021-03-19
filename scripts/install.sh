@@ -4,7 +4,6 @@ VERIFYSCRIPT="verify.sh"
 SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 PROG="${0}"
 ROOTDIR="$(dirname "$SCRIPTDIR")"
-SNAPCLASSDIR="$ROOTDIR/deploy/beta-snapshot-crds"
 DEPLOYDIR="$ROOTDIR/deploy"
 CONFIGDIR="$ROOTDIR/config"
 POWERMAX_CRD="csipowermaxes.storage.dell.com"
@@ -24,7 +23,6 @@ function usage() {
   echo "Options:"
   echo "  Optional"
   echo "  --upgrade                                Perform an upgrade of the specified driver, default is false"
-  echo "  --snapshot-crd                           Install snapshot CRDs. Default will not install beta snapshot crds."
   echo "  -h                                       Help"
   echo
 
@@ -76,14 +74,10 @@ function verify_kubernetes() {
   if [ ! -f "${SCRIPTDIR}/${VERIFYSCRIPT}" ]; then
     log error "Unable to locate ${VERIFYSCRIPT} script in ${SCRIPTDIR}"
   fi
-  if [ "$INSTALL_CRD" == "yes" ]; then
-    bash "${SCRIPTDIR}/${VERIFYSCRIPT}" --skip-betacrd-validation
-  else
-    bash "${SCRIPTDIR}/${VERIFYSCRIPT}"
-  fi
+  bash "${SCRIPTDIR}/${VERIFYSCRIPT}"
   case $? in
   0) ;;
-
+  
   1)
     warning "Kubernetes validation failed but installation can continue. " \
       "This may affect driver installation."
@@ -142,41 +136,6 @@ function check_for_operator() {
   else
     log step_success
   fi
-}
-
-function install_beta_snapshot_crd() {
-  declare -A SNAPCLASSES=(
-    ["volumesnapshotclasses"]="snapshot.storage.k8s.io_volumesnapshotclasses.yaml"
-    ["volumesnapshotcontents"]="snapshot.storage.k8s.io_volumesnapshotcontents.yaml"
-    ["volumesnapshots"]="snapshot.storage.k8s.io_volumesnapshots.yaml"
-  )
-  for C in "${!SNAPCLASSES[@]}"; do
-    if [ ! -f "${SNAPCLASSDIR}/${SNAPCLASSES[$C]}" ]; then
-        echo "Unable to to find Snapshot Classes CRD file at ${SNAPCLASSDIR}"
-        exit 1
-      fi
-    kubectl get crd | grep "${C}" --quiet
-    if [[ $? -ne 0 ]]; then
-      # make sure CRD exists
-      log step "Installing CRD: $C"
-      # create the custom resource
-      kubectl create -f "${SNAPCLASSDIR}/${SNAPCLASSES[$C]}" > /dev/null 2>&1
-      if [ $? -ne 0 ]; then
-        log step_failure
-        log error "Failed to install $CRD"
-      else
-        log step_success
-      fi
-    else
-      log step "Updating CRD: $C"
-      kubectl apply -f "${SNAPCLASSDIR}/${SNAPCLASSES[$C]}" > /dev/null 2>&1
-      if [ $? -ne 0 ]; then
-        log error "Failed to update $CRD"
-      fi
-      log step_success
-    fi
-  done
-  sleep 3s
 }
 
 function install_or_update_driver_crd() {
@@ -261,10 +220,6 @@ while getopts ":h-:" optchar; do
   case "${optchar}" in
   -)
     case "${OPTARG}" in
-      # SNAPSHOT_CRD
-    snapshot-crd)
-      INSTALL_CRD="yes"
-      ;;
     upgrade)
       MODE="upgrade"
       ;;
@@ -292,9 +247,6 @@ header
 check_for_kubectl
 check_for_operator
 verify_kubernetes
-if [ "$INSTALL_CRD" == "yes" ]; then
-  install_beta_snapshot_crd
-fi
 install_operator
 check_progress
 
