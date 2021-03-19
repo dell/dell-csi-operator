@@ -1,0 +1,66 @@
+apiVersion: storage.dell.com/v1
+kind: CSIVXFlexOS
+metadata:
+  name: test-vxflexos
+  namespace: test-vxflexos
+spec:
+  driver:
+    configVersion: v4
+    replicas: 1
+    forceUpdate: false
+    common:
+      image: "dellemc/csi-vxflexos:v1.4.0"
+      imagePullPolicy: IfNotPresent
+      envs:
+        - name: X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT
+          value: "false"
+        - name: X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE
+          value: "false"
+        - name: X_CSI_DEBUG
+          value: "true"
+        - name: X_CSI_ALLOW_RWO_MULTI_POD_ACCESS
+          value: "false"
+    sideCars:
+    # Uncomment the following section if you want to run the monitoring sidecar
+      - name: sdc-monitor
+        envs:
+        - name: HOST_PID
+          value: "1"
+        - name: MDM
+          value: ""
+    initContainers:
+      - image: dellemc/sdc:3.5.1.1-1
+        imagePullPolicy: IfNotPresent
+        name: sdc
+        envs:
+          - name: MDM
+            value: ""
+       
+    storageClass:
+      - name: vxflexos
+        default: true
+        reclaimPolicy: Delete
+        allowVolumeExpansion: true
+        parameters:
+          storagepool: pool1
+        allowedTopologies:
+        - matchLabelExpressions:
+        # Replace X_CSI_VXFLEXOS_SYSTEMNAME with its value
+          - key: csi-vxflexos.dellemc.com/X_CSI_VXFLEXOS_SYSTEMNAME
+            values:
+            - csi-vxflexos.dellemc.com
+      - name: vxflexos-xfs
+        default: false
+        reclaimPolicy: Delete
+        allowVolumeExpansion: true
+        parameters:
+          storagepool: pool1
+          FsType: xfs
+        allowedTopologies:
+        - matchLabelExpressions:
+        # Replace X_CSI_VXFLEXOS_SYSTEMNAME with its value
+          - key: csi-vxflexos.dellemc.com/X_CSI_VXFLEXOS_SYSTEMNAME
+            values:
+            - csi-vxflexos.dellemc.com
+    snapshotClass:
+      - name: vxflexos-snapclass

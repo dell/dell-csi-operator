@@ -156,6 +156,18 @@ rules:
 - apiGroups:
   - rbac.authorization.k8s.io
   resources:
+  - clusterroles/finalizers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
   - roles
   verbs:
   - create
@@ -404,7 +416,7 @@ spec:
         env:
         - name: OPERATOR_DRIVERS
           value: unity,powermax,isilon,vxflexos,powerstore
-        image: dellemc/dell-csi-operator:v1.2.0.000R
+        image: dellemc/dell-csi-operator:v1.3.0
         imagePullPolicy: Always
         name: dell-csi-operator-controller
         volumeMounts:
@@ -416,7 +428,9 @@ spec:
       - command:
         - sh
         - -c
-        - 'if [ -e /configmap/config.tar.gz ]; then /bin/tar -C /etc/config/dell-csi-operator -xzvf /configmap/config.tar.gz --strip-components 1; else echo "Warning: ConfigMap not mounted"; fi'
+        - 'if [ -e /configmap/config.tar.gz ]; then /bin/tar -C /etc/config/dell-csi-operator
+          -xzvf /configmap/config.tar.gz --strip-components 1; else echo "Warning:
+          ConfigMap not mounted"; fi'
         image: docker.io/busybox:1.32.0
         name: config-copy
         volumeMounts:

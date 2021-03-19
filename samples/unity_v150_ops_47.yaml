@@ -5,14 +5,16 @@ metadata:
   namespace: test-unity
 spec:
   driver:
-    configVersion: v2
-    replicas: 1
+    configVersion: v4
+    replicas: 2
     common:
-      image: "dellemc/csi-unity:v1.4.0.000R"
+      image: "dellemc/csi-unity:v1.5.0"
       imagePullPolicy: IfNotPresent
       envs:
       - name: X_CSI_UNITY_DEBUG
         value: "true"
+      - name: X_CSI_UNITY_ALLOW_MULTI_POD_ACCESS
+        value: "false"
     sideCars:
       - name: provisioner
         args: ["--volume-name-prefix=csiunity"]
@@ -43,6 +45,19 @@ spec:
         protocol: "NFS"
         hostIoSize: "8192"
         nasServer: nas_1
+    - name: virt2017****-iscsi-topology
+      reclaimPolicy: "Delete"
+      allowVolumeExpansion: true
+      volumeBindingMode: WaitForFirstConsumer
+      allowedTopologies:
+      - matchLabelExpressions:
+          - key: csi-unity.dellemc.com/virt2017****-iscsi
+            values:
+              - "true"
+      parameters:
+        storagePool: pool_1
+        arrayId: "VIRT2017****"
+        protocol: "iSCSI"
     snapshotClass:
       - name: test-snap
         parameters:
