@@ -156,7 +156,11 @@ drivers:
 csiSideCars:
   - name: podmon
     images:
+      - version: v119
+        - tag: dellemc/podmon:v0.1.0
       - version: v120
+        - tag: dellemc/podmon:v0.1.0
+      - version: v121
         - tag: dellemc/podmon:v0.1.0
   - name: attacher
     images:
