@@ -154,6 +154,10 @@ drivers:
         resizer: quay.io/k8scsi/csi-resizer:v1.0.0
         registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.0.1
 csiSideCars:
+  - name: podmon
+    images:
+      - version: v120
+        - tag: dellemc/podmon:v0.1.0
   - name: attacher
     images:
       - version: v117
