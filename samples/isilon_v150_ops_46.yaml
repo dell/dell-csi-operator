@@ -48,27 +48,3 @@ spec:
     sideCars:
       - name: provisioner
         args: ["--volume-name-prefix=csipscale"]
-    storageClass:
-      # The storageClass name will have a prefix "isilon"
-      - name: storageclass
-        reclaimPolicy: "Delete"
-        allowVolumeExpansion: true
-        default: true
-        volumeBindingMode: WaitForFirstConsumer
-        # If X_CSI_CUSTOM_TOPOLOGY_ENABLED is set to True, please comment out the below
-        # section related to allowed Topologies.
-        allowedTopologies:
-          - matchLabelExpressions:
-              - key: csi-isilon.dellemc.com/1.1.1.1
-                values:
-                  - "csi-isilon.dellemc.com"
-        parameters:
-          AccessZone: "System"
-          IsiPath: "/ifs/data/csi"
-          AzServiceIP: 1.1.1.1
-          RootClientEnabled: "false"
-    snapshotClass:
-      # The volumeSnapshotClass name will have a prefix "isilon"
-      - name: volumesnapshotclass
-        parameters:
-          IsiPath: "/ifs/data/csi"

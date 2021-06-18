@@ -99,40 +99,94 @@ function check_for_kubectl() {
 }
 
 function delete_old_deployment() {
-  kubectl delete deployment dell-csi-operator 2>&1 >/dev/null
-  kubectl delete clusterrolebinding dell-csi-operator 2>&1 >/dev/null
-  kubectl delete clusterrole dell-csi-operator 2>&1 >/dev/null
-  kubectl delete serviceaccount dell-csi-operator 2>&1 >/dev/null
-  kubectl delete configmap config-dell-csi-operator 2>&1 >/dev/null
+    # deployments
+    kubectl delete -n $1 deployment dell-csi-operator-controller-manager 2>&1 >/dev/null
+    # clusterRoleBindings
+    kubectl delete clusterrolebinding dell-csi-operator-manager-rolebinding 2>&1 >/dev/null
+    kubectl delete clusterrolebinding dell-csi-operator-proxy-rolebinding 2>&1 >/dev/null
+    # clusterRoles
+    kubectl delete clusterrole dell-csi-operator-manager-role 2>&1 >/dev/null
+    kubectl delete clusterrole dell-csi-operator-metrics-reader 2>&1 >/dev/null
+    kubectl delete clusterrole dell-csi-operator-proxy-role 2>&1 >/dev/null
+    # service and serviceAccount
+    kubectl delete -n $1 service dell-csi-operator-controller-manager-metrics-service 2>&1 >/dev/null
+    kubectl delete -n $1 serviceaccount dell-csi-operator-manager-service-account 2>&1 >/dev/null
+    # configMap
+    kubectl delete -n $1 configmap dell-csi-operator-config 2>&1 >/dev/null
+}
+
+function check_or_create_namespace() {
+  # Check if namespace exists
+  kubectl get namespace $1 > /dev/null 2>&1
+  if [ $? -ne 0 ]; then
+    echo "Namespace '$1' doesn't exist"
+    echo "Creating namespace '$1'"
+    kubectl create namespace $1 2>&1 >/dev/null
+    if [ $? -ne 0 ]; then
+      echo "Failed to create namespace: '$1'"
+      echo "Exiting with failure"
+      exit 1
+    fi
+  else
+    echo "Namespace '$1' already exists"
+  fi
 }
 
 function check_for_operator() {
+  # check for old operator (ver < 1.2) and fail if the operator are older than 1.2  
+  kubectl get deployment -A --no-headers | grep dell-csi-operator | awk {'print $2'} | grep -w ^dell-csi-operator$ --quiet
+  if [ $? -eq 0 ]; then
+    log error "Found dell-csi-operator version < 1.2. Please remove the old operator manually and retry installation."
+    exit 1
+  fi
+  # get namespace from YAML file for deployment
+  NS_STRING=$(cat ${DEPLOYDIR}/operator.yaml | grep "namespace:" | head -1)
+  if [ -z "${NS_STRING}" ]; then
+    echo "Couldn't find any target namespace in ${DEPLOYDIR}/operator.yaml"
+    exit 1
+  fi
+  # find the namespace from the filtered string
+  NAMESPACE=$(echo $NS_STRING | cut -d ' ' -f2)
+  EXISTING_OP_NS=''
+  
+  # check for existing installations in supported namespaces - default, dell-csi-operator
   log step "Checking for existing installations"
+  # check operator in default namespace first
   kubectl get pods -n default | grep "dell-csi-operator" --quiet
   if [ $? -eq 0 ]; then
     operator_in_default_namespace=true
+    EXISTING_OP_NS='default'
   else
-    kubectl get pods -A | grep "dell-csi-operator" --quiet
+    # check for operator in dell-csi-operator namespace
+    kubectl get pods -n dell-csi-operator | grep "dell-csi-operator" --quiet
     if [ $? -eq 0 ]; then
-      operator_in_different_namespace=true
+      EXISTING_OP_NS='dell-csi-operator'
+      operator_in_default_namespace=true
+    else
+      kubectl get pods -A | grep "dell-csi-operator" --quiet
+      if [ $? -eq 0 ]; then
+        operator_in_different_namespace=true
+      fi
     fi
   fi
   if [ "$MODE" == "upgrade" ] && [ "$operator_in_default_namespace" = true ]; then
     log step_warning
-    log warning "Found existing installation of Operator in default namespace"
+    log warning "Found existing installation of Operator in '$EXISTING_OP_NS' namespace"
     echo "Attempting to upgrade the Operator as --upgrade option was specified"
-    kubectl get deployment dell-csi-operator | grep "dell-csi-operator" --quiet
+    kubectl get deployment -n $EXISTING_OP_NS dell-csi-operator-controller-manager | grep "dell-csi-operator" --quiet
     if [[ $? -eq 0 ]]; then
-      delete_old_deployment
+      delete_old_deployment $EXISTING_OP_NS
     fi
   elif [ "$operator_in_default_namespace" = true ]; then
     log step_failure
-    log warning "Found existing installation of dell-csi-operator in default namespace"
-    log error "Remove the existing installation or use the --upgrade option to upgrade the Operator"
+    log warning "Found existing installation of dell-csi-operator in '$EXISTING_OP_NS' namespace"
+    log error "Remove the existing installation manually, or use the --upgrade option to upgrade the Operator"
+    exit 1
   elif [ "$operator_in_different_namespace" = true ]; then
     log step_failure
-    log warning "Found existing installation of dell-csi-operator"
-    log error "Remove the existing installation and then proceed with installation"
+    log warning "Found existing installation of dell-csi-operator in a different namespace"
+    log error "Remove the existing installation manually, and then proceed with installation"
+    exit 1
   else
     log step_success
   fi
@@ -155,7 +209,7 @@ function create_or_update_configmap() {
   fi
   log step_success
   log step "Create/Update ConfigMap"
-  kubectl create configmap dell-csi-operator-config --from-file "$ROOTDIR/config.tar.gz" -o yaml --dry-run | kubectl apply -f - > /dev/null 2>&1
+  kubectl create configmap dell-csi-operator-config --from-file "$ROOTDIR/config.tar.gz" -o yaml --dry-run | kubectl apply -n $1 -f - > /dev/null 2>&1
   if [ $? -ne 0 ]; then
     log error "Failed to create/update ConfigMap for operator"
   fi
@@ -185,8 +239,8 @@ function install_operator() {
   log separator
   install_or_update_driver_crd
   log separator
-  create_or_update_configmap
-  create_operator_deployment
+  create_or_update_configmap $NAMESPACE
+  create_operator_deployment $NAMESPACE
   log separator
 }
 
@@ -214,7 +268,6 @@ function summary() {
 #
 ASSUMEYES="false"
 OPERATOR="dell-csi-operator"
-NAMESPACE="default"
 
 while getopts ":h-:" optchar; do
   case "${optchar}" in
@@ -247,7 +300,8 @@ header
 check_for_kubectl
 check_for_operator
 verify_kubernetes
-install_operator
+check_or_create_namespace $NAMESPACE
+install_operator $NAMESPACE
 check_progress
 
 summary

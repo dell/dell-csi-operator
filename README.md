@@ -32,7 +32,7 @@ For any CSI operator and driver issues, questions or feedback, join the [Dell EM
 ## Supported Platforms
 Dell CSI Operator has been tested and qualified with 
 
-    * Upstream Kubernetes cluster v1.18, v1.19, v1.20
+    * Upstream Kubernetes cluster v1.19, v1.20, v1.21
     * OpenShift Clusters 4.6, 4.7 with RHEL 7.x & RHCOS worker nodes
 
 ## Installation
@@ -42,7 +42,7 @@ To install Dell CSI Operator please refer the steps given here at [https://dell.
 To upgrade the driver to the latest version (across supported Kubernetes/OpenShift versions), please refer [https://dell.github.io/storage-plugin-docs/docs/upgradation/drivers/operator/](https://dell.github.io/storage-plugin-docs/docs/upgradation/drivers/operator/)
 
 ## Install CSI Drivers
-To install CSI drivers using operator please refer here at [https://dell.github.io/storage-plugin-docs/docs/installation/operator/#install-csi-driver](https://dell.github.io/storage-plugin-docs/docs/installation/operator/#install-csi-driver)
+To install CSI drivers using operator please refer here at [https://dell.github.io/storage-plugin-docs/docs/installation/operator/#installing-csi-driver-via-operator](https://dell.github.io/storage-plugin-docs/docs/installation/operator/#installing-csi-driver-via-operator)
 
 ## Uninstall CSI Drivers
 To uninstall CSI drivers installed using operator please refer here at [https://dell.github.io/storage-plugin-docs/docs/uninstall/#uninstall-a-dell-csi-driver-installed-via-dell-csi-operator](https://dell.github.io/storage-plugin-docs/docs/uninstall/#uninstall-a-dell-csi-driver-installed-via-dell-csi-operator)
