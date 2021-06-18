@@ -3,162 +3,156 @@ supportedK8sVersions:
   - v118
   - v119
   - v120
+  - v121
 drivers:
   - name: powermax
     configVersions:
-      - configVersion: v5
+      - configVersion: v6
         useDefaults: true
         supportedVersions:
-          - v118
-          - v119
-          - v120 
+          - version: v119
+          - version: v120
+          - version: v121
+      - configVersion: v5
+        useDefaults: false
+        supportedVersions:
+          - version: v118
+          - version: v119
+          - version: v120
+            snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v4.0.0
+        attacher: k8s.gcr.io/sig-storage/csi-attacher:v3.1.0
+        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v2.1.0
+        snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v3.0.3
+        resizer: quay.io/k8scsi/csi-resizer:v1.1.0
+        registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.1.0
       - configVersion: v4
         useDefaults: false
         supportedVersions:
-          - v117
-          - v118
-          - v119
-          - v120
+          - version: v117
+          - version: v118
+          - version: v119
+          - version: v120
         provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v2.0.2
         attacher: k8s.gcr.io/sig-storage/csi-attacher:v3.0.0
         snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v3.0.2
         resizer: quay.io/k8scsi/csi-resizer:v1.0.0
         registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.0.1
-      - configVersion: v3
-        useDefaults: false
-        supportedVersions:
-          - v117
-          - v118
-          - v119
-        provisioner: quay.io/k8scsi/csi-provisioner:v1.6.0
-        attacher: quay.io/k8scsi/csi-attacher:v2.2.0
-        snapshotter: quay.io/k8scsi/csi-snapshotter:v2.1.1
-        resizer: quay.io/k8scsi/csi-resizer:v0.5.0
-        registrar: quay.io/k8scsi/csi-node-driver-registrar:v1.2.0
   - name: unity
     configVersions:
-      - configVersion: v4
+      - configVersion: v5
         useDefaults: true
         supportedVersions:
-          - v118
-          - v119
-          - v120
+          - version: v119
+          - version: v120
+          - version: v121
+      - configVersion: v4
+        useDefaults: false
+        supportedVersions:
+          - version: v118
+          - version: v119
+          - version: v120
+            snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v4.0.0
+        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v2.1.0
+        attacher: k8s.gcr.io/sig-storage/csi-attacher:v3.1.0
+        snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v3.0.3
+        resizer: quay.io/k8scsi/csi-resizer:v1.1.0
+        registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.1.0
       - configVersion: v3
         useDefaults: false
         supportedVersions:
-          - v117
-          - v118
-          - v119
-          - v120
+          - version: v117
+          - version: v118
+          - version: v119
+          - version: v120
         provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v2.0.2
         attacher: k8s.gcr.io/sig-storage/csi-attacher:v3.0.0
         snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v3.0.2
         resizer: quay.io/k8scsi/csi-resizer:v1.0.0
         registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.0.1
-      - configVersion: v2
-        useDefaults: false
-        supportedVersions:
-          - v117
-          - v118
-          - v119
-        provisioner: quay.io/k8scsi/csi-provisioner:v1.6.0
-        attacher: quay.io/k8scsi/csi-attacher:v2.2.0
-        snapshotter: quay.io/k8scsi/csi-snapshotter:v2.1.1
-        resizer: quay.io/k8scsi/csi-resizer:v0.5.0
-        registrar: quay.io/k8scsi/csi-node-driver-registrar:v1.2.0
   - name: vxflexos
-    configVersions:
-      - configVersion: v4
-        useDefaults: true
-        supportedVersions:
-          - v118
-          - v119
-          - v120
-      - configVersion: v3
-        useDefaults: false
-        supportedVersions:
-          - v117
-          - v118
-          - v119
-          - v120
-        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v2.0.2
-        attacher: k8s.gcr.io/sig-storage/csi-attacher:v3.0.0
-        snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v3.0.2
-        resizer: quay.io/k8scsi/csi-resizer:v1.0.0
-        registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.0.1
-      - configVersion: v2
-        useDefaults: false
-        supportedVersions:
-          - v117
-          - v118
-          - v119
-        provisioner: quay.io/k8scsi/csi-provisioner:v1.6.0
-        attacher: quay.io/k8scsi/csi-attacher:v2.2.0
-        snapshotter: quay.io/k8scsi/csi-snapshotter:v2.1.1
-        resizer: quay.io/k8scsi/csi-resizer:v0.5.0
-        registrar: quay.io/k8scsi/csi-node-driver-registrar:v1.2.0
-  - name: isilon
     configVersions:
       - configVersion: v5
         useDefaults: true
         supportedVersions:
-          - v118
-          - v119
-          - v120
+          - version: v119
+          - version: v120
+          - version: v121
+      - configVersion: v4
+        useDefaults: true
+        supportedVersions:
+          - version: v118
+          - version: v119
+          - version: v120
+      - configVersion: v3
+        useDefaults: false
+        supportedVersions:
+          - version: v117
+          - version: v118
+          - version: v119
+          - version: v120
+        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v2.0.2
+        attacher: k8s.gcr.io/sig-storage/csi-attacher:v3.0.0
+        snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v3.0.2
+        resizer: quay.io/k8scsi/csi-resizer:v1.0.0
+        registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.0.1
+  - name: isilon
+    configVersions:
+      - configVersion: v6
+        useDefaults: true
+        supportedVersions:
+          - version: v119
+          - version: v120
+          - version: v121
+      - configVersion: v5
+        useDefaults: false
+        supportedVersions:
+          - version: v118
+          - version: v119
+          - version: v120
+            snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v4.0.0
+        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v2.1.0
+        attacher: k8s.gcr.io/sig-storage/csi-attacher:v3.1.0
+        snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v3.0.3
+        resizer: quay.io/k8scsi/csi-resizer:v1.1.0
+        registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.1.0
       - configVersion: v4
         useDefaults: false
         supportedVersions:
-          - v117
-          - v118
-          - v119
-          - v120
+          - version: v117
+          - version: v118
+          - version: v119
+          - version: v120
         provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v2.0.2
         attacher: k8s.gcr.io/sig-storage/csi-attacher:v3.0.0
         snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v3.0.2
         resizer: quay.io/k8scsi/csi-resizer:v1.0.0
         registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.0.1
-      - configVersion: v3
-        useDefaults: false
-        supportedVersions:
-          - v117
-          - v118
-          - v119
-        provisioner: quay.io/k8scsi/csi-provisioner:v1.6.0
-        attacher: quay.io/k8scsi/csi-attacher:v2.2.0
-        snapshotter: quay.io/k8scsi/csi-snapshotter:v2.1.1
-        resizer: quay.io/k8scsi/csi-resizer:v0.5.0
-        registrar: quay.io/k8scsi/csi-node-driver-registrar:v1.2.0
   - name: powerstore
     configVersions:
+      - configVersion: v4
+        useDefaults: true
+        supportedVersions:
+          - version: v119
+          - version: v120
+          - version: v121
       - configVersion: v3
         useDefaults: true
         supportedVersions:
-          - v118
-          - v119
-          - v120
+          - version: v118
+          - version: v119
+          - version: v120
       - configVersion: v2
         useDefaults: false
         supportedVersions:
-          - v117
-          - v118
-          - v119
-          - v120
+          - version: v117
+          - version: v118
+          - version: v119
+          - version: v120
         provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v2.0.2
         attacher: k8s.gcr.io/sig-storage/csi-attacher:v3.0.0
         snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v3.0.2
         resizer: quay.io/k8scsi/csi-resizer:v1.0.0
         registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.0.1
-      - configVersion: v1
-        useDefaults: false
-        supportedVersions:
-          - v117
-          - v118
-          - v119
-        provisioner: quay.io/k8scsi/csi-provisioner:v1.6.0
-        attacher: quay.io/k8scsi/csi-attacher:v2.2.0
-        snapshotter: quay.io/k8scsi/csi-snapshotter:v2.1.1
-        resizer: quay.io/k8scsi/csi-resizer:v0.5.0
-        registrar: quay.io/k8scsi/csi-node-driver-registrar:v1.2.0
 csiSideCars:
   - name: attacher
     images:
@@ -169,7 +163,9 @@ csiSideCars:
       - version: v119
         tag: k8s.gcr.io/sig-storage/csi-attacher:v3.1.0
       - version: v120
-        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.1.0
+        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.2.1
+      - version: v121
+        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.2.1
   - name: provisioner
     images:
       - version: v117
@@ -179,7 +175,9 @@ csiSideCars:
       - version: v119
         tag: k8s.gcr.io/sig-storage/csi-provisioner:v2.1.0
       - version: v120
-        tag: k8s.gcr.io/sig-storage/csi-provisioner:v2.1.0
+        tag: k8s.gcr.io/sig-storage/csi-provisioner:v2.2.1
+      - version: v121
+        tag: k8s.gcr.io/sig-storage/csi-provisioner:v2.2.1
   - name: snapshotter
     images:
       - version: v117
@@ -189,7 +187,9 @@ csiSideCars:
       - version: v119
         tag: k8s.gcr.io/sig-storage/csi-snapshotter:v3.0.3
       - version: v120
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v4.0.0
+        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v4.1.0
+      - version: v121
+        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v4.1.0
   - name: resizer
     images:
       - version: v117
@@ -199,7 +199,9 @@ csiSideCars:
       - version: v119
         tag: quay.io/k8scsi/csi-resizer:v1.1.0
       - version: v120
-        tag: quay.io/k8scsi/csi-resizer:v1.1.0
+        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.2.0
+      - version: v121
+        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.2.0
   - name: registrar
     images:
       - version: v117
@@ -209,7 +211,9 @@ csiSideCars:
       - version: v119
         tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.1.0
       - version: v120
-        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.1.0
+        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.2.0
+      - version: v121
+        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.2.0
 extensions:
   - name: sdc-monitor
     images:

@@ -1,0 +1,405 @@
+{
+  "driverConfig": {
+    "controllerHA": true,
+    "enableEphemeralVolumes": true,
+    "driverEnvs": [
+      {
+        "Name": "CSI_ENDPOINT",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "/var/run/csi/csi.sock",
+        "DefaultValueForNode": "unix:///var/lib/kubelet/plugins/unity.emc.dell.com/csi_sock"
+      },
+      {
+        "Name": "X_CSI_MODE",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "controller",
+        "DefaultValueForNode": "node"
+      },
+      {
+        "Name": "X_CSI_UNITY_AUTOPROBE",
+        "CSIEnvType": "Boolean",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "true",
+        "DefaultValueForNode": "true"
+      },
+      {
+        "Name": "X_CSI_PRIVATE_MOUNT_DIR",
+        "CSIEnvType": "String",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": "/var/lib/kubelet/plugins/unity.emc.dell.com/disks"
+      },
+      {
+        "Name": "X_CSI_EPHEMERAL_STAGING_PATH",
+        "CSIEnvType": "String",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": "/var/lib/kubelet/plugins/kubernetes.io/csi/pv/"
+      },
+      {
+        "Name": "X_CSI_ISCSI_CHROOT",
+        "CSIEnvType": "String",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": "/noderoot"
+      },
+      {
+        "Name": "X_CSI_UNITY_NODENAME",
+        "CSIEnvType": "EnvVarReferenceType",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": "v1/spec.nodeName"
+      },
+      {
+        "Name": "X_CSI_UNITY_NODENAME_PREFIX",
+        "CSIEnvType": "String",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": "csi-node"
+      },
+      {
+        "Name": "SSL_CERT_DIR",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "/certs",
+        "DefaultValueForNode": "/certs"
+      },
+      {
+        "Name": "X_CSI_UNITY_SYNC_NODEINFO_INTERVAL",
+        "CSIEnvType": "String",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": "15"
+      },
+      {
+          "Name": "X_CSI_UNITY_ALLOW_MULTI_POD_ACCESS",
+          "CSIEnvType": "Boolean",
+          "SetForController": false,
+          "SetForNode": true,
+          "DefaultValueForController": "false",
+          "DefaultValueForNode": "false"
+      },
+      {
+        "Name": "X_CSI_MAX_VOLUMES_PER_NODE",
+        "CSIEnvType": "String",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": "0"
+      }
+    ],
+    "driverArgs": [
+      "--driver-name=csi-unity.dellemc.com",
+      "--driver-config=/unity-config/config"
+    ],
+    "driverNodeVolumes": [
+      {
+        "hostPath": {
+          "path": "/var/lib/kubelet/plugins_registry/",
+          "type": "DirectoryOrCreate"
+        },
+        "name": "registration-dir"
+      },
+      {
+        "hostPath": {
+          "path": "/var/lib/kubelet/plugins/unity.emc.dell.com",
+          "type": "DirectoryOrCreate"
+        },
+        "name": "driver-path"
+      },
+      {
+        "hostPath": {
+          "path": "/var/lib/kubelet/plugins/kubernetes.io/csi",
+          "type": "DirectoryOrCreate"
+        },
+        "name": "volumedevices-path"
+      },
+      {
+        "hostPath": {
+          "path": "/var/lib/kubelet/pods",
+          "type": "Directory"
+        },
+        "name": "pods-path"
+      },
+      {
+        "hostPath": {
+          "path": "/dev",
+          "type": "Directory"
+        },
+        "name": "dev"
+      },
+      {
+        "hostPath": {
+          "path": "/",
+          "type": "Directory"
+        },
+        "name": "noderoot"
+      },
+      {
+        "name": "certs",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "unity-certs",
+          "optional": true
+        }
+      },
+      {
+        "name": "unity-config",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "unity-creds",
+          "optional": true
+        }
+      }
+    ],
+    "driverControllerVolumes": [
+      {
+        "emptyDir": {},
+        "name": "socket-dir"
+      },
+      {
+        "name": "certs",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "unity-certs",
+          "optional": true
+        }
+      },
+      {
+        "name": "unity-config",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "unity-creds",
+          "optional": true
+        }
+      }
+    ],
+    "driverControllerVolumeMounts": [
+      {
+        "mountPath": "/var/run/csi",
+        "name": "socket-dir"
+      },
+      {
+        "mountPath": "/certs",
+        "name": "certs",
+        "readOnly": true
+      },
+      {
+        "mountPath": "/unity-config",
+        "name": "unity-config",
+        "readOnly": true
+      }
+    ],
+    "driverNodeVolumeMounts": [
+      {
+        "mountPath": "/var/lib/kubelet/plugins/unity.emc.dell.com",
+        "name": "driver-path"
+      },
+      {
+        "mountPath": "/var/lib/kubelet/plugins/kubernetes.io/csi",
+        "mountPropagation": "Bidirectional",
+        "name": "volumedevices-path"
+      },
+      {
+        "mountPath": "/var/lib/kubelet/pods",
+        "mountPropagation": "Bidirectional",
+        "name": "pods-path"
+      },
+      {
+        "mountPath": "/dev",
+        "name": "dev"
+      },
+      {
+        "mountPath": "/noderoot",
+        "name": "noderoot"
+      },
+      {
+        "mountPath": "/certs",
+        "name": "certs",
+        "readOnly": true
+      },
+      {
+        "mountPath": "/unity-config",
+        "name": "unity-config",
+        "readOnly": true
+      }
+    ],
+    "sidecarParams": [
+      {
+        "name": "provisioner",
+        "args": [
+          "--csi-address=$(ADDRESS)",
+          "--timeout=120s",
+          "--volume-name-uuid-length=10",
+          "--timeout=180s",
+          "--worker-threads=6",
+          "--v=5",
+          "--volume-name-prefix=csiunity",
+          "--leader-election",
+          "--default-fstype=ext4"
+        ],
+        "envs": [
+          {
+            "name": "ADDRESS",
+            "value": "/var/run/csi/csi.sock"
+          }
+        ],
+        "volumeMounts": [
+          {
+            "mountPath": "/var/run/csi",
+            "name": "socket-dir"
+          }
+        ]
+      },
+      {
+        "name": "attacher",
+        "args": [
+          "--csi-address=$(ADDRESS)",
+          "--v=5",
+          "--timeout=180s",
+          "--leader-election"
+        ],
+        "envs": [
+          {
+            "name": "ADDRESS",
+            "value": "/var/run/csi/csi.sock"
+          }
+        ],
+        "volumeMounts": [
+          {
+            "mountPath": "/var/run/csi",
+            "name": "socket-dir"
+          }
+        ]
+      },
+      {
+        "name": "snapshotter",
+        "args": [
+          "--v=5",
+          "--snapshot-name-uuid-length=10",
+          "--timeout=360s",
+          "--csi-address=$(ADDRESS)",
+          "--snapshot-name-prefix=csi-snap",
+          "--leader-election"
+        ],
+        "envs": [
+          {
+            "name": "ADDRESS",
+            "value": "/var/run/csi/csi.sock"
+          }
+        ],
+        "volumeMounts": [
+          {
+            "mountPath": "/var/run/csi",
+            "name": "socket-dir"
+          }
+        ]
+      },
+      {
+        "name": "registrar",
+        "args": [
+          "--v=5",
+          "--csi-address=$(ADDRESS)",
+          "--kubelet-registration-path=/var/lib/kubelet/plugins/unity.emc.dell.com/csi_sock"
+        ],
+        "envs": [
+          {
+            "name": "ADDRESS",
+            "value": "/csi/csi_sock"
+          },
+          {
+            "name": "KUBE_NODE_NAME",
+            "valueFrom": {
+              "fieldRef": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.nodeName"
+              }
+            }
+          }
+        ],
+        "volumeMounts": [
+          {
+            "mountPath": "/registration",
+            "name": "registration-dir"
+          },
+          {
+            "mountPath": "/csi",
+            "name": "driver-path"
+          }
+        ]
+      },
+      {
+        "name": "resizer",
+        "args": [
+          "--csi-address=$(ADDRESS)",
+          "--v=5",
+          "--leader-election"
+        ],
+        "envs": [
+          {
+            "name": "ADDRESS",
+            "value": "/var/run/csi/csi.sock"
+          }
+        ],
+        "volumeMounts": [
+          {
+            "mountPath": "/var/run/csi",
+            "name": "socket-dir"
+          }
+        ]
+      }
+    ],
+    "storageClassParams": [
+      {
+        "Name": "storagePool",
+        "Mandatory": true
+      },
+      {
+        "Name": "arrayId",
+        "Mandatory": true
+      },
+      {
+        "Name": "FsType",
+        "Mandatory": false
+      },
+      {
+        "Name": "thinProvisioned"
+      },
+      {
+        "Name": "isDataReductionEnabled"
+      },
+      {
+        "Name": "tieringPolicy"
+      },
+      {
+        "Name": "hostIOLimitName"
+      },
+      {
+        "Name": "hostIoSize",
+        "Mandatory": false
+      }
+    ],
+    "storageClassAttrs": [
+      {
+        "name": "allowVolumeExpansion",
+        "value": true
+      },
+      {
+        "name": "volumeBindingMode",
+        "value": "Immediate"
+      }
+    ]
+  }
+}

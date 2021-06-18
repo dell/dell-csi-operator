@@ -1,0 +1,95 @@
+# This sample has been provided to show how to install CSI PowerMax driver with
+# CSI PowerMax ReverseProxy in the standalone mode which provides
+# the ability to connect to multiple Unisphere servers to managed multiple PowerMax arrays
+apiVersion: storage.dell.com/v1
+kind: CSIPowerMaxRevProxy
+metadata:
+  name: powermax-reverseproxy
+  namespace: test-powermax
+spec:
+  # Image for CSI PowerMax ReverseProxy
+  image: dellemc/csipowermax-reverseproxy:v1.3.0
+  imagePullPolicy: IfNotPresent
+  # TLS secret which contains SSL certificate and private key for the Reverse Proxy server
+  tlsSecret: csirevproxy-tls-secret
+  config:
+    # Mode for the proxy - supported modes are "StandAlone & Linked"
+    mode: StandAlone
+    standAloneConfig:
+      storageArrays:
+        - storageArrayId: "000000000001"
+          # Unisphere server managing the PowerMax array
+          primaryURL: https://unisphere-1-addr:8443
+          # proxyCredentialSecrets are used by the clients of the proxy to connect to it
+          # If using proxy in the stand alone mode, then the driver must be provided the
+          # same secret.
+          # The format of the proxy credential secret are exactly the same as the unisphere credential secret
+          # For using the proxy with the driver, use the same proxy credential secrets for
+          # all the managed storage arrays
+          proxyCredentialSecrets:
+            - proxy-creds
+        - storageArrayId: "000000000002"
+          primaryURL: https://unisphere-2-addr:8443
+          # An optional backup Unisphere server managing the same array
+          # This can be used by the proxy to fall back to in case the primary
+          # Unisphere is inaccessible temporarily
+          backupURL: unisphere-3-addr:8443
+          proxyCredentialSecrets:
+            - proxy-creds
+      managementServers:
+        - url: https://unisphere-1-addr:8443
+          # Secret containing the credentials of the Unisphere server
+          arrayCredentialSecret: unsiphere-1-creds
+          skipCertificateValidation: true
+        - url: https://unisphere-2-addr:8443
+          arrayCredentialSecret: unsiphere-2-creds
+          skipCertificateValidation: true
+        - url: https://unisphere-3-addr:8443
+          arrayCredentialSecret: unsiphere-3-creds
+          skipCertificateValidation: true
+
+---
+# This driver manifest is configured with the same set of arrays as the reverseproxy above
+apiVersion: storage.dell.com/v1
+kind: CSIPowerMax
+metadata:
+  name: test-powermax
+  namespace: test-powermax
+spec:
+  driver:
+    # Config version for CSI PowerMax v1.7 driver
+    configVersion: v6
+    # Controller count
+    replicas: 2
+    forceUpdate: false
+    authSecret: proxy-creds # This is set to the proxy credentials instead of the unisphere credentials
+    common:
+      # Image for CSI PowerMax driver v1.7
+      image: dellemc/csi-powermax:v1.7.0
+      imagePullPolicy: IfNotPresent
+      envs:
+        # add list of Arrays
+        - name: X_CSI_MANAGED_ARRAYS
+          value: "000000000000,000000000001" # These are the same set of arrays managed by the proxy
+        # Unisphere IP
+        - name: X_CSI_POWERMAX_ENDPOINT
+          value: "https://0.0.0.0:8443/" # Since we are using Reverse Proxy, this remains unchanged
+        # Change this to a 3 character prefix unique for this cluster
+        - name: X_CSI_K8S_CLUSTER_PREFIX
+          value: "XYZ"
+        # Add a list of comma separated port groups (only for ISCSI)
+        - name: X_CSI_POWERMAX_PORTGROUPS
+          value: ""
+        # Preferred transport protocol (FC/ISCSI)
+        - name: X_CSI_TRANSPORT_PROTOCOL
+          value: ""
+        - name: X_CSI_POWERMAX_PROXY_SERVICE_NAME
+          value: powermax-reverseproxy # This is set to the service created during the reverseproxy installation
+        # Set this value to a higher number (max 50) if you are using the proxy
+        - name: X_CSI_GRPC_MAX_THREADS
+          value: "4"
+    node:
+      envs:
+        # Enable ISCSI CHAP Authentication
+        - name: X_CSI_POWERMAX_ISCSI_ENABLE_CHAP
+          value: "false"

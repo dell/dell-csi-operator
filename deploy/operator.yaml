@@ -4,13 +4,13 @@ metadata:
   labels:
     control-plane: controller-manager
   name: dell-csi-operator-manager-service-account
-  namespace: default
+  namespace: dell-csi-operator
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: dell-csi-operator-leader-election-role
-  namespace: default
+  namespace: dell-csi-operator
 rules:
 - apiGroups:
   - ""
@@ -151,6 +151,7 @@ rules:
   - delete
   - get
   - list
+  - patch
   - update
   - watch
 - apiGroups:
@@ -171,8 +172,10 @@ rules:
   - roles
   verbs:
   - create
+  - delete
   - get
   - list
+  - patch
   - update
   - watch
 - apiGroups:
@@ -265,8 +268,10 @@ rules:
   - csidrivers
   verbs:
   - create
+  - delete
   - get
   - list
+  - patch
   - update
   - watch
 - apiGroups:
@@ -311,6 +316,16 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
+  name: dell-csi-operator-metrics-reader
+rules:
+- nonResourceURLs:
+  - /metrics
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
   name: dell-csi-operator-proxy-role
 rules:
 - apiGroups:
@@ -326,21 +341,11 @@ rules:
   verbs:
   - create
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRole
-metadata:
-  name: dell-csi-operator-metrics-reader
-rules:
-- nonResourceURLs:
-  - /metrics
-  verbs:
-  - get
----
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: dell-csi-operator-leader-election-rolebinding
-  namespace: default
+  namespace: dell-csi-operator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -348,7 +353,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: default
-  namespace: default
+  namespace: dell-csi-operator
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -361,7 +366,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: dell-csi-operator-manager-service-account
-  namespace: default
+  namespace: dell-csi-operator
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -374,7 +379,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: default
-  namespace: default
+  namespace: dell-csi-operator
 ---
 apiVersion: v1
 kind: Service
@@ -382,7 +387,7 @@ metadata:
   labels:
     control-plane: controller-manager
   name: dell-csi-operator-controller-manager-metrics-service
-  namespace: default
+  namespace: dell-csi-operator
 spec:
   ports:
   - name: https
@@ -397,7 +402,7 @@ metadata:
   labels:
     control-plane: controller-manager
   name: dell-csi-operator-controller-manager
-  namespace: default
+  namespace: dell-csi-operator
 spec:
   replicas: 1
   selector:
@@ -416,7 +421,7 @@ spec:
         env:
         - name: OPERATOR_DRIVERS
           value: unity,powermax,isilon,vxflexos,powerstore
-        image: dellemc/dell-csi-operator:v1.3.0
+        image: dellemc/dell-csi-operator:v1.4.0
         imagePullPolicy: Always
         name: dell-csi-operator-controller
         volumeMounts:
