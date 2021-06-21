@@ -71,6 +71,12 @@ drivers:
         registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.0.1
   - name: vxflexos
     configVersions:
+      - configVersion: v6
+        useDefaults: true
+        supportedVersions:
+          - version: v119
+          - version: v120
+          - version: v121
       - configVersion: v5
         useDefaults: true
         supportedVersions:
