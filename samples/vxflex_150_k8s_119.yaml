@@ -5,7 +5,7 @@ metadata:
   namespace: test-vxflexos
 spec:
   driver:
-    configVersion: v5
+    configVersion: v6
     replicas: 1
     forceUpdate: false
     common:
