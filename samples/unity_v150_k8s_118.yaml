@@ -7,6 +7,7 @@ spec:
   driver:
     configVersion: v4
     replicas: 2
+    dnsPolicy: ClusterFirstWithHostNet
     common:
       image: "dellemc/csi-unity:v1.5.0"
       imagePullPolicy: IfNotPresent

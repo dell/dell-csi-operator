@@ -9,6 +9,7 @@ spec:
     configVersion: v3
     # Controller count
     replicas: 2
+    dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     common:
       # Image for CSI PowerStore driver v1.3

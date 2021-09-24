@@ -238,7 +238,7 @@
           "--volume-name-uuid-length=10",
           "--timeout=180s",
           "--worker-threads=6",
-          "--v=6",
+          "--v=5",
           "--volume-name-prefix=csipscale",
           "--leader-election"
         ],
@@ -259,7 +259,7 @@
         "name": "attacher",
         "args": [
           "--csi-address=$(ADDRESS)",
-          "--v=6",
+          "--v=5",
           "--timeout=180s",
           "--leader-election"
         ],
@@ -281,7 +281,7 @@
         "args": [
           "--csi-address=$(ADDRESS)",
           "--timeout=15s",
-          "--v=6",
+          "--v=5",
           "--leader-election"
         ],
         "envs": [
@@ -300,7 +300,7 @@
       {
         "name": "registrar",
         "args": [
-          "--v=6",
+          "--v=5",
           "--csi-address=$(ADDRESS)",
           "--kubelet-registration-path=/var/lib/kubelet/plugins/csi-isilon/csi_sock"
         ],
@@ -334,7 +334,7 @@
         "name": "resizer",
         "args": [
           "--csi-address=$(ADDRESS)",
-          "--v=6",
+          "--v=5",
           "--leader-election"
         ],
         "envs": [
