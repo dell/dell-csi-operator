@@ -4,13 +4,26 @@ metadata:
   name: powermax-reverseproxy
   namespace: test-powermax
 spec:
-  # Image for CSI PowerMax ReverseProxy
-  image: dellemc/csipowermax-reverseproxy:v1.3.0
+  # image: Define the container images used for the reverse proxy
+  # Default value: None
+  # Example: "csipowermax-reverseproxy:v1.4.0"
+  image: dellemc/csipowermax-reverseproxy:v1.4.0
+  # imagePullPolicy: Policy to determine if the image should be pulled prior to starting the container.
+  # Allowed values:
+  #  Always: Always pull the image.
+  #  IfNotPresent: Only pull the image if it does not already exist on the node.
+  #  Never: Never pull the image.
+  # Default value: None
   imagePullPolicy: IfNotPresent
-  # TLS secret which contains SSL certificate and private key for the Reverse Proxy server
+  # "tlsSecret" defines the TLS secret that is created with certificate
+  # and its associated key
+  # Default value: None
+  # Example: "csirevproxy-tls-secret"
   tlsSecret: csirevproxy-tls-secret
   config:
-    # Mode for the proxy - only supported mode for now is "Linked"
+    # Mode for the proxy
+    # Default value: None
+    # Example: "Linked"
     mode: Linked
     linkConfig:
       primary:

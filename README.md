@@ -23,7 +23,7 @@ Currently, the Dell CSI Operator can be used to deploy the following CSI drivers
 Additionally, the Dell CSI Operator can also deploy Storage Classes and Volume Snapshot Classes as part of the driver deployment.
 The Dell CSI Operator is itself installed as a Kubernetes deployment.
 
-**NOTE**: You can refer to additional information about the Dell CSI Operator on the new documentation website [here](https://dell.github.io/storage-plugin-docs/docs/installation/operator/)
+**NOTE**: You can refer to additional information about the Dell CSI Operator on the new documentation website [here](https://dell.github.io/csm-docs/docs/csidriver/installation/operator/)
 
 ## Support
 The Dell CSI Operator image is available on Dockerhub and is officially supported by Dell EMC.
@@ -32,17 +32,17 @@ For any CSI operator and driver issues, questions or feedback, join the [Dell EM
 ## Supported Platforms
 Dell CSI Operator has been tested and qualified with 
 
-    * Upstream Kubernetes cluster v1.19, v1.20, v1.21
-    * OpenShift Clusters 4.6, 4.7 with RHEL 7.x & RHCOS worker nodes
+    * Upstream Kubernetes cluster v1.20, v1.21, v1.22
+    * OpenShift Clusters 4.6 EUS, 4.7, 4.8 with RHEL 7.x & RHCOS worker nodes
 
 ## Installation
-To install Dell CSI Operator please refer the steps given here at [https://dell.github.io/storage-plugin-docs/docs/installation/operator/](https://dell.github.io/storage-plugin-docs/docs/installation/operator/)
+To install Dell CSI Operator please refer the steps given here at [https://dell.github.io/csm-docs/docs/csidriver/installation/operator/](https://dell.github.io/csm-docs/docs/csidriver/installation/operator/)
 
 ## Upgrading Dell CSI Operator
-To upgrade the driver to the latest version (across supported Kubernetes/OpenShift versions), please refer [https://dell.github.io/storage-plugin-docs/docs/upgradation/drivers/operator/](https://dell.github.io/storage-plugin-docs/docs/upgradation/drivers/operator/)
+To upgrade the driver to the latest version (across supported Kubernetes/OpenShift versions), please refer [https://dell.github.io/csm-docs/docs/csidriver/upgradation/drivers/operator/](https://dell.github.io/csm-docs/docs/csidriver/upgradation/drivers/operator/)
 
 ## Install CSI Drivers
-To install CSI drivers using operator please refer here at [https://dell.github.io/storage-plugin-docs/docs/installation/operator/#installing-csi-driver-via-operator](https://dell.github.io/storage-plugin-docs/docs/installation/operator/#installing-csi-driver-via-operator)
+To install CSI drivers using operator please refer here at [https://dell.github.io/csm-docs/docs/csidriver/installation/operator/#installing-csi-driver-via-operator](https://dell.github.io/csm-docs/docs/csidriver/installation/operator/#installing-csi-driver-via-operator)
 
 ## Uninstall CSI Drivers
-To uninstall CSI drivers installed using operator please refer here at [https://dell.github.io/storage-plugin-docs/docs/uninstall/#uninstall-a-dell-csi-driver-installed-via-dell-csi-operator](https://dell.github.io/storage-plugin-docs/docs/uninstall/#uninstall-a-dell-csi-driver-installed-via-dell-csi-operator)
+To uninstall CSI drivers installed using operator please refer here at [https://dell.github.io/csm-docs/docs/csidriver/uninstall/#uninstall-a-csi-driver-installed-via-dell-csi-operator](https://dell.github.io/csm-docs/docs/csidriver/uninstall/#uninstall-a-csi-driver-installed-via-dell-csi-operator)

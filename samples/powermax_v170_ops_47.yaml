@@ -9,6 +9,7 @@ spec:
     configVersion: v6
     # Controller count. Don't increase it
     replicas: 2
+    dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     common:
       # Image for CSI PowerMax driver v1.7

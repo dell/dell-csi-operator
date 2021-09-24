@@ -8,6 +8,7 @@ spec:
     # Config version for CSI PowerScale v1.6.0 driver
     configVersion: v6
     replicas: 2
+    dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     common:
       # Image for CSI PowerScale driver v1.6.0

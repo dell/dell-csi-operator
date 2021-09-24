@@ -1,0 +1,32 @@
+apiVersion: storage.dell.com/v1
+kind: CSIUnity
+metadata:
+  name: test-unity
+  namespace: test-unity
+spec:
+  driver:
+    configVersion: v2.0.0
+    replicas: 2
+    dnsPolicy: ClusterFirstWithHostNet
+    forceUpdate: false
+    common:
+      image: "dellemc/csi-unity:v2.0.0"
+      imagePullPolicy: IfNotPresent
+    sideCars:
+      - name: provisioner
+        args: ["--volume-name-prefix=csiunity","--default-fstype=ext4"]
+      - name: snapshotter
+        args: ["--snapshot-name-prefix=csiunitysnap"]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unity-config-params
+  namespace: test-unity
+data:
+  driver-config-params.yaml: |
+    CSI_LOG_LEVEL: "info"
+    ALLOW_RWO_MULTIPOD_ACCESS: "false"
+    MAX_UNITY_VOLUMES_PER_NODE: "0"
+    SYNC_NODE_INFO_TIME_INTERVAL: "0"
+
