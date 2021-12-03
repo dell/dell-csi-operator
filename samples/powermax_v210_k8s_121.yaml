@@ -1,66 +1,3 @@
-# This sample has been provided to show how to install CSI PowerMax driver with
-# CSI PowerMax ReverseProxy in the standalone mode which provides
-# the ability to connect to multiple Unisphere servers to managed multiple PowerMax arrays
-apiVersion: storage.dell.com/v1
-kind: CSIPowerMaxRevProxy
-metadata:
-  name: powermax-reverseproxy
-  namespace: test-powermax
-spec:
-  # image: Define the container images used for the reverse proxy
-  # Default value: None
-  # Example: "csipowermax-reverseproxy:v1.4.0"
-  image: dellemc/csipowermax-reverseproxy:v1.4.0
-  # imagePullPolicy: Policy to determine if the image should be pulled prior to starting the container.
-  # Allowed values:
-  #  Always: Always pull the image.
-  #  IfNotPresent: Only pull the image if it does not already exist on the node.
-  #  Never: Never pull the image.
-  # Default value: None
-  imagePullPolicy: IfNotPresent
-  # "tlsSecret" defines the TLS secret that is created with certificate
-  # and its associated key
-  # Default value: None
-  # Example: "csirevproxy-tls-secret"
-  tlsSecret: csirevproxy-tls-secret
-  config:
-    # Mode for the proxy - "StandAlone"
-    mode: StandAlone
-    standAloneConfig:
-      storageArrays:
-        - storageArrayId: "000000000001"
-          # Unisphere server managing the PowerMax array
-          primaryURL: https://unisphere-1-addr:8443
-          # proxyCredentialSecrets are used by the clients of the proxy to connect to it
-          # If using proxy in the stand alone mode, then the driver must be provided the
-          # same secret.
-          # The format of the proxy credential secret are exactly the same as the unisphere credential secret
-          # For using the proxy with the driver, use the same proxy credential secrets for
-          # all the managed storage arrays
-          proxyCredentialSecrets:
-            - proxy-creds
-        - storageArrayId: "000000000002"
-          primaryURL: https://unisphere-2-addr:8443
-          # An optional backup Unisphere server managing the same array
-          # This can be used by the proxy to fall back to in case the primary
-          # Unisphere is inaccessible temporarily
-          backupURL: unisphere-3-addr:8443
-          proxyCredentialSecrets:
-            - proxy-creds
-      managementServers:
-        - url: https://unisphere-1-addr:8443
-          # Secret containing the credentials of the Unisphere server
-          arrayCredentialSecret: unsiphere-1-creds
-          skipCertificateValidation: true
-        - url: https://unisphere-2-addr:8443
-          arrayCredentialSecret: unsiphere-2-creds
-          skipCertificateValidation: true
-        - url: https://unisphere-3-addr:8443
-          arrayCredentialSecret: unsiphere-3-creds
-          skipCertificateValidation: true
-
----
-# This driver manifest is configured with the same set of arrays as the reverseproxy above
 apiVersion: storage.dell.com/v1
 kind: CSIPowerMax
 metadata:
@@ -112,7 +49,7 @@ spec:
           # Allowed values: iSCSI Port Group names
           # Default value: None
           # Examples: "pg1", "pg1, pg2"
-        - name: X_CSI_POWERMAX_PORTGROUPS
+        - name: "X_CSI_POWERMAX_PORTGROUPS"
           value: ""
           # "X_CSI_TRANSPORT_PROTOCOL" can be "FC" or "FIBRE" for fibrechannel,
           # "ISCSI" for iSCSI, or "" for autoselection.
@@ -122,19 +59,19 @@ spec:
           #   "ISCSI" - iSCSI protocol
           #   ""      - Automatic selection of transport protocol
           # Default value: "" <empty>
-        - name: X_CSI_TRANSPORT_PROTOCOL
+        - name: "X_CSI_TRANSPORT_PROTOCOL"
           value: ""
         # X_CSI_POWERMAX_PROXY_SERVICE_NAME: Refers to the name of the proxy service in kubernetes
         # Set this to "powermax-reverseproxy" if you are installing the proxy
         # Allowed values: "powermax-reverseproxy"
         # default values: "" <empty>
-        - name: X_CSI_POWERMAX_PROXY_SERVICE_NAME
+        - name: "X_CSI_POWERMAX_PROXY_SERVICE_NAME"
           value: ""
           # X_CSI_GRPC_MAX_THREADS: Defines the maximum number of concurrent grpc requests.
           # Set this value to a higher number (max 50) if you are using the proxy
           # Allowed values: n, where n > 4
           # default values: None
-        - name: X_CSI_GRPC_MAX_THREADS
+        - name: "X_CSI_GRPC_MAX_THREADS"
           value: "4"
     node:
       envs:
@@ -146,7 +83,7 @@ spec:
         #   "true"  - CHAP is enabled
         #   "false" - CHAP is disabled
         # Default value: "false"
-        - name: X_CSI_POWERMAX_ISCSI_ENABLE_CHAP
+        - name: "X_CSI_POWERMAX_ISCSI_ENABLE_CHAP"
           value: "false"
 ---
 apiVersion: v1
