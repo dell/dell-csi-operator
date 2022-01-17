@@ -1,0 +1,65 @@
+domain: dell.com
+layout:
+- go.kubebuilder.io/v3
+plugins:
+  manifests.sdk.operatorframework.io/v2: {}
+  scorecard.sdk.operatorframework.io/v2: {}
+projectName: dell-csi-operator-certified
+repo: github.com/dell/dell-csi-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: dell.com
+  group: storage
+  kind: CSIPowerMax
+  path: github.com/dell/dell-csi-operator/api/v1
+  version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: dell.com
+  group: storage
+  kind: CSIPowerMaxRevProxy
+  path: github.com/dell/dell-csi-operator/api/v1
+  version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: dell.com
+  group: storage
+  kind: CSIIsilon
+  path: github.com/dell/dell-csi-operator/api/v1
+  version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: dell.com
+  group: storage
+  kind: CSIUnity
+  path: github.com/dell/dell-csi-operator/api/v1
+  version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: dell.com
+  group: storage
+  kind: CSIVXFlexOS
+  path: github.com/dell/dell-csi-operator/api/v1
+  version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: dell.com
+  group: storage
+  kind: CSIPowerStore
+  path: github.com/dell/dell-csi-operator/api/v1
+  version: v1
+version: "3"
+

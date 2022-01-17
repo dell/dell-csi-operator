@@ -1,0 +1,20 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: powermax-reverseproxy
+  namespace: test-powermax
+  ownerReferences:
+    - apiVersion: storage.dell.com/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CSIPowerMaxRevProxy
+      name: powermax-reverseproxy
+      uid: ""
+subjects:
+  - kind: ServiceAccount
+    name: powermax-reverseproxy
+    namespace: test-powermax
+roleRef:
+  kind: Role
+  name: powermax-reverseproxy
+  apiGroup: rbac.authorization.k8s.io

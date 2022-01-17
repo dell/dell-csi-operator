@@ -1,0 +1,87 @@
+{
+  "apiVersion": "storage.dell.com/v1",
+  "kind": "CSIPowerStore",
+  "metadata": {
+    "name": "powerstore",
+    "namespace": "powerstore"
+  },
+  "spec": {
+    "driver": {
+      "common": {
+        "envs": [
+          {
+            "name": "X_CSI_POWERSTORE_ENDPOINT",
+            "value": "https://10.230.42.95/api/rest"
+          },
+          {
+            "name": "X_CSI_POWERSTORE_NODE_NAME_PREFIX",
+            "value": "csi"
+          },
+          {
+            "name": "X_CSI_TRANSPORT_PROTOCOL",
+            "value": "ISCSI"
+          },
+          {
+            "name": "X_CSI_FC_PORTS_FILTER_FILE_PATH",
+            "value": "/etc/fc-ports-filter"
+          }
+        ],
+        "image": "amaas-eos-mw1.cec.lab.emc.com:5017/csi_powerstore:v1.2.0.000X",
+        "imagePullPolicy": "IfNotPresent"
+      },
+      "configVersion": "v2",
+      "forceUpdate": false,
+      "node": {
+        "envs": [
+          {
+            "name": "X_CSI_POWERSTORE_ENABLE_CHAP",
+            "value": "false"
+          }
+        ]
+      },
+      "replicas": 1,
+      "snapshotClass": [
+        {
+          "name": "powerstore-snapshot"
+        }
+      ],
+      "storageClass": [
+        {
+          "default": true,
+          "name": "powerstore",
+          "parameters": {
+            "csi.storage.k8s.io/fstype": "ext4"
+          },
+          "reclaimPolicy": "Delete"
+        },
+        {
+          "name": "powerstore-xfs",
+          "parameters": {
+            "csi.storage.k8s.io/fstype": "xfs"
+          },
+          "reclaimPolicy": "Delete"
+        },
+        {
+          "allowedTopologies": [
+            {
+              "matchLabelExpressions": [
+                {
+                  "key": "csi-powerstore.dellemc.com/10.230.42.95-nfs",
+                  "values": [
+                    "true"
+                  ]
+                }
+              ]
+            }
+          ],
+          "name": "powerstore-nfs",
+          "parameters": {
+            "csi.storage.k8s.io/fstype": "nfs",
+            "nasName": "nas-server"
+          },
+          "reclaimPolicy": "Delete"
+        }
+      ]
+    }
+  }
+}

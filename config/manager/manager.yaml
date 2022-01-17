@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: controller-manager
+  namespace: system
+  labels:
+    control-plane: controller-manager
+spec:
+  selector:
+    matchLabels:
+      control-plane: controller-manager
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        control-plane: controller-manager
+    spec:
+      serviceAccountName: manager-service-account
+      initContainers:
+      - name: config-copy
+        image: docker.io/busybox:1.32.0
+        command: ['sh', '-c', 'if [ -e /configmap/config.tar.gz ]; then /bin/tar -C /etc/config/dell-csi-operator -xzvf /configmap/config.tar.gz --strip-components 1; else echo "Warning: ConfigMap not mounted"; fi']
+        volumeMounts:
+          - name: configmap-volume
+            mountPath: /configmap
+          - name: config-dir
+            mountPath: /etc/config/dell-csi-operator
+      containers:
+      - name: dell-csi-operator-controller
+        command:
+          - /manager
+        args:
+          - --enable-leader-election
+        image: controller:latest
+        imagePullPolicy: Always
+        env:
+          - name: OPERATOR_DRIVERS
+            value: "unity,powermax,isilon,vxflexos,powerstore"
+        volumeMounts:
+          - name: configmap-volume
+            mountPath: /etc/config/configmap
+          - name: config-dir
+            mountPath: /etc/config/dell-csi-operator
+      terminationGracePeriodSeconds: 10
+      volumes:
+        - name: configmap-volume
+          configMap:
+            # Provide the name of the ConfigMap containing the files you want
+            # to add to the container
+            name: dell-csi-operator-config
+            optional: true
+        - name: config-dir
+          emptyDir:
+

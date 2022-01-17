@@ -1,0 +1,64 @@
+apiVersion: storage.dell.com/v1
+kind: CSIUnity
+metadata:
+  creationTimestamp: null
+  name: test-unity
+  namespace: test-unity
+spec:
+  driver:
+    configVersion: v1
+    replicas: 1
+    dnsPolicy: ClusterFirstWithHostNet
+    common:
+      envs:
+        - name: X_CSI_UNITY_DEBUG
+          value: "true"
+        - name: X_CSI_UNITY_ENDPOINT
+          value: https://10.247.55.82
+        - name: X_CSI_UNITY_INSECURE
+          value: "true"
+      image: amaas-eos-mw1.cec.lab.emc.com:5028/csi-unity/csi-unity-seelam:20200311143220
+      imagePullPolicy: IfNotPresent
+    sideCars:
+      - args:
+          - --volume-name-prefix=csivol
+        image: quay.io/k8scsi/csi-provisioner:v1.2.1
+        imagePullPolicy: IfNotPresent
+        name: provisioner
+      - image: quay.io/k8scsi/csi-attacher:v1.2.1
+        imagePullPolicy: IfNotPresent
+        name: attacher
+      - args:
+          - --snapshot-name-prefix=csi-snap
+        image: quay.io/k8scsi/csi-snapshotter:v1.2.2
+        imagePullPolicy: IfNotPresent
+        name: snapshotter
+      - image: quay.io/k8scsi/csi-node-driver-registrar:v1.1.0
+        imagePullPolicy: IfNotPresent
+        name: registrar
+    snapshotClass:
+      - name: test-snap
+        parameters:
+          retentionDuration: "1:1:1:1"
+      - name: test1-snap
+        parameters:
+          retentionDuration: "2:2:2:2"
+    storageClass:
+      - default: true
+        name: fc
+        parameters:
+          protocol: FC
+          storagepool: pool_1
+          tieringPolicy: "2"
+        reclaimPolicy: Delete
+      - name: iscsi
+        parameters:
+          protocol: iSCSCI
+          storagepool: pool_1
+        reclaimPolicy: Delete
+status:
+  status:
+    creationTime: "2020-03-12T09:37:54Z"
+    envName: test-unity
+    startTime: "2020-03-12T09:37:54Z"
+    state: Succeeded

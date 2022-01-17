@@ -1,0 +1,15 @@
+apiVersion: snapshot.storage.k8s.io/v1alpha1
+kind: VolumeSnapshotClass
+metadata:
+  creationTimestamp: null
+  name: test-unity-test-snap
+  ownerReferences:
+    - apiVersion: storage.dell.com/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CSIUnity
+      name: test-unity
+      uid: ""
+parameters:
+  retentionDuration: "1:1:1:1"
+snapshotter: csi-unity.dellemc.com

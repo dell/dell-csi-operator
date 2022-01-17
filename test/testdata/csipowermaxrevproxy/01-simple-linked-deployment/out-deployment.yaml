@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: powermax-reverseproxy
+  namespace: test-powermax
+  ownerReferences:
+    - apiVersion: storage.dell.com/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CSIPowerMaxRevProxy
+      name: powermax-reverseproxy
+      uid: ""
+spec:
+  selector:
+    matchLabels:
+      name: powermax-reverseproxy
+  template:
+    metadata:
+      labels:
+        name: powermax-reverseproxy
+    spec:
+      serviceAccountName: powermax-reverseproxy
+      containers:
+        - name: csireverseproxy
+          # Replace this with the built image name
+          image: dellemc/csipowermax-reverseproxy:v1.4.0.000R
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: X_CSI_REVPROXY_CONFIG_DIR
+              value: /etc/config/configmap
+            - name: X_CSI_REVPROXY_CONFIG_FILE_NAME
+              value: config.yaml
+            - name: X_CSI_REVRPOXY_IN_CLUSTER
+              value: "true"
+            - name: X_CSI_REVPROXY_TLS_CERT_DIR
+              value: /app/tls
+            - name: X_CSI_REVPROXY_WATCH_NAMESPACE
+              value: test-powermax #Change this to the namespace where proxy will be installed
+          volumeMounts:
+            - name: configmap-volume
+              mountPath: /etc/config/configmap
+            - name: tls-secret
+              mountPath: /app/tls
+            - name: cert-dir
+              mountPath: /app/certs
+      volumes:
+        - name: configmap-volume
+          configMap:
+            name: powermax-reverseproxy-config
+            optional: false
+        - name: tls-secret
+          secret:
+            secretName: csirevproxy-tls-secret
+            optional: false
+        - name: cert-dir
+          emptyDir: {}

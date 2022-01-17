@@ -1,0 +1,200 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: powermax-controller
+  namespace: test-powermax
+  ownerReferences:
+    - apiVersion: storage.dell.com/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CSIPowerMax
+      name: test-powermax
+      uid: ""
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: powermax-controller
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: powermax-controller
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - powermax-controller
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - args:
+            - --leader-election
+          env:
+            - name: X_CSI_POWERMAX_DRIVER_NAME
+              value: csi-powermax.dellemc.com
+            - name: CSI_ENDPOINT
+              value: /var/run/csi/csi.sock
+            - name: X_CSI_MANAGED_ARRAYS
+              value: "000000000000,000000000001"
+            - name: X_CSI_POWERMAX_ENDPOINT
+              value: https://0.0.0.0:8443/
+            - name: X_CSI_K8S_CLUSTER_PREFIX
+              value: XYZ
+            - name: X_CSI_MODE
+              value: controller
+            - name: X_CSI_POWERMAX_SKIP_CERTIFICATE_VALIDATION
+              value: "true"
+            - name: X_CSI_POWERMAX_USER
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: powermax-creds
+            - name: X_CSI_POWERMAX_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: powermax-creds
+            - name: X_CSI_POWERMAX_DEBUG
+              value: "false"
+            - name: X_CSI_POWERMAX_PORTGROUPS
+            - name: X_CSI_POWERMAX_ARRAYS
+            - name: X_CSI_GRPC_MAX_THREADS
+              value: "4"
+            - name: X_CSI_ENABLE_BLOCK
+              value: "true"
+            - name: X_CSI_TRANSPORT_PROTOCOL
+            - name: SSL_CERT_DIR
+              value: /certs
+            - name: X_CSI_IG_NODENAME_TEMPLATE
+            - name: X_CSI_IG_MODIFY_HOSTNAME
+              value: "false"
+            - name: X_CSI_POWERMAX_PROXY_SERVICE_NAME
+              value: none
+            - name: X_CSI_ReplicationContextPrefix
+              value: powermax/
+            - name: X_CSI_ReplicationPrefix
+              value: replication.storage.dell.com/
+            - name: X_CSI_UNISPHERE_TIMEOUT
+              value: 5m
+            - name: X_CSI_POWERMAX_CONFIG_PATH
+              value: /powermax-config-params/driver-config-params.yaml
+          image: dellemc/csi-powermax:v2.1.0.000R
+          imagePullPolicy: IfNotPresent
+          name: driver
+          resources: {}
+          securityContext: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/csi
+              name: socket-dir
+            - mountPath: /certs
+              name: certs
+              readOnly: true
+            - mountPath: /powermax-config-params
+              name: powermax-config-params
+        - args:
+            - --v=5
+            - --snapshot-name-uuid-length=10
+            - --timeout=180s
+            - --snapshot-name-prefix=pmsn
+            - --csi-address=$(ADDRESS)
+            - --leader-election
+          env:
+            - name: ADDRESS
+              value: /var/run/csi/csi.sock
+          image: k8s.gcr.io/sig-storage/csi-snapshotter:v4.2.1
+          imagePullPolicy: IfNotPresent
+          name: snapshotter
+          resources: {}
+          securityContext: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/csi
+              name: socket-dir
+        - args:
+            - --csi-address=$(ADDRESS)
+            - --volume-name-uuid-length=10
+            - --timeout=180s
+            - --worker-threads=6
+            - --v=5
+            - --volume-name-prefix=pmax
+            - --default-fstype=ext4
+            - --leader-election
+            - --extra-create-metadata
+            - --feature-gates=Topology=true
+          env:
+            - name: ADDRESS
+              value: /var/run/csi/csi.sock
+          image: k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0
+          imagePullPolicy: IfNotPresent
+          name: provisioner
+          resources: {}
+          securityContext: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/csi
+              name: socket-dir
+        - args:
+            - --csi-address=$(ADDRESS)
+            - --v=5
+            - --timeout=180s
+            - --worker-threads=6
+            - --leader-election
+          env:
+            - name: ADDRESS
+              value: /var/run/csi/csi.sock
+          image: k8s.gcr.io/sig-storage/csi-attacher:v3.3.0
+          imagePullPolicy: IfNotPresent
+          name: attacher
+          resources: {}
+          securityContext: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/csi
+              name: socket-dir
+        - args:
+            - --csi-address=$(ADDRESS)
+            - --v=5
+            - --timeout=180s
+            - --leader-election
+          env:
+            - name: ADDRESS
+              value: /var/run/csi/csi.sock
+          image: k8s.gcr.io/sig-storage/csi-resizer:v1.3.0
+          imagePullPolicy: IfNotPresent
+          name: resizer
+          resources: {}
+          securityContext: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/csi
+              name: socket-dir
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      serviceAccountName: powermax-controller
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - emptyDir: {}
+          name: socket-dir
+        - name: certs
+          secret:
+            defaultMode: 420
+            optional: true
+            secretName: powermax-certs
+        - name: powermax-config-params
+          configMap:
+            name: powermax-config-params

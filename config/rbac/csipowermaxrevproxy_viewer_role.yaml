@@ -1,0 +1,20 @@
+# permissions for end users to view csipowermaxrevproxies.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: csipowermaxrevproxy-viewer-role
+rules:
+- apiGroups:
+  - storage.dell.com
+  resources:
+  - csipowermaxrevproxies
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - storage.dell.com
+  resources:
+  - csipowermaxrevproxies/status
+  verbs:
+  - get

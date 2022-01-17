@@ -1,0 +1,50 @@
+apiVersion: storage.dell.com/v1
+kind: CSIPowerMax
+metadata:
+  creationTimestamp: null
+  name: powermax
+  namespace: powermax
+spec:
+  driver:
+    common:
+      envs:
+      - name: X_CSI_POWERMAX_PORTGROUPS
+        value: csi_pg1
+      - name: X_CSI_K8S_CLUSTER_PREFIX
+        value: BCC
+      - name: X_CSI_POWERMAX_ENDPOINT
+        value: https://10.228.207.4:8443
+      - name: X_CSI_POWERMAX_ARRAYS
+        value: "000197600197"
+      - name: X_CSI_TRANSPORT_PROTOCOL
+        value: iscsi
+      image: dellemc/csi-powermax:v1.5.0.000R
+    configVersion: v4
+    controller: {}
+    node: {}
+    replicas: 2
+    sideCars:
+    - args:
+      - --v=5
+      - --snapshot-name-uuid-length=10
+      - --timeout=360s
+      - --snapshot-name-prefix=pmax
+      - --csi-address=$(ADDRESS)
+      name: snapshotter
+    snapshotClass:
+    - name: powermax-snapclass
+      parameters:
+        key: val
+    storageClass:
+    - default: true
+      name: bronze
+      parameters:
+        SERVICELEVEL: Diamond
+        SRP: DEFAULT_SRP
+        SYMID: "000197600197"
+      reclaimPolicy: Retain
+status:
+  controllerStatus: {}
+  lastUpdate:
+    time: null
+  nodeStatus: {}

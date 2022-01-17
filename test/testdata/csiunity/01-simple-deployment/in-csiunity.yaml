@@ -1,0 +1,51 @@
+apiVersion: storage.dell.com/v1
+kind: CSIUnity
+metadata:
+  name: test-unity
+  namespace: test-unity
+spec:
+  driver:
+    configVersion: v1
+    replicas: 1
+    dnsPolicy: ClusterFirstWithHostNet
+    common:
+      image: "amaas-eos-mw1.cec.lab.emc.com:5028/csi-unity/csi-unity-seelam:20200311143220"
+      imagePullPolicy: IfNotPresent
+      envs:
+        - name: X_CSI_UNITY_DEBUG
+          value: "true"
+        - name: X_CSI_UNITY_ENDPOINT
+          value: "https://10.247.55.82"
+        - name: X_CSI_UNITY_INSECURE
+          value: "true"
+    sideCars:
+      - name: provisioner
+        image: quay.io/k8scsi/csi-provisioner:v1.2.1
+        imagePullPolicy: IfNotPresent
+        args: ['--volume-name-prefix=csivol']
+      - name: attacher
+        image: quay.io/k8scsi/csi-attacher:v1.2.1
+        imagePullPolicy: IfNotPresent
+      - name: snapshotter
+        imagePullPolicy: IfNotPresent
+        args: ['--snapshot-name-prefix=csi-snap']
+    storageClass:
+      - name: fc
+        default: true
+        reclaimPolicy: "Delete"
+        parameters:
+          storagepool: pool_1
+          protocol: "FC"
+          tieringPolicy: "2"
+      - name: iscsi
+        reclaimPolicy: "Delete"
+        parameters:
+          storagepool: pool_1
+          protocol: "iSCSCI"
+    snapshotClass:
+      - name: test-snap
+        parameters:
+          retentionDuration: "1:1:1:1"
+      - name: test1-snap
+        parameters:
+          retentionDuration: "2:2:2:2"

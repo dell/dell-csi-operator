@@ -1,0 +1,121 @@
+{
+	"apiVersion": "storage.dell.com/v1",
+	"kind": "CSIIsilon",
+	"metadata": {
+	  "name": "test-isilon",
+	  "namespace": "test-isilon"
+	},
+	"spec": {
+	  "driver": {
+		"configVersion": "v3",
+		"replicas": 1,
+		"common": {
+		  "image": "dellemc/csi-isilon:v1.3.0.000R",
+		  "imagePullPolicy": "Always",
+		  "envs": [
+			{
+			  "name": "X_CSI_VERBOSE",
+			  "value": "1"
+			},
+			{
+			  "name": "X_CSI_ISI_ENDPOINT",
+			  "value": "10.247.96.195"
+			},
+			{
+			  "name": "X_CSI_ISI_PORT",
+			  "value": "8080"
+			},
+			{
+			  "name": "X_CSI_ISI_PATH",
+			  "value": "/ifs/data/csi"
+			},
+			{
+			  "name": "X_CSI_ISILON_NO_PROBE_ON_START",
+			  "value": "false"
+			},
+			{
+			  "name": "X_CSI_ISI_AUTOPROBE",
+			  "value": "true"
+			},
+			{
+			  "name": "X_CSI_ISI_INSECURE",
+			  "value": "true"
+			},
+			{
+			  "name": "X_CSI_DEBUG",
+			  "value": "true"
+			}
+		  ]
+		},
+		"controller": {
+		  "envs": [
+			{
+			  "name": "X_CSI_ISI_QUOTA_ENABLED",
+			  "value": "true"
+			},
+			{
+			  "name": "X_CSI_ISI_ACCESS_ZONE",
+			  "value": "System"
+			}
+		  ]
+		},
+		"node": {
+		  "envs": [
+			{
+			  "name": "X_CSI_ISILON_NFS_V3",
+			  "value": "false"
+			}
+		  ]
+		},
+		"sideCars": [
+		  {
+			"name": "provisioner",
+			"image": "quay.io/k8scsi/csi-provisioner:v1.2.1",
+			"imagePullPolicy": "IfNotPresent",
+			"args": [
+			  "--volume-name-prefix=csi-vol"
+			]
+		  },
+		  {
+			"name": "attacher",
+			"image": "quay.io/k8scsi/csi-attacher:v1.2.1",
+			"imagePullPolicy": "IfNotPresent"
+		  },
+		  {
+			"name": "snapshotter",
+			"image": "quay.io/k8scsi/csi-snapshotter:v1.2.0",
+			"imagePullPolicy": "IfNotPresent",
+			"args": [
+			  "--snapshot-name-prefix=csi-snap"
+			]
+		  },
+		  {
+			"name": "registrar",
+			"image": "quay.io/k8scsi/csi-node-driver-registrar:v1.1.0",
+			"imagePullPolicy": "IfNotPresent"
+		  }
+		],
+		"storageClass": [
+		  {
+			"name": "sc",
+			"reclaimPolicy": "Delete",
+			"default": true,
+			"parameters": {
+			  "AccessZone": "System",
+			  "IsiPath": "/ifs/data/csi",
+			  "AzServiceIP": "10.247.96.195",
+			  "RootClientEnabled": "false"
+			}
+		  }
+		],
+		"snapshotClass": [
+		  {
+			"name": "vsc",
+			"parameters": {
+			  "IsiPath": "/ifs/data/csi"
+			}
+		  }
+		]
+	  }
+	}
+  }

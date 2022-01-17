@@ -1,0 +1,143 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  creationTimestamp: null
+  name: unity-controller
+  namespace: test-unity
+  ownerReferences:
+    - apiVersion: storage.dell.com/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CSIUnity
+      name: test-unity
+      uid: ""
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: unity-controller
+  serviceName: unity-controller
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: unity-controller
+    spec:
+      containers:
+        - args:
+            - --driver-name=csi-unity.dellemc.com
+          env:
+            - name: CSI_ENDPOINT
+              value: /var/run/csi/csi.sock
+            - name: X_CSI_MODE
+              value: controller
+            - name: X_CSI_DEBUG
+              value: "true"
+            - name: X_CSI_UNITY_ENDPOINT
+              value: https://10.247.55.82
+            - name: X_CSI_UNITY_USER
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: unity-creds
+            - name: X_CSI_UNITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: unity-creds
+            - name: X_CSI_UNITY_INSECURE
+              value: "true"
+            - name: X_CSI_UNITY_DEBUG
+              value: "true"
+            - name: GOUNITY_DEBUG
+              value: "false"
+            - name: X_CSI_UNITY_VOLUMENAME_PREFIX
+              value: csivol
+            - name: SSL_CERT_DIR
+              value: /certs
+          image: amaas-eos-mw1.cec.lab.emc.com:5028/csi-unity/csi-unity-seelam:20200311143220
+          imagePullPolicy: IfNotPresent
+          name: driver
+          resources: {}
+          securityContext: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/csi
+              name: socket-dir
+            - mountPath: /certs
+              name: certs
+              readOnly: true
+        - args:
+            - --csi-address=$(ADDRESS)
+            - --timeout=120s
+            - --volume-name-uuid-length=10
+            - --timeout=180s
+            - --worker-threads=6
+            - --v=5
+            - --volume-name-prefix=csivol
+          env:
+            - name: ADDRESS
+              value: /var/run/csi/csi.sock
+          image: quay.io/k8scsi/csi-provisioner:v1.2.1
+          imagePullPolicy: IfNotPresent
+          name: provisioner
+          resources: {}
+          securityContext: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/csi
+              name: socket-dir
+        - args:
+            - --csi-address=$(ADDRESS)
+            - --v=5
+            - --timeout=180s
+          env:
+            - name: ADDRESS
+              value: /var/run/csi/csi.sock
+          image: quay.io/k8scsi/csi-attacher:v1.2.1
+          imagePullPolicy: IfNotPresent
+          name: attacher
+          resources: {}
+          securityContext: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/csi
+              name: socket-dir
+        - args:
+            - --v=5
+            - --snapshot-name-uuid-length=10
+            - --timeout=360s
+            - --snapshot-name-prefix=csi-snap
+          env:
+            - name: ADDRESS
+              value: /var/run/csi/csi.sock
+          image: quay.io/k8scsi/csi-snapshotter:v1.2.2
+          imagePullPolicy: IfNotPresent
+          name: snapshotter
+          resources: {}
+          securityContext: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/csi
+              name: socket-dir
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      serviceAccountName: unity-controller
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - emptyDir: {}
+          name: socket-dir
+        - name: certs
+          secret:
+            defaultMode: 420
+            optional: true
+            secretName: unity-certs
+  updateStrategy:
+    type: RollingUpdate

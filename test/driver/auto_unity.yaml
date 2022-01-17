@@ -1,0 +1,37 @@
+apiVersion: storage.dell.com/v1
+kind: CSIUnity
+metadata:
+  creationTimestamp: null
+  name: test-auto-unity
+  namespace: test-auto-unity
+spec:
+  driver:
+    common:
+      image: amaas-eos-mw1.cec.lab.emc.com:5028/csi-unity/csi-unity-root:20200820032423
+    configVersion: v2
+    controller: {}
+    node: {}
+    replicas: 1
+    sideCars:
+    - name: snapshotter
+    snapshotClass:
+    - name: unity
+      parameters:
+        name: test-snap
+        retentionDuration: "2:2:2:2"
+    storageClass:
+    - default: true
+      name: apm00175023135-iscsi
+      parameters:
+        FsType: xfs
+        arrayId: '"APM00175023135"'
+        isDataReductionEnabled: '"false"'
+        protocol: '"iSCSI"'
+        storagePool: pool_1
+        thinProvisioned: '"false"'
+      reclaimPolicy: Retain
+status:
+  controllerStatus: {}
+  lastUpdate:
+    time: null
+  nodeStatus: {}

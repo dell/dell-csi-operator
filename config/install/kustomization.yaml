@@ -1,0 +1,17 @@
+# Adds namespace to all resources.
+namespace: dell-csi-operator
+namePrefix: dell-csi-operator-
+
+# Labels to add to all resources and selectors.
+#commonLabels:
+#  someName: someValue
+
+bases:
+- ../serviceaccount
+- ../rbac
+- ../manager
+
+images:
+  - name: controller
+    newName: amaas-eos-mw1.cec.lab.emc.com:5035/csi-operator/dell-csi-operator
+    newTag: v1.7.0

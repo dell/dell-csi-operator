@@ -1,0 +1,88 @@
+{
+  "apiVersion": "storage.dell.com/v1",
+  "kind": "CSIVXFlexOS",
+  "metadata": {
+    "name": "test-vxflexos",
+    "namespace": "test-vxflexos"
+  },
+  "spec": {
+    "driver": {
+      "configVersion": "v3",
+      "replicas": 1,
+      "common": {
+        "image": "amaas-eos-mw1.cec.lab.emc.com:5036/vxflexos:v1.1.4",
+        "imagePullPolicy": "IfNotPresent",
+        "envs": [
+          {
+            "name": "X_CSI_VXFLEXOS_SYSTEMNAME",
+            "value": "4d4a2e5a36080e0f"
+          },
+          {
+            "name": "X_CSI_VXFLEXOS_ENDPOINT",
+            "value": "https://10.247.38.41"
+          },
+          {
+            "name": "X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT",
+            "value": "false"
+          },
+          {
+            "name": "X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE",
+            "value": "false"
+          },
+          {
+            "name": "X_CSI_DEBUG",
+            "value": "true"
+          }
+        ]
+      },
+      "storageClass": [
+        {
+          "name": "vxflexos",
+          "default": true,
+          "reclaimPolicy": "Delete",
+          "parameters": {
+            "storagepool": "pool_20190320123801"
+          },
+          "allowedTopologies": [
+            {
+              "matchLabelExpressions": [
+                {
+                  "key": "csi-vxflexos.dellemc.com/4d4a2e5a36080e0f",
+                  "values": [
+                    "csi-vxflexos.dellemc.com"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "vxflexos-xfs",
+          "default": false,
+          "reclaimPolicy": "Delete",
+          "parameters": {
+            "storagepool": "pool_20190320123801",
+            "FsType": "xfs"
+          },
+          "allowedTopologies": [
+            {
+              "matchLabelExpressions": [
+                {
+                  "key": "csi-vxflexos.dellemc.com/4d4a2e5a36080e0f",
+                  "values": [
+                    "csi-vxflexos.dellemc.com"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "snapshotClass": [
+        {
+          "name": "vxflexos-snapclass"
+        }
+      ]
+    }
+  }
+}

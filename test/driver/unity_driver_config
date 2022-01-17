@@ -1,0 +1,17 @@
+#!/bin/bash
+export OPERATOR_ENV_DRIVER_MANIFEST=auto_unity.yaml
+export OPERATOR_ENV_DRIVER_TYPE=csi-unity
+export OPERATOR_ENV_DRIVER_NAME=test-auto-unity
+export OPERATOR_ENV_DRIVER_NAMESPACE=test-auto-unity
+export OPERATOR_ENV_DRIVER_IMAGE=""amaas-eos-mw1.cec.lab.emc.com:5028/csi-unity/csi-unity-root:20200820032423""
+export OPERATOR_ENV_DRIVER_CONFIG_VERSION=v2
+#export OPERATOR_ENV_COMMON_X_CSI_K8S_CLUSTER_PREFIX=KPC
+#export OPERATOR_ENV_COMMON_X_CSI_POWERMAX_ENDPOINT=https://10.247.73.133:8443
+export OPERATOR_ENV_SIDECAR1_NAME=snapshotter
+#export OPERATOR_ENV_SIDECAR1_ARGS='["name=test-snap","retentionDuration="""]'
+export OPERATOR_ENV_STORAGECLASS1_NAME="apm00175023135-iscsi"
+export OPERATOR_ENV_STORAGECLASS1_DEFAULTSC="true"
+export OPERATOR_ENV_STORAGECLASS1_RECLAIM_POLICY="Retain"
+export OPERATOR_ENV_STORAGECLASS1_PARAMETERS='["FsType=xfs","arrayId="APM00175023135"","isDataReductionEnabled="false"","protocol="iSCSI"","storagePool=pool_1","thinProvisioned="false""]'
+export OPERATOR_ENV_VOLUMESNAPSHOTCLASS1_NAME="unity"
+export OPERATOR_ENV_VOLUMESNAPSHOTCLASS1_PARAMETERS='["name=test-snap","retentionDuration=2:2:2:2"]'

@@ -1,0 +1,35 @@
+apiVersion: storage.dell.com/v1
+kind: CSIPowerMaxRevProxy
+metadata:
+  name: powermax-reverseproxy
+  namespace: test-powermax
+spec:
+  # image: Define the container images used for the reverse proxy
+  # Default value: None
+  # Example: "csipowermax-reverseproxy:v1.4.0"
+  image: dellemc/csipowermax-reverseproxy:v1.4.0
+  # imagePullPolicy: Policy to determine if the image should be pulled prior to starting the container.
+  # Allowed values:
+  #  Always: Always pull the image.
+  #  IfNotPresent: Only pull the image if it does not already exist on the node.
+  #  Never: Never pull the image.
+  # Default value: None
+  imagePullPolicy: IfNotPresent
+  # "tlsSecret" defines the TLS secret that is created with certificate
+  # and its associated key
+  # Default value: None
+  # Example: "csirevproxy-tls-secret"
+  tlsSecret: csirevproxy-tls-secret
+  config:
+    # Mode for the proxy
+    # Default value: None
+    # Example: "Linked"
+    mode: Linked
+    linkConfig:
+      primary:
+        url: https://0.0.0.0:8443 #Unisphere URL
+        skipCertificateValidation: true # This setting determines if client side Unisphere certificate validation is to be skipped
+        certSecret: "" # Provide this value if skipCertificateValidation is set to false
+      backup: # This is an optional field and lets you configure a backup unisphere which can be used by proxy server
+        url: https://0.0.0.0:8443 #Unisphere URL
+        skipCertificateValidation: true

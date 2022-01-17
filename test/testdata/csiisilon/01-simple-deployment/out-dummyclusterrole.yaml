@@ -1,0 +1,7 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    name: test-isilon-test-isilon-dummy
+  name: test-isilon-test-isilon-dummy
+rules: null
