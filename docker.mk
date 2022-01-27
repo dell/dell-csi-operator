@@ -22,7 +22,7 @@ endif
 BUNDLE_METADATA_OPTS ?= $(BUNDLE_CHANNELS) $(BUNDLE_DEFAULT_CHANNEL)
 
 # Registry for all images
-REGISTRY ?= "amaas-eos-mw1.cec.lab.emc.com:5035/csi-operator"
+REGISTRY ?= "dellemc/dell-csi-operator"
 
 # Default Operator image name
 OPERATOR_IMAGE ?= dell-csi-operator
@@ -108,7 +108,7 @@ bundle-push: bundle-build
 	docker push $(BUNDLE_IMG)
 
 index: docker-push bundle-push
-	opm index add --bundles $(BUNDLE_IMG) --from-index amaas-eos-mw1.cec.lab.emc.com:5035/csi-operator/dellemcregistry_certified:v1.6.0 --tag $(INDEX_IMG) --container-tool docker
+	opm index add --bundles $(BUNDLE_IMG) --from-index dellemc/dell-csi-operator --tag $(INDEX_IMG) --container-tool docker
 	docker tag $(INDEX_IMG) $(INDEX_REL_IMG)
 	docker push $(INDEX_IMG)
 	docker push $(INDEX_REL_IMG)
