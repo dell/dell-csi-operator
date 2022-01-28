@@ -1,0 +1,164 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  creationTimestamp: null
+  name: unity-node
+  namespace: test-unity
+  ownerReferences:
+    - apiVersion: storage.dell.com/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CSIUnity
+      name: test-unity
+      uid: ""
+spec:
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: unity-node
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: unity-node
+    spec:
+      containers:
+        - args:
+            - --driver-name=csi-unity.dellemc.com
+          env:
+            - name: CSI_ENDPOINT
+              value: unix:///var/lib/kubelet/plugins/unity.emc.dell.com/csi_sock
+            - name: X_CSI_MODE
+              value: node
+            - name: X_CSI_DEBUG
+              value: "true"
+            - name: X_CSI_UNITY_AUTOPROBE
+              value: "true"
+            - name: X_CSI_UNITY_ENDPOINT
+              value: https://10.247.55.82
+            - name: X_CSI_UNITY_USER
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: unity-creds
+            - name: X_CSI_UNITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: unity-creds
+            - name: X_CSI_UNITY_INSECURE
+              value: "true"
+            - name: X_CSI_UNITY_DEBUG
+              value: "true"
+            - name: GOUNITY_DEBUG
+              value: "false"
+            - name: X_CSI_ISCSI_CHROOT
+              value: /noderoot
+            - name: X_CSI_UNITY_NODENAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: spec.nodeName
+            - name: X_CSI_UNITY_NODENAME_PREFIX
+              value: csi-node
+            - name: X_CSI_PRIVATE_MOUNT_DIR
+              value: /var/lib/kubelet/plugins/unity.emc.dell.com/disks
+            - name: SSL_CERT_DIR
+              value: /certs
+          image: dellemc/csi-unity:latest
+          imagePullPolicy: IfNotPresent
+          name: driver
+          resources: {}
+          securityContext:
+            capabilities:
+              add:
+                - SYS_ADMIN
+            privileged: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/lib/kubelet/plugins/unity.emc.dell.com
+              name: driver-path
+            - mountPath: /var/lib/kubelet/plugins/kubernetes.io/csi/volumeDevices
+              mountPropagation: Bidirectional
+              name: volumedevices-path
+            - mountPath: /var/lib/kubelet/pods
+              mountPropagation: Bidirectional
+              name: pods-path
+            - mountPath: /dev
+              name: dev
+            - mountPath: /sys
+              name: sys
+            - mountPath: /noderoot
+              name: noderoot
+            - mountPath: /certs
+              name: certs
+              readOnly: true
+        - args:
+            - --v=5
+            - --csi-address=$(ADDRESS)
+            - --kubelet-registration-path=/var/lib/kubelet/plugins/unity.emc.dell.com/csi_sock
+          env:
+            - name: ADDRESS
+              value: /csi/csi_sock
+            - name: KUBE_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: spec.nodeName
+          image: quay.io/k8scsi/csi-node-driver-registrar:v1.1.0
+          imagePullPolicy: IfNotPresent
+          name: registrar
+          resources: {}
+          securityContext: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /registration
+              name: registration-dir
+            - mountPath: /csi
+              name: driver-path
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      serviceAccountName: unity-node
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - hostPath:
+            path: /var/lib/kubelet/plugins_registry/
+            type: DirectoryOrCreate
+          name: registration-dir
+        - hostPath:
+            path: /var/lib/kubelet/plugins/unity.emc.dell.com
+            type: DirectoryOrCreate
+          name: driver-path
+        - hostPath:
+            path: /var/lib/kubelet/plugins/kubernetes.io/csi/volumeDevices
+            type: DirectoryOrCreate
+          name: volumedevices-path
+        - hostPath:
+            path: /var/lib/kubelet/pods
+            type: Directory
+          name: pods-path
+        - hostPath:
+            path: /dev
+            type: Directory
+          name: dev
+        - hostPath:
+            path: /sys
+            type: Directory
+          name: sys
+        - hostPath:
+            path: /
+            type: Directory
+          name: noderoot
+        - name: certs
+          secret:
+            defaultMode: 420
+            optional: true
+            secretName: unity-certs
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate

@@ -1,0 +1,19 @@
+# Adds namespace to all resources.
+namespace: test-operator
+namePrefix: dell-csi-operator-
+# Labels to add to all resources and selectors.
+#commonLabels:
+#  someName: someValue
+
+resources:
+- ./namespace.yaml
+- ../serviceaccount
+- ../rbac
+- ../manager
+
+generatorOptions:
+  disableNameSuffixHash: true
+configMapGenerator:
+- files:
+  - config.tar.gz
+  name: config

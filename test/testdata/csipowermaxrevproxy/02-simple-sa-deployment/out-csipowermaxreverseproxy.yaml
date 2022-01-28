@@ -1,0 +1,33 @@
+apiVersion: storage.dell.com/v1
+kind: CSIPowerMaxRevProxy
+metadata:
+  name: powermax-reverseproxy
+  namespace: test-powermax
+spec:
+  image: dellemc/csipowermax-reverseproxy:v1.4.0.000R
+  tlsSecret: csirevproxy-tls-secret
+  config:
+    mode: StandAlone
+    standAloneConfig:
+      storageArrays:
+      - storageArrayId: "000000000001"
+        primaryURL: https://0.0.0.0:8443
+        backupURL: https://0.0.0.0:8443
+        proxyCredentialSecrets:
+        - powermax-creds
+      managementServers:
+      - url: https://0.0.0.0:8443
+        arrayCredentialSecret: powermax-creds
+        skipCertificateValidation: true
+      - url: https://0.0.0.0:8443
+        arrayCredentialSecret: powermax-creds
+        skipCertificateValidation: true
+status:
+  lastUpdate:
+    condition: Succeeded
+    time: '2020-08-31T10:34:49Z'
+  proxyHash: 0x99cf347a
+  proxyStatus:
+    stopped:
+    - powermax-reverseproxy
+  state: Succeeded

@@ -1,0 +1,18 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  creationTimestamp: null
+  name: test-unity-iscsi
+  ownerReferences:
+    - apiVersion: storage.dell.com/v1
+      blockOwnerDeletion: false
+      controller: true
+      kind: CSIUnity
+      name: test-unity
+      uid: ""
+parameters:
+  protocol: iSCSCI
+  storagepool: pool_1
+provisioner: csi-unity.dellemc.com
+reclaimPolicy: Delete
+volumeBindingMode: Immediate

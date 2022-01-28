@@ -1,0 +1,20 @@
+# permissions for end users to view csiunities.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: csiunity-viewer-role
+rules:
+- apiGroups:
+  - storage.dell.com
+  resources:
+  - csiunities
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - storage.dell.com
+  resources:
+  - csiunities/status
+  verbs:
+  - get

@@ -1,0 +1,72 @@
+apiVersion: storage.dell.com/v1
+kind: CSIPowerMax
+metadata:
+  name: test-powermax
+  namespace: test-powermax
+  annotations:
+    storage.dell.com/CSIDriverConfigVersion: v2.1.0
+    storage.dell.com/attacher.Image: k8s.gcr.io/sig-storage/csi-attacher:v3.3.0
+    storage.dell.com/attacher.Image.IsDefault: "true"
+    storage.dell.com/provisioner.Image: k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0
+    storage.dell.com/provisioner.Image.IsDefault: "true"
+    storage.dell.com/registrar.Image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
+    storage.dell.com/registrar.Image.IsDefault: "true"
+    storage.dell.com/resizer.Image: k8s.gcr.io/sig-storage/csi-resizer:v1.3.0
+    storage.dell.com/resizer.Image.IsDefault: "true"
+    storage.dell.com/snapshotter.Image: k8s.gcr.io/sig-storage/csi-snapshotter:v4.2.1
+    storage.dell.com/snapshotter.Image.IsDefault: "true"
+  finalizers: 
+    - "finalizer.dell.emc.com"
+spec:
+  driver:
+    configVersion: v2.1.0
+    replicas: 1
+    dnsPolicy: ClusterFirstWithHostNet
+    common:
+      image: "dellemc/csi-powermax:v2.1.0.000R"
+      imagePullPolicy: IfNotPresent
+      envs:
+        - name: X_CSI_MANAGED_ARRAYS
+          value: "000000000000,000000000001"
+        - name: X_CSI_POWERMAX_ENDPOINT
+          value: "https://0.0.0.0:8443/"
+        - name: X_CSI_K8S_CLUSTER_PREFIX
+          value: "XYZ"
+        - name: "X_CSI_POWERMAX_PORTGROUPS"
+          value: ""
+        - name: "X_CSI_POWERMAX_ARRAYS"
+          value: ""
+        - name: "X_CSI_TRANSPORT_PROTOCOL"
+          value: ""
+    node:
+      envs:
+        - name: "X_CSI_POWERMAX_ISCSI_ENABLE_CHAP"
+          value: "false"
+    sideCars:
+      - image: k8s.gcr.io/sig-storage/csi-snapshotter:v4.2.1
+        imagePullPolicy: IfNotPresent
+        name: snapshotter
+      - image: k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0
+        imagePullPolicy: IfNotPresent
+        name: provisioner
+      - image: k8s.gcr.io/sig-storage/csi-attacher:v3.3.0
+        imagePullPolicy: IfNotPresent
+        name: attacher
+      - image: k8s.gcr.io/sig-storage/csi-resizer:v1.3.0
+        imagePullPolicy: IfNotPresent
+        name: resizer
+      - image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
+        imagePullPolicy: IfNotPresent
+        name: registrar
+status:
+  controllerStatus:
+    stopped:
+      - "powermax-controller"
+  nodeStatus:
+    stopped:
+      - "powermax-node"
+  driverHash: 0x4b5f4832
+  state: "Succeeded"
+  lastUpdate:
+    condition: "Succeeded"
+    time: "2020-06-22T12:52:28Z"

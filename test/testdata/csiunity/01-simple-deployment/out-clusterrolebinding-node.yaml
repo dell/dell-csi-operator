@@ -1,0 +1,19 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: test-unity-node
+  ownerReferences:
+    - apiVersion: storage.dell.com/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CSIUnity
+      name: test-unity
+      uid: ""
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: test-unity-node
+subjects:
+  - kind: ServiceAccount
+    name: unity-node
+    namespace: test-unity

@@ -1,0 +1,16 @@
+apiVersion: storage.k8s.io/v1
+kind: CSIDriver
+metadata:
+  name: csi-powerstore.dellemc.com
+  ownerReferences:
+    - apiVersion: storage.dell.com/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CSIPowerStore
+      name: test-powerstore
+spec:
+  attachRequired: true
+  podInfoOnMount: true
+  volumeLifecycleModes:
+    - Persistent
+    - Ephemeral

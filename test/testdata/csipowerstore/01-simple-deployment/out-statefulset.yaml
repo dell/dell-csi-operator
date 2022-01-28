@@ -1,0 +1,192 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: powerstore-controller
+  namespace: test-powerstore
+  ownerReferences:
+    - apiVersion: storage.dell.com/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CSIPowerStore
+      name: test-powerstore
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: powerstore-controller
+  template:
+    metadata:
+      labels:
+        app: powerstore-controller
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - powerstore-controller
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - args:
+            - --leader-election
+          env:
+            - name: CSI_ENDPOINT
+              value: /var/run/csi/csi.sock
+            - name: X_CSI_DRIVER_NAME
+              value: csi-powerstore.dellemc.com
+            - name: X_CSI_DEBUG
+              value: "true"
+            - name: X_CSI_MODE
+              value: controller
+            - name: X_CSI_POWERSTORE_CONFIG_PATH
+              value: /powerstore-config/config
+            - name: X_CSI_POWERSTORE_CONFIG_PARAMS_PATH
+              value: /powerstore-config-params/driver-config-params.yaml
+            - name: X_CSI_HEALTH_MONITOR_ENABLED
+              value: "false"
+            - name: X_CSI_POWERSTORE_NODE_NAME_PREFIX
+              value: csi
+            - name: X_CSI_FC_PORTS_FILTER_FILE_PATH
+              value: /etc/fc-ports-filter
+          image: dellemc/csi-powerstore:v2.1.0
+          imagePullPolicy: IfNotPresent
+          name: driver
+          resources: {}
+          securityContext: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/csi
+              name: socket-dir
+            - mountPath: /certs
+              name: certs
+              readOnly: true
+            - mountPath: /powerstore-config
+              name: powerstore-config
+              readOnly: true
+            - mountPath: /powerstore-config-params
+              name: powerstore-config-params
+              readOnly: true
+        - args:
+            - "--csi-address=$(ADDRESS)"
+            - "--timeout=180s"
+            - "--v=5"
+            - "--leader-election"
+            - "--monitor-interval=60s"
+            - "--enable-node-watcher=true"
+            - "--http-endpoint=:8080"
+          env:
+            - name: ADDRESS
+              value: /var/run/csi/csi.sock
+          image: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.4.0
+          imagePullPolicy: IfNotPresent
+          name: external-health-monitor
+          resources: {}
+          securityContext: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/csi
+              name: socket-dir
+        - args:
+            - --csi-address=$(ADDRESS)
+            - --volume-name-uuid-length=10
+            - --v=5
+            - --volume-name-prefix=csi-pstore
+            - --leader-election
+            - --default-fstype=ext4
+            - --extra-create-metadata
+          env:
+            - name: ADDRESS
+              value: /var/run/csi/csi.sock
+          image: k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0
+          imagePullPolicy: IfNotPresent
+          name: provisioner
+          resources: {}
+          securityContext: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/csi
+              name: socket-dir
+        - args:
+            - --csi-address=$(ADDRESS)
+            - --v=5
+            - --leader-election
+            - --worker-threads=130
+            - --resync=10s
+            - --timeout=130s
+          env:
+            - name: ADDRESS
+              value: /var/run/csi/csi.sock
+          image: k8s.gcr.io/sig-storage/csi-attacher:v3.3.0
+          imagePullPolicy: IfNotPresent
+          name: attacher
+          resources: {}
+          securityContext: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/csi
+              name: socket-dir
+        - args:
+            - --csi-address=$(ADDRESS)
+            - --v=5
+            - --leader-election
+          env:
+            - name: ADDRESS
+              value: /var/run/csi/csi.sock
+          image: k8s.gcr.io/sig-storage/csi-resizer:v1.3.0
+          imagePullPolicy: IfNotPresent
+          name: resizer
+          resources: {}
+          securityContext: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/csi
+              name: socket-dir
+        - args:
+            - --v=5
+            - --csi-address=$(ADDRESS)
+            - --leader-election
+          env:
+            - name: ADDRESS
+              value: /var/run/csi/csi.sock
+          image: k8s.gcr.io/sig-storage/csi-snapshotter:v4.2.1
+          imagePullPolicy: IfNotPresent
+          name: snapshotter
+          resources: {}
+          securityContext: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/csi
+              name: socket-dir
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      serviceAccountName: powerstore-controller
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - emptyDir: {}
+          name: socket-dir
+        - name: certs
+          secret:
+            defaultMode: 420
+            optional: true
+            secretName: powerstore-certs
+        - name: powerstore-config
+          secret:
+            defaultMode: 420
+            optional: false
+            secretName: powerstore-config
+        - name: powerstore-config-params
+          configMap:
+            defaultMode: 420
+            optional: false
+            name: powerstore-config-params

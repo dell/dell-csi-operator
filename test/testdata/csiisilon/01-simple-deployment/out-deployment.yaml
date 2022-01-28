@@ -1,0 +1,208 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: isilon-controller
+  namespace: test-isilon
+  ownerReferences:
+  - apiVersion: storage.dell.com/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CSIIsilon
+    name: test-isilon
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: isilon-controller
+  template:
+    metadata:
+      labels:
+        app: isilon-controller
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - isilon-controller
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - args:
+        - --driver-config-params=/csi-isilon-config-params/driver-config-params.yaml
+        - --leader-election
+        env:
+        - name: CSI_ENDPOINT
+          value: /var/run/csi/csi.sock
+        - name: X_CSI_MODE
+          value: controller
+        - name: X_CSI_ISI_AUTOPROBE
+          value: "true"
+        - name: X_CSI_ISI_SKIP_CERTIFICATE_VALIDATION
+          value: "true"
+        - name: X_CSI_NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
+        - name: SSL_CERT_DIR
+          value: /certs
+        - name: X_CSI_ISI_PORT
+          value: "8080"
+        - name: X_CSI_CUSTOM_TOPOLOGY_ENABLED
+          value: "false"
+        - name: X_CSI_ISI_VOLUME_PATH_PERMISSIONS
+          value: "0777"
+        - name: X_CSI_HEALTH_MONITOR_ENABLED
+          value: "false"
+        - name: X_CSI_VERBOSE
+          value: "1"
+        - name: X_CSI_ISI_PATH
+          value: /ifs/data/csi
+        - name: X_CSI_ISI_NO_PROBE_ON_START
+          value: "false"
+        - name: X_CSI_ISI_QUOTA_ENABLED
+          value: "true"
+        - name: X_CSI_ISI_ACCESS_ZONE
+          value: System
+        image: dellemc/csi-isilon:v2.1.0
+        imagePullPolicy: IfNotPresent
+        name: driver
+        resources: {}
+        securityContext: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/run/csi
+          name: socket-dir
+        - mountPath: /certs
+          name: certs
+          readOnly: true
+        - mountPath: /isilon-configs
+          name: isilon-configs
+          readOnly: true
+        - mountPath: /csi-isilon-config-params
+          name: csi-isilon-config-params
+          readOnly: true
+      - args:
+        - --csi-address=$(ADDRESS)
+        - --timeout=120s
+        - --volume-name-uuid-length=10
+        - --timeout=180s
+        - --worker-threads=6
+        - --v=5
+        - --volume-name-prefix=csipscale
+        - --leader-election
+        env:
+        - name: ADDRESS
+          value: /var/run/csi/csi.sock
+        image: k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0
+        imagePullPolicy: IfNotPresent
+        name: provisioner
+        resources: {}
+        securityContext: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/run/csi
+          name: socket-dir
+      - args:
+        - "--csi-address=$(ADDRESS)"
+        - "--timeout=180s"
+        - "--v=5"
+        - "--leader-election"
+        - "--monitor-interval=60s"
+        - "--enable-node-watcher=true"
+        - "--http-endpoint=:8080"
+        env:
+        - name: ADDRESS
+          value: /var/run/csi/csi.sock
+        image: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.4.0
+        imagePullPolicy: IfNotPresent
+        name: external-health-monitor
+        resources: {}
+        securityContext: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/run/csi
+          name: socket-dir
+      - args:
+        - --csi-address=$(ADDRESS)
+        - --v=5
+        - --timeout=180s
+        - --leader-election
+        env:
+        - name: ADDRESS
+          value: /var/run/csi/csi.sock
+        image: k8s.gcr.io/sig-storage/csi-attacher:v3.3.0
+        imagePullPolicy: IfNotPresent
+        name: attacher
+        resources: {}
+        securityContext: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/run/csi
+          name: socket-dir
+      - args:
+        - --csi-address=$(ADDRESS)
+        - --timeout=15s
+        - --v=5
+        - --leader-election
+        env:
+        - name: ADDRESS
+          value: /var/run/csi/csi.sock
+        image: k8s.gcr.io/sig-storage/csi-snapshotter:v4.2.1
+        imagePullPolicy: IfNotPresent
+        name: snapshotter
+        resources: {}
+        securityContext: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/run/csi
+          name: socket-dir
+      - args:
+        - --csi-address=$(ADDRESS)
+        - --v=5
+        - --leader-election
+        env:
+        - name: ADDRESS
+          value: /var/run/csi/csi.sock
+        image: k8s.gcr.io/sig-storage/csi-resizer:v1.3.0
+        imagePullPolicy: IfNotPresent
+        name: resizer
+        resources: {}
+        securityContext: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/run/csi
+          name: socket-dir
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      serviceAccountName: isilon-controller
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - emptyDir: {}
+        name: socket-dir
+      - name: certs
+        secret:
+          defaultMode: 420
+          optional: true
+          secretName: isilon-certs
+      - name: isilon-configs
+        secret:
+          defaultMode: 420
+          optional: true
+          secretName: isilon-creds
+      - configMap:
+          defaultMode: 420
+          name: isilon-config-params
+          optional: true
+        name: csi-isilon-config-params

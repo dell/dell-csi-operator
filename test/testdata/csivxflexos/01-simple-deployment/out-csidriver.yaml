@@ -1,0 +1,16 @@
+apiVersion: storage.k8s.io/v1
+kind: CSIDriver
+metadata:
+  name: csi-vxflexos.dellemc.com
+  ownerReferences:
+  - apiVersion: storage.dell.com/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CSIVXFlexOS
+    name: test-vxflexos
+spec:
+  attachRequired: true
+  podInfoOnMount: true
+  volumeLifecycleModes:
+    - Persistent
+    - Ephemeral

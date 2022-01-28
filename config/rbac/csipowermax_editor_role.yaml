@@ -1,0 +1,24 @@
+# permissions for end users to edit csipowermaxes.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: csipowermax-editor-role
+rules:
+- apiGroups:
+  - storage.dell.com
+  resources:
+  - csipowermaxes
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - storage.dell.com
+  resources:
+  - csipowermaxes/status
+  verbs:
+  - get

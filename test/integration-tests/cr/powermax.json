@@ -1,0 +1,55 @@
+{
+    "apiVersion": "storage.dell.com/v1",
+    "kind": "CSIPowerMax",
+    "metadata": {
+      "name": "test-powermax",
+      "namespace": "test-powermax"
+    },
+    "spec": {
+        "driver": {
+            "configVersion": "v1",
+            "replicas": 1,
+            "forceUpdate": false,
+            "common": {
+                "image": "10.243.149.79:8443/csi-powermax:v1.3.0.008X",
+                "imagePullPolicy": "IfNotPresent",
+                "envs": [
+                    {
+                        "name": "X_CSI_POWERMAX_ENDPOINT",
+                        "value": "https://10.247.73.133:8443"
+                    },
+                    {
+                        "name": "X_CSI_K8S_CLUSTER_PREFIX",
+                        "value": "ADD"
+                    },
+                    {
+                        "name": "X_CSI_POWERMAX_PORTGROUPS",
+                        "value": "iscsi_ports"
+                    }
+                ]
+            },
+            "sideCars": [
+                { 
+                    "name": "snapshotter" 
+                }
+            ],
+            "storageClass": [
+                {
+                    "name": "bronze",
+                    "default": true,
+                    "reclaimPolicy": "Delete",
+                    "parameters": {
+                        "SYMID": "000197900046",
+                        "SRP": "SRP_1",
+                        "ServiceLevel": "Bronze"
+                    }
+                }
+            ],
+            "snapshotClass": [
+                {
+                    "name": "powermax-snapclass"
+                }
+            ]
+        }
+    }
+}

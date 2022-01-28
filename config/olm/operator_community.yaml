@@ -1,0 +1,30 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: dellemc-registry
+  namespace: test-olm
+spec:
+  sourceType: grpc
+  image: dellemc/dellemcregistry_community:v1.7.0
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  annotations:
+    olm.providedAPIs: CSIIsilon.v1.storage.dell.com,CSIPowerMax.v1.storage.dell.com,CSIUnity.v1.storage.dell.com,CSIVXFlexOS.v1.storage.dell.com,CSIPowerStore.v1.storage.dell.com,CSIPowerMaxRevProxy.v1.storage.dell.com
+  name: dellemc-operators
+  namespace: test-olm
+spec:
+  targetNamespaces:
+    - test-olm
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: dellemc-subscription
+  namespace: test-olm
+spec:
+  channel: stable
+  name: dell-csi-operator
+  source: dellemc-registry
+  sourceNamespace: test-olm

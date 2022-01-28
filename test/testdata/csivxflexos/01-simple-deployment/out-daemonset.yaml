@@ -1,0 +1,217 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: vxflexos-node
+  namespace: test-vxflexos
+  ownerReferences:
+  - apiVersion: storage.dell.com/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CSIVXFlexOS
+    name: test-vxflexos
+    uid: ""
+spec:
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: vxflexos-node
+  template:
+    metadata:
+      labels:
+        app: vxflexos-node
+    spec:
+      containers:
+      - env:
+        - name: CSI_ENDPOINT
+          value: unix:///var/lib/kubelet/plugins/vxflexos.emc.dell.com/csi_sock
+        - name: X_CSI_DEBUG
+          value: "true"
+        - name: X_CSI_MODE
+          value: node
+        - name: X_CSI_ALLOW_RWO_MULTI_POD_ACCESS
+          value: "false"
+        - name: X_CSI_PRIVATE_MOUNT_DIR
+          value: /var/lib/kubelet/plugins/vxflexos.emc.dell.com/disks
+        - name: SSL_CERT_DIR
+          value: "/certs"
+        - name: X_CSI_HEALTH_MONITOR_ENABLED
+          value: "false"
+        - name: X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT
+          value: "false"
+        - name: X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE
+          value: "false"
+        image: dellemc/csi-vxflexos:v2.1.0
+        imagePullPolicy: IfNotPresent
+        name: driver
+        args: 
+        - --array-config=/vxflexos-config/config
+        - --driver-config-params=/vxflexos-config-params/driver-config-params.yaml
+        resources: {}
+        securityContext:
+          capabilities:
+            add:
+            - SYS_ADMIN
+          privileged: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/lib/kubelet/plugins/vxflexos.emc.dell.com
+          name: driver-path
+        - mountPath: /var/lib/kubelet/plugins/kubernetes.io/csi/volumeDevices
+          mountPropagation: Bidirectional
+          name: volumedevices-path
+        - mountPath: /var/lib/kubelet/pods
+          mountPropagation: Bidirectional
+          name: pods-path
+        - mountPath: /dev
+          name: dev
+        - mountPath: /opt/emc/scaleio/sdc/bin
+          name: scaleio-path-opt
+        - mountPath: /certs
+          name: certs
+          readOnly: true
+        - mountPath: /vxflexos-config
+          name: vxflexos-config
+          readOnly: true
+        - mountPath: /vxflexos-config-params
+          name: vxflexos-config-params
+          readOnly: true
+      - args:
+        - --v=5
+        - --csi-address=$(ADDRESS)
+        - --kubelet-registration-path=/var/lib/kubelet/plugins/vxflexos.emc.dell.com/csi_sock
+        env:
+        - name: ADDRESS
+          value: /csi/csi_sock
+        - name: KUBE_NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
+        image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
+        imagePullPolicy: IfNotPresent
+        name: registrar
+        resources: {}
+        securityContext: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /registration
+          name: registration-dir
+        - mountPath: /csi
+          name: driver-path
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
+      initContainers:
+      - env:
+        - name: MDM
+          value: 10.247.32.32,10.247.90.21
+        - name: HOST_DRV_CFG_PATH
+          value: /opt/emc/scaleio/sdc/bin
+        - name: MODE
+          value: config
+        - name: NODENAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
+        - name: REPO_ADDRESS
+        - name: REPO_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: sdc-repo-creds
+              optional: true
+        - name: REPO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: sdc-repo-creds
+              optional: true
+        image: dellemc/sdc:3.5.1.1-1
+        imagePullPolicy: IfNotPresent
+        name: sdc
+        resources: {}
+        securityContext:
+          capabilities:
+            add:
+            - SYS_ADMIN
+          privileged: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /dev
+          name: dev
+        - mountPath: /host-os-release
+          name: os-release
+        - mountPath: /rules.d
+          name: udev-d
+        - mountPath: /storage
+          name: sdc-storage
+        - mountPath: /host_drv_cfg_path
+          name: scaleio-path-opt
+        - mountPath: /config
+          name: sdc-config
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      serviceAccountName: vxflexos-node
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - hostPath:
+          path: /var/lib/kubelet/plugins_registry/
+          type: DirectoryOrCreate
+        name: registration-dir
+      - hostPath:
+          path: /var/lib/kubelet/plugins/vxflexos.emc.dell.com
+          type: DirectoryOrCreate
+        name: driver-path
+      - hostPath:
+          path: /var/lib/kubelet/plugins/kubernetes.io/csi/volumeDevices
+          type: DirectoryOrCreate
+        name: volumedevices-path
+      - hostPath:
+          path: /var/lib/kubelet/pods
+          type: Directory
+        name: pods-path
+      - hostPath:
+          path: /dev
+          type: Directory
+        name: dev
+      - hostPath:
+          path: /opt/emc/scaleio/sdc/bin
+          type: DirectoryOrCreate
+        name: scaleio-path-opt
+      - hostPath:
+          path: /etc/os-release
+          type: File
+        name: os-release
+      - hostPath:
+          path: /var/emc-scaleio
+          type: DirectoryOrCreate
+        name: sdc-storage
+      - hostPath:
+          path: /var/sio-config
+          type: DirectoryOrCreate
+        name: sdc-config
+      - hostPath:
+          path: /etc/udev/rules.d
+          type: Directory
+        name: udev-d
+      - name: certs
+        secret:
+          defaultMode: 420
+          optional: true
+          secretName: vxflexos-certs
+      - name: vxflexos-config
+        secret:
+          defaultMode: 420
+          optional: true
+          secretName: vxflexos-config
+      - name: vxflexos-config-params
+        configMap:
+          name: vxflexos-config-params
+          optional: true
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate

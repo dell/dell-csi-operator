@@ -1,0 +1,21 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  annotations:
+    storageclass.beta.kubernetes.io/is-default-class: "true"
+  creationTimestamp: null
+  name: test-unity-fc
+  ownerReferences:
+    - apiVersion: storage.dell.com/v1
+      blockOwnerDeletion: false
+      controller: true
+      kind: CSIUnity
+      name: test-unity
+      uid: ""
+parameters:
+  protocol: FC
+  storagepool: pool_1
+  tieringPolicy: "2"
+provisioner: csi-unity.dellemc.com
+reclaimPolicy: Delete
+volumeBindingMode: Immediate

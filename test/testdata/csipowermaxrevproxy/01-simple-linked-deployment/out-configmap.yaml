@@ -1,0 +1,25 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: powermax-reverseproxy-config
+  namespace: test-powermax
+  labels:
+    name: powermax-reverseproxy
+  ownerReferences:
+    - apiVersion: storage.dell.com/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CSIPowerMaxRevProxy
+      name: powermax-reverseproxy
+      uid: ""
+data:
+  config.yaml: |
+    mode: Linked
+    port: 2222
+    linkConfig:
+      primary:
+        url: https://0.0.0.0:8443
+        skipCertificateValidation: true
+      backup:
+        url: https://0.0.0.0:8443
+        skipCertificateValidation: true

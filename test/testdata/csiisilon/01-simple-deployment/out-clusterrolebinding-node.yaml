@@ -1,0 +1,17 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: test-isilon-node
+  ownerReferences:
+  - blockOwnerDeletion: true
+    controller: true
+    name: test-isilon-test-isilon-dummy
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: test-isilon-node
+subjects:
+- kind: ServiceAccount
+  name: isilon-node
+  namespace: test-isilon
+

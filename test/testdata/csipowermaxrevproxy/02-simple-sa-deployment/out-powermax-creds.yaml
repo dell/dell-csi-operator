@@ -1,0 +1,9 @@
+kind: Secret
+apiVersion: v1
+metadata:
+  name: powermax-creds
+  namespace: test-powermax
+data:
+  password: c21j
+  username: c21j
+type: Opaque
