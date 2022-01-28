@@ -5,7 +5,7 @@ metadata:
   namespace: test-olm
 spec:
   sourceType: grpc
-  image: amaas-eos-mw1.cec.lab.emc.com:5035/csi-operator/dellemcregistry_certified:v1.7.0
+  image: dellemc/dellemcregistry_certified:v1.7.0
 ---
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup

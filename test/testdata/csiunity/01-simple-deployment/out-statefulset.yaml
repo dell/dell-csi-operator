@@ -57,7 +57,7 @@ spec:
               value: csivol
             - name: SSL_CERT_DIR
               value: /certs
-          image: amaas-eos-mw1.cec.lab.emc.com:5028/csi-unity/csi-unity-seelam:20200311143220
+          image: dellemc/csi-unity:latest
           imagePullPolicy: IfNotPresent
           name: driver
           resources: {}

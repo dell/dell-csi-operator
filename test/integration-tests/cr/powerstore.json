@@ -26,7 +26,7 @@
             "value": "/etc/fc-ports-filter"
           }
         ],
-        "image": "amaas-eos-mw1.cec.lab.emc.com:5017/csi_powerstore:v1.2.0.000X",
+        "image": "dellemc/csi_powerstore:latest",
         "imagePullPolicy": "IfNotPresent"
       },
       "configVersion": "v2",

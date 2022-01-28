@@ -17,7 +17,7 @@ spec:
           value: https://10.247.55.82
         - name: X_CSI_UNITY_INSECURE
           value: "true"
-      image: amaas-eos-mw1.cec.lab.emc.com:5028/csi-unity/csi-unity-seelam:20200311143220
+      image: dellemc/csi-unity:latest
       imagePullPolicy: IfNotPresent
     sideCars:
       - args:

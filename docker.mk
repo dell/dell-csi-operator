@@ -22,7 +22,7 @@ endif
 BUNDLE_METADATA_OPTS ?= $(BUNDLE_CHANNELS) $(BUNDLE_DEFAULT_CHANNEL)
 
 # Registry for all images
-REGISTRY ?= "dellemc/dell-csi-operator"
+REGISTRY ?= "dellemc"
 
 # Default Operator image name
 OPERATOR_IMAGE ?= dell-csi-operator

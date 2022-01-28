@@ -9,7 +9,7 @@ spec:
     replicas: 1
     dnsPolicy: ClusterFirstWithHostNet
     common:
-      image: "amaas-eos-mw1.cec.lab.emc.com:5028/csi-unity/csi-unity-seelam:20200311143220"
+      image: "dellemc/csi-unity:latest"
       imagePullPolicy: IfNotPresent
       envs:
         - name: X_CSI_UNITY_DEBUG

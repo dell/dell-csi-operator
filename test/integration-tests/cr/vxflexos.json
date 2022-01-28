@@ -10,7 +10,7 @@
       "configVersion": "v3",
       "replicas": 1,
       "common": {
-        "image": "amaas-eos-mw1.cec.lab.emc.com:5036/vxflexos:v1.1.4",
+        "image": "dellemc/vxflexos:v1.1.4",
         "imagePullPolicy": "IfNotPresent",
         "envs": [
           {
