@@ -10,7 +10,7 @@
       "configVersion": "v3",
       "replicas": 1,
       "common": {
-        "image": "dellemc/vxflexos:v1.1.4",
+        "image": "dellemc/vxflexos:v2.1.0",
         "imagePullPolicy": "IfNotPresent",
         "envs": [
           {

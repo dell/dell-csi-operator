@@ -98,11 +98,20 @@
         "SetForNode": true,
         "DefaultValueForController": "",
         "DefaultValueForNode": "0"
+      },
+      {
+        "Name": "X_CSI_ENABLE_VOL_HEALTH_MONITOR",
+        "CSIEnvType": "Boolean",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "false",
+        "DefaultValueForNode": "false"
       }
     ],
     "driverArgs": [
       "--driver-name=csi-unity.dellemc.com",
-      "--driver-config=/unity-config/config"
+      "--driver-config=/unity-config/driver-config-params.yaml",
+      "--driver-secret=/unity-secret/config"
     ],
     "driverNodeVolumes": [
       {
@@ -148,15 +157,15 @@
         "name": "noderoot"
       },
       {
-        "name": "certs",
-        "secret": {
+        "name": "unity-config",
+        "configMap": {
           "defaultMode": 420,
-          "secretName": "unity-certs",
+          "name": "unity-config-params",
           "optional": true
         }
       },
       {
-        "name": "unity-config",
+        "name": "unity-secret",
         "secret": {
           "defaultMode": 420,
           "secretName": "unity-creds",
@@ -179,6 +188,14 @@
       },
       {
         "name": "unity-config",
+        "configMap": {
+          "defaultMode": 420,
+          "name": "unity-config-params",
+          "optional": true
+        }
+      },
+      {
+        "name": "unity-secret",
         "secret": {
           "defaultMode": 420,
           "secretName": "unity-creds",
@@ -199,6 +216,11 @@
       {
         "mountPath": "/unity-config",
         "name": "unity-config",
+        "readOnly": true
+      },
+      {
+        "mountPath": "/unity-secret",
+        "name": "unity-secret",
         "readOnly": true
       }
     ],
@@ -233,6 +255,11 @@
       {
         "mountPath": "/unity-config",
         "name": "unity-config",
+        "readOnly": true
+      },
+      {
+        "mountPath": "/unity-secret",
+        "name": "unity-secret",
         "readOnly": true
       }
     ],
@@ -293,6 +320,31 @@
           "--csi-address=$(ADDRESS)",
           "--snapshot-name-prefix=csi-snap",
           "--leader-election"
+        ],
+        "envs": [
+          {
+            "name": "ADDRESS",
+            "value": "/var/run/csi/csi.sock"
+          }
+        ],
+        "volumeMounts": [
+          {
+            "mountPath": "/var/run/csi",
+            "name": "socket-dir"
+          }
+        ]
+      },
+      {
+        "name": "external-health-monitor",
+        "optional": true,
+        "args": [
+          "--csi-address=$(ADDRESS)",
+          "--timeout=180s",
+          "--v=5",
+          "--leader-election",
+          "--monitor-interval=60s",
+          "--enable-node-watcher=true",
+          "--http-endpoint=:8080"
         ],
         "envs": [
           {

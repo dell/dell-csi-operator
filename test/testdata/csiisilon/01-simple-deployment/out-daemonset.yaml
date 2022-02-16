@@ -62,7 +62,7 @@ spec:
           value: /ifs/data/csi
         - name: X_CSI_ISI_NO_PROBE_ON_START
           value: "false"
-        image: dellemc/csi-isilon:v2.1.0
+        image: dellemc/csi-isilon:v2.2.0
         imagePullPolicy: IfNotPresent
         name: driver
         resources: {}
@@ -104,7 +104,7 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: spec.nodeName
-        image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
+        image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.0
         imagePullPolicy: IfNotPresent
         name: registrar
         resources: {}
@@ -160,6 +160,5 @@ spec:
         name: csi-isilon-config-params
   updateStrategy:
     rollingUpdate:
-      maxSurge: 0
       maxUnavailable: 1
     type: RollingUpdate

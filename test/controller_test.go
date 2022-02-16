@@ -78,7 +78,7 @@ func (suite *ControllerTestSuite) SetupSuite() {
 			reconciler: &controllers.CSIPowerMaxReconciler{
 				Log: ctrl.Log.WithName("controllers").WithName("CSIPowerMax"),
 			},
-			k8sVersion: "v120",
+			k8sVersion: "v121",
 			findCR: func(inObjects []runtime.Object) (string, string) {
 				for _, o := range inObjects {
 					if cr, ok := o.(*v1.CSIPowerMax); ok {

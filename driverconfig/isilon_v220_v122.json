@@ -28,15 +28,7 @@
         "DefaultValueForNode": "true"
       },
       {
-        "Name": "X_CSI_DEBUG",
-        "CSIEnvType": "Boolean",
-        "SetForController": true,
-        "SetForNode": true,
-        "DefaultValueForController": "true",
-        "DefaultValueForNode": "true"
-      },
-      {
-        "Name": "X_CSI_ISI_INSECURE",
+        "Name": "X_CSI_ISI_SKIP_CERTIFICATE_VALIDATION",
         "CSIEnvType": "Boolean",
         "SetForController": true,
         "SetForNode": true,
@@ -107,7 +99,26 @@
         "SetForNode": true,
         "DefaultValueForController": "",
         "DefaultValueForNode": "0"
+      },
+      {
+        "Name": "X_CSI_ISI_VOLUME_PATH_PERMISSIONS",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": false,
+        "DefaultValueForController": "0777",
+        "DefaultValueForNode": ""
+      },
+      {
+        "Name": "X_CSI_HEALTH_MONITOR_ENABLED",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "false",
+        "DefaultValueForNode": "false"
       }
+    ],
+    "driverArgs": [
+      "--driver-config-params=/csi-isilon-config-params/driver-config-params.yaml"
     ],
     "driverControllerVolumes": [
       {
@@ -129,6 +140,14 @@
           "secretName": "isilon-creds",
           "optional": true
         }
+      },
+      {
+        "name": "csi-isilon-config-params",
+        "configMap": {
+          "defaultMode": 420,
+          "name": "isilon-config-params",
+          "optional": true
+        }
       }
     ],
     "driverControllerVolumeMounts": [
@@ -144,6 +163,11 @@
       {
         "mountPath": "/isilon-configs",
         "name": "isilon-configs",
+        "readOnly": true
+      },
+      {
+        "mountPath": "/csi-isilon-config-params",
+        "name": "csi-isilon-config-params",
         "readOnly": true
       }
     ],
@@ -198,6 +222,14 @@
           "secretName": "isilon-creds",
           "optional": true
         }
+      },
+      {
+        "name": "csi-isilon-config-params",
+        "configMap": {
+          "defaultMode": 420,
+          "name": "isilon-config-params",
+          "optional": true
+        }
       }
     ],
     "driverNodeVolumeMounts": [
@@ -226,6 +258,11 @@
       {
         "mountPath": "/isilon-configs",
         "name": "isilon-configs",
+        "readOnly": true
+      },
+      {
+        "mountPath": "/csi-isilon-config-params",
+        "name": "csi-isilon-config-params",
         "readOnly": true
       }
     ],
@@ -283,6 +320,31 @@
           "--timeout=15s",
           "--v=5",
           "--leader-election"
+        ],
+        "envs": [
+          {
+            "name": "ADDRESS",
+            "value": "/var/run/csi/csi.sock"
+          }
+        ],
+        "volumeMounts": [
+          {
+            "mountPath": "/var/run/csi",
+            "name": "socket-dir"
+          }
+        ]
+      },
+      {
+        "name": "external-health-monitor",
+        "optional": true,
+        "args": [
+          "--csi-address=$(ADDRESS)",
+          "--timeout=180s",
+          "--v=5",
+          "--leader-election",
+          "--monitor-interval=60s",
+          "--enable-node-watcher=true",
+          "--http-endpoint=:8080"
         ],
         "envs": [
           {

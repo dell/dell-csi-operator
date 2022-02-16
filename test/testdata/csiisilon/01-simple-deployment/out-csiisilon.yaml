@@ -2,16 +2,16 @@ apiVersion: storage.dell.com/v1
 kind: CSIIsilon
 metadata:
   annotations:
-    storage.dell.com/CSIDriverConfigVersion: v2.1.0
-    storage.dell.com/attacher.Image: k8s.gcr.io/sig-storage/csi-attacher:v3.3.0
+    storage.dell.com/CSIDriverConfigVersion: v2.2.0
+    storage.dell.com/attacher.Image: k8s.gcr.io/sig-storage/csi-attacher:v3.4.0
     storage.dell.com/attacher.Image.IsDefault: "true"
-    storage.dell.com/provisioner.Image: k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0
+    storage.dell.com/provisioner.Image: k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0
     storage.dell.com/provisioner.Image.IsDefault: "true"
-    storage.dell.com/registrar.Image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
+    storage.dell.com/registrar.Image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.0
     storage.dell.com/registrar.Image.IsDefault: "true"
-    storage.dell.com/resizer.Image: k8s.gcr.io/sig-storage/csi-resizer:v1.3.0
+    storage.dell.com/resizer.Image: k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
     storage.dell.com/resizer.Image.IsDefault: "true"
-    storage.dell.com/snapshotter.Image: k8s.gcr.io/sig-storage/csi-snapshotter:v4.2.1
+    storage.dell.com/snapshotter.Image: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
     storage.dell.com/snapshotter.Image.IsDefault: "true"
     storage.dell.com/external-health-monitor.Image: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.4.0
     storage.dell.com/external-health-monitor.Image.IsDefault: "true"
@@ -38,9 +38,9 @@ spec:
         value: "true"
       - name: X_CSI_CUSTOM_TOPOLOGY_ENABLED
         value: "false"
-      image: dellemc/csi-isilon:v2.1.0
+      image: dellemc/csi-isilon:v2.2.0
       imagePullPolicy: IfNotPresent
-    configVersion: v2.1.0
+    configVersion: v2.2.0
     controller:
       envs:
       - name: X_CSI_ISI_QUOTA_ENABLED
@@ -60,23 +60,23 @@ spec:
     sideCars:
     - args:
       - --volume-name-prefix=csipscale
-      image: k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0
+      image: k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0
       imagePullPolicy: IfNotPresent
       name: provisioner
     - image: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.4.0
       imagePullPolicy: IfNotPresent
       name: external-health-monitor
       args: ["--monitor-interval=60s"]
-    - image: k8s.gcr.io/sig-storage/csi-attacher:v3.3.0
+    - image: k8s.gcr.io/sig-storage/csi-attacher:v3.4.0
       imagePullPolicy: IfNotPresent
       name: attacher
-    - image: k8s.gcr.io/sig-storage/csi-snapshotter:v4.2.1
+    - image: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
       imagePullPolicy: IfNotPresent
       name: snapshotter
-    - image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
+    - image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.0
       imagePullPolicy: IfNotPresent
       name: registrar
-    - image: k8s.gcr.io/sig-storage/csi-resizer:v1.3.0
+    - image: k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
       imagePullPolicy: IfNotPresent
       name: resizer
 status:
