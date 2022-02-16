@@ -195,10 +195,10 @@ metadata:
                     "value": "/etc/fc-ports-filter"
                   }
                 ],
-                "image": "dellemc/csi-powerstore:v2.1.0",
+                "image": "dellemc/csi-powerstore:v2.2.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.1.0",
+              "configVersion": "v2.2.0",
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
               "node": {
@@ -319,8 +319,7 @@ metadata:
     categories: Storage
     containerImage: dellemc/dell-csi-operator:v1.7.0
     olm.properties: '[{"type": "olm.maxOpenShiftVersion", "value": "4.9"}]'
-    olm.skipRange: '>=1.5.0 <1.6.0'
-    operators.operatorframework.io/builder: operator-sdk-v1.6.1+git
+    operators.operatorframework.io/builder: operator-sdk-v1.14.0+git
     operators.operatorframework.io/project_layout: go.kubebuilder.io/v3
     repository: https://github.com/dell/dell-csi-operator
     support: Dell EMC
@@ -1875,4 +1874,5 @@ spec:
   minKubeVersion: 1.20.0
   provider:
     name: Dell EMC
+  replaces: dell-csi-operator.v1.6.0
   version: 1.7.0

@@ -1,5 +1,5 @@
 # Build the manager binary
-FROM golang:1.16 as builder
+FROM golang:1.17 as builder
 
 WORKDIR /workspace
 # Copy the Go Modules manifests
@@ -25,7 +25,7 @@ FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
 RUN microdnf install yum \
     && yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical \
     && yum clean all \
-    && microdnf remove yum \
+    && rpm -e yum \
     && microdnf clean all
     
 ENV USER_UID=1001 \

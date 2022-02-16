@@ -209,7 +209,7 @@ function create_or_update_configmap() {
   fi
   log step_success
   log step "Create/Update ConfigMap"
-  kubectl create configmap dell-csi-operator-config --from-file "$ROOTDIR/config.tar.gz" -o yaml --dry-run | kubectl apply -n $1 -f - > /dev/null 2>&1
+  kubectl create configmap dell-csi-operator-config --from-file "$ROOTDIR/config.tar.gz" -o yaml --dry-run=client | kubectl apply -n $1 -f - > /dev/null 2>&1
   if [ $? -ne 0 ]; then
     log error "Failed to create/update ConfigMap for operator"
   fi

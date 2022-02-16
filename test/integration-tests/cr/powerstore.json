@@ -26,7 +26,7 @@
             "value": "/etc/fc-ports-filter"
           }
         ],
-        "image": "dellemc/csi_powerstore:latest",
+        "image": "dellemc/csi-powerstore:latest",
         "imagePullPolicy": "IfNotPresent"
       },
       "configVersion": "v2",

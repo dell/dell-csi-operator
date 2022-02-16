@@ -25,6 +25,19 @@ jobs:
         uses: securego/gosec@master
         with:
           args: -exclude=G108,G402,G307 ./...
+  test:
+    name: Run Go unit tests and check package coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Checkout dell-csi-operator
+        uses: actions/checkout@v2
+        with:
+          repository: 'dell/dell-csi-operator'
+          path: 'dell-csi-operator'
+      - name: Run unit tests and check package coverage
+        run: make unit-test
   malware_security_scan:
     name: Malware Scanner
     runs-on: ubuntu-latest
