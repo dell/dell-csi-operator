@@ -207,6 +207,7 @@ func isEnvPresent(name string, envs []corev1.EnvVar) (bool, string) {
 	return false, ""
 }
 
+// GetSideCarTypeFromName - returns sidecar type from name
 func GetSideCarTypeFromName(sideCarName string) (csiv1.ImageType, error) {
 	switch sideCarName {
 	case csiv1.Provisioner:

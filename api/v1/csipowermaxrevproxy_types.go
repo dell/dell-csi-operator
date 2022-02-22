@@ -23,6 +23,7 @@ import (
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
+
 // ProxyLimits is used for storing the various types of limits
 // applied for a particular proxy instance
 type ProxyLimits struct {
@@ -113,8 +114,8 @@ type CSIPowerMaxRevProxyStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=csipowermaxrevproxies,scope=Namespaced
 
-// +operator-sdk:csv:customresourcedefinitions:displayName="CSI PowerMax ReverseProxy",resources={{Deployment,v1,powermax-reverseproxy}}
 // CSIPowerMaxRevProxy is the Schema for the csipowermaxrevproxies API
+// +operator-sdk:csv:customresourcedefinitions:displayName="CSI PowerMax ReverseProxy",resources={{Deployment,v1,powermax-reverseproxy}}
 type CSIPowerMaxRevProxy struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

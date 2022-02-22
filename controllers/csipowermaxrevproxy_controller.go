@@ -79,6 +79,7 @@ type CSIPowerMaxRevProxyReconciler struct {
 
 // +kubebuilder:rbac:groups=storage.dell.com,resources=csipowermaxrevproxies;csipowermaxrevproxies/finalizers;csipowermaxrevproxies/status,verbs=*
 
+// Reconcile function reconciles a CSIPowerMax object
 func (r *CSIPowerMaxRevProxyReconciler) Reconcile(ctx context.Context, request ctrl.Request) (ctrl.Result, error) {
 	reqLogger := log.WithValues("Request.Namespace", request.Namespace, "Request.Name", request.Name)
 	reqLogger.Info("Reconciling CSIPowerMaxRevProxy")
@@ -220,6 +221,7 @@ func (r *CSIPowerMaxRevProxyReconciler) Reconcile(ctx context.Context, request c
 	return logBannerAndReturn(reconcile.Result{Requeue: true, RequeueAfter: retryInterval}, nil, reqLogger)
 }
 
+// SetupWithManager - sets up controller
 func (r *CSIPowerMaxRevProxyReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	c, err := controller.New("CSIPowerMaxRevProxy", mgr, controller.Options{Reconciler: r})
 	if err != nil {

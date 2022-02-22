@@ -75,6 +75,7 @@ type CSIUnityReconciler struct {
 // +kubebuilder:rbac:groups="coordination.k8s.io",resources=leases,verbs=get;list;watch;create;update;delete
 // +kubebuilder:rbac:groups="security.openshift.io",resources=securitycontextconstraints,resourceNames=privileged,verbs=use
 
+// Reconcile function reconciles a CSIUnity Object
 func (r *CSIUnityReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	log := r.Log.WithValues("csiunity", req.NamespacedName)
 
@@ -82,6 +83,7 @@ func (r *CSIUnityReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	return utils.Reconcile(ctx, csiUnity, req, r, log)
 }
 
+// SetupWithManager - sets up controller
 func (r *CSIUnityReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	c, err := controller.New("CSIUnity", mgr, controller.Options{Reconciler: r})
 	if err != nil {

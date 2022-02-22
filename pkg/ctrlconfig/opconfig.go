@@ -2,11 +2,12 @@ package ctrlconfig
 
 import (
 	"fmt"
-	csiv1 "github.com/dell/dell-csi-operator/api/v1"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	csiv1 "github.com/dell/dell-csi-operator/api/v1"
+	"gopkg.in/yaml.v2"
 )
 
 // OpConfig - Represents the image & RBAC config used by Operator
@@ -61,7 +62,7 @@ type ContainerApp struct {
 func ReadOpConfig(configDirectory, configFileName string) (*OpConfig, error) {
 	configFile := filepath.Join(configDirectory, configFileName)
 	log.Info("Reading file for default image tags", "Filename", configFile)
-	jsonFile, err := os.Open(configFile)
+	jsonFile, err := os.Open(filepath.Clean(configFile))
 	if err != nil {
 		return nil, err
 	}

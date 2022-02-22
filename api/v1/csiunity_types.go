@@ -33,8 +33,8 @@ type CSIUnitySpec struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=csiunities,scope=Namespaced
 
-// +operator-sdk:csv:customresourcedefinitions:displayName="CSI Unity",resources={{Deployment,v1,unity-controller},{DameonSet,v1,unity-node}}
 // CSIUnity is the Schema for the csiunities API
+// +operator-sdk:csv:customresourcedefinitions:displayName="CSI Unity",resources={{Deployment,v1,unity-controller},{DameonSet,v1,unity-node}}
 type CSIUnity struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

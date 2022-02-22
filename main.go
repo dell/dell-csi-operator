@@ -19,7 +19,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -28,6 +27,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"gopkg.in/yaml.v2"
 
 	operatorconfig "github.com/dell/dell-csi-operator/pkg/config"
 
@@ -58,6 +59,8 @@ var (
 
 // BaseKubernetesVersion - Kubernetes Version which the operator defaults to
 const BaseKubernetesVersion = "v121"
+
+// DefaultConfigFile - config.yaml is the default config file
 const DefaultConfigFile = "config.yaml"
 
 func init() {
@@ -91,7 +94,7 @@ func kubeAPIServerVersion(configDirectory, configFile string) (storagev1.K8sVers
 	kubeVersion := fmt.Sprintf("v%s%s", majorVersion, minorVersion)
 	log.Info(fmt.Sprintf("Kubernetes Version: %s", kubeVersion))
 	supportedVersionFilePath := filepath.Join(configDirectory, configFile)
-	file, err := os.Open(supportedVersionFilePath)
+	file, err := os.Open(filepath.Clean(supportedVersionFilePath))
 	if err != nil {
 		log.Info(fmt.Sprintf("Failed to find the config file %s", configFile))
 		return "", fmt.Errorf("missing config file")
@@ -157,7 +160,7 @@ func getOperatorConfig() operatorconfig.Config {
 	} else {
 		// Check if the directory is empty
 		fileName := configDir + "/" + configFile
-		_, err := os.Open(fileName)
+		_, err := os.Open(filepath.Clean(fileName))
 		if err != nil {
 			// This means that the configmap is not mounted
 			// fall back to the local copy

@@ -20,6 +20,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
+// Constants
 const (
 	Before = "before"
 	After  = "after"
@@ -94,11 +95,13 @@ func Setup() error {
 	return nil
 }
 
+// GetRestClientForDellStorage - returns the rest client for storage
 func GetRestClientForDellStorage(kubeconfig string) (*rest.RESTClient, error) {
 	var gv = schema.GroupVersion{Group: "storage.dell.com", Version: "v1"}
 	return GetRestClient(&gv, kubeconfig)
 }
 
+// GetRestClient - returns rest client
 func GetRestClient(schemaObj *schema.GroupVersion, kubeconfig string) (*rest.RESTClient, error) {
 	cfg, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 	if err != nil {

@@ -80,7 +80,7 @@ func TestBasic1PowerStore(t *testing.T) {
 	}
 }
 
-func testBasicDriver(driverType string, driverContext *DriverContext, initialDriverSpec v1.CSIDriver, afterDriverSpec v1.CSIDriver, unisphereUrl, isiEndpoint, isiPort, username, password, chapsecret, customDriverName string, isCHAPEnabled bool) error {
+func testBasicDriver(driverType string, driverContext *DriverContext, initialDriverSpec v1.CSIDriver, afterDriverSpec v1.CSIDriver, unisphereURL, isiEndpoint, isiPort, username, password, chapsecret, customDriverName string, isCHAPEnabled bool) error {
 	f := framework.Global
 
 	secretName := driverType + "-creds"

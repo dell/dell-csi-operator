@@ -21,9 +21,10 @@ import (
 	"fmt"
 	"os"
 	"regexp"
-	"sigs.k8s.io/yaml"
 	"strings"
 	"sync/atomic"
+
+	"sigs.k8s.io/yaml"
 
 	"github.com/dell/dell-csi-operator/pkg/utils"
 
@@ -74,6 +75,7 @@ type CSIVXFlexOSReconciler struct {
 // +kubebuilder:rbac:groups="coordination.k8s.io",resources=leases,verbs=get;list;watch;create;update;delete
 // +kubebuilder:rbac:groups="security.openshift.io",resources=securitycontextconstraints,resourceNames=privileged,verbs=use
 
+// Reconcile function reconciles a CSIVFlex Object
 func (r *CSIVXFlexOSReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	log := r.Log.WithValues("csivxflexos", req.NamespacedName)
 
@@ -131,7 +133,7 @@ func (r *CSIVXFlexOSReconciler) InitializeDriverSpec(instance storagev1.CSIDrive
 	ctx := context.Background()
 	if driver.ConfigVersion == "v5" {
 		var newmdm corev1.EnvVar
-		mdm_var, err := r.GetMDMFromSecret(ctx, instance, reqLogger)
+		mdmVar, err := r.GetMDMFromSecret(ctx, instance, reqLogger)
 		if err != nil {
 			return false, err
 		}
@@ -141,7 +143,7 @@ func (r *CSIVXFlexOSReconciler) InitializeDriverSpec(instance storagev1.CSIDrive
 				initenv := initcontainer.Envs
 				for c, env := range initenv {
 					if env.Name == "MDM" {
-						env.Value = mdm_var
+						env.Value = mdmVar
 						newmdm = env
 						k = c
 						break
@@ -160,7 +162,7 @@ func (r *CSIVXFlexOSReconciler) InitializeDriverSpec(instance storagev1.CSIDrive
 				j := 0
 				for c, env := range sidenv {
 					if env.Name == "MDM" {
-						env.Value = mdm_var
+						env.Value = mdmVar
 						updatenv = env
 						j = c
 						break
@@ -171,69 +173,68 @@ func (r *CSIVXFlexOSReconciler) InitializeDriverSpec(instance storagev1.CSIDrive
 			}
 		}
 		return isDriverupdate, nil
-	} else {
-		mdm_ip := ""
-		mdm_fin := ""
-		ismdmip := false
-		for _, initcontainer := range driver.InitContainers {
-			if initcontainer.Name == "sdc" {
-				initenv := initcontainer.Envs
-				for i, env := range initenv {
-					if env.Name == "MDM" {
-						mdm_ip = env.Value
-						mdm_fin, ismdmip = ValidateIpAddress(mdm_ip)
-						if !ismdmip {
-							return false, fmt.Errorf("Invalid MDM value. Ip address should be nummeric and comma separated without space")
-						}
-						env.Value = mdm_fin
-						initenv[i] = env
-						break
-					}
-				}
-			}
-		}
-		for i, sidecar := range driver.SideCars {
-			if sidecar.Name == "sdc-monitor" {
-				sidenv := sidecar.Envs
-				updatenv, err := Getmdmipforsdc(sidenv, mdm_fin, reqLogger)
-				if err != nil {
-					return false, err
-				}
-				if len(updatenv.Value) > 0 {
-					sidenv = append(sidenv, updatenv)
-				}
-				sidecar.Envs = sidenv
-				driver.SideCars[i] = sidecar
-				isDriverupdate = true
-			}
-		}
-		return isDriverupdate, nil
 	}
+	mdmIP := ""
+	mdmFin := ""
+	ismdmip := false
+	for _, initcontainer := range driver.InitContainers {
+		if initcontainer.Name == "sdc" {
+			initenv := initcontainer.Envs
+			for i, env := range initenv {
+				if env.Name == "MDM" {
+					mdmIP = env.Value
+					mdmFin, ismdmip = ValidateIPAddress(mdmIP)
+					if !ismdmip {
+						return false, fmt.Errorf("Invalid MDM value. Ip address should be nummeric and comma separated without space")
+					}
+					env.Value = mdmFin
+					initenv[i] = env
+					break
+				}
+			}
+		}
+	}
+	for i, sidecar := range driver.SideCars {
+		if sidecar.Name == "sdc-monitor" {
+			sidenv := sidecar.Envs
+			updatenv, err := Getmdmipforsdc(sidenv, mdmFin, reqLogger)
+			if err != nil {
+				return false, err
+			}
+			if len(updatenv.Value) > 0 {
+				sidenv = append(sidenv, updatenv)
+			}
+			sidecar.Envs = sidenv
+			driver.SideCars[i] = sidecar
+			isDriverupdate = true
+		}
+	}
+	return isDriverupdate, nil
 }
 
 // Getmdmipforsdc - Appends MDM value to sdc-monitor
 // Function to append MDM varibale to sdc-monitor environment varibale if not provided
-func Getmdmipforsdc(sidenv []corev1.EnvVar, mdm_fin string, reqLogger logr.Logger) (corev1.EnvVar, error) {
+func Getmdmipforsdc(sidenv []corev1.EnvVar, mdmFin string, reqLogger logr.Logger) (corev1.EnvVar, error) {
 	var updatenv corev1.EnvVar
-	var mdm_found bool
+	var mdmFound bool
 	for _, env := range sidenv {
 		if env.Name == "MDM" {
-			mdm_found = true
-			existing_ip, ismdmip := ValidateIpAddress(env.Value)
+			mdmFound = true
+			existingIP, ismdmip := ValidateIPAddress(env.Value)
 			if !ismdmip {
 				return updatenv, fmt.Errorf("Invalid MDM value, ip address should be nummeric, comma separated without space")
 			}
-			if mdm_fin != existing_ip {
-				env.Value = mdm_fin
+			if mdmFin != existingIP {
+				env.Value = mdmFin
 				updatenv = env
 				break
 			}
 		}
 	}
-	if !mdm_found {
+	if !mdmFound {
 		updatenv = corev1.EnvVar{
 			Name:  "MDM",
-			Value: mdm_fin,
+			Value: mdmFin,
 		}
 	}
 	return updatenv, nil
@@ -265,24 +266,24 @@ func (r *CSIVXFlexOSReconciler) ValidateDriverSpec(ctx context.Context, instance
 	return nil
 }
 
-// ValidateIpAddress - Validates the Ip Address
+// ValidateIPAddress - Validates the Ip Address
 // returns error if the Ip Address is not valid
-func ValidateIpAddress(ipAdd string) (string, bool) {
-	trim_ip := strings.Split(ipAdd, ",")
-	if len(trim_ip) < 1 {
+func ValidateIPAddress(ipAdd string) (string, bool) {
+	trimIP := strings.Split(ipAdd, ",")
+	if len(trimIP) < 1 {
 		return "", false
 	}
-	new_ip := ""
-	for i := range trim_ip {
-		trim_ip[i] = strings.TrimSpace(trim_ip[i])
-		istrueip := IsIpv4Regex(trim_ip[i])
+	newIP := ""
+	for i := range trimIP {
+		trimIP[i] = strings.TrimSpace(trimIP[i])
+		istrueip := IsIpv4Regex(trimIP[i])
 		if istrueip {
-			new_ip = strings.Join(trim_ip[:], ",")
+			newIP = strings.Join(trimIP[:], ",")
 		} else {
-			return new_ip, false
+			return newIP, false
 		}
 	}
-	return new_ip, true
+	return newIP, true
 }
 
 var (
@@ -295,6 +296,7 @@ func IsIpv4Regex(ipAddress string) bool {
 	return ipRegex.MatchString(ipAddress)
 }
 
+// GetMDMFromSecret - Returns MDM value
 func (r *CSIVXFlexOSReconciler) GetMDMFromSecret(ctx context.Context, instance storagev1.CSIDriver, log logr.Logger) (string, error) {
 	client := r.GetClient()
 	secretName := fmt.Sprintf("%s-config", instance.GetDriverType())
@@ -304,21 +306,21 @@ func (r *CSIVXFlexOSReconciler) GetMDMFromSecret(ctx context.Context, instance s
 	}
 
 	type StorageArrayConfig struct {
-		Username  		  string `json:"username"`
-		Password  		  string `json:"password"`
-		SystemID  		  string `json:"systemId"`
-		Endpoint  		  string `json:"endpoint"`
+		Username                  string `json:"username"`
+		Password                  string `json:"password"`
+		SystemID                  string `json:"systemId"`
+		Endpoint                  string `json:"endpoint"`
 		SkipCertificateValidation bool   `json:"skipCertificateValidation,omitempty"`
 		AllSystemNames            string `json:"allSystemNames"`
-		IsDefault 		  bool   `json:"isDefault,omitempty"`
-		MDM       		  string `json:"mdm"`
+		IsDefault                 bool   `json:"isDefault,omitempty"`
+		MDM                       string `json:"mdm"`
 	}
 
 	//To parse the secret json file
 	data := credSecret.Data
 	configBytes := data["config"]
-	mdm_val := ""
-	mdm_fin := ""
+	mdmVal := ""
+	mdmFin := ""
 	ismdmip := false
 
 	if string(configBytes) != "" {
@@ -349,14 +351,14 @@ func (r *CSIVXFlexOSReconciler) GetMDMFromSecret(ctx context.Context, instance s
 				return "", fmt.Errorf("invalid value for RestGateway at index [%d]", i)
 			}
 			if config.MDM != "" {
-				mdm_fin, ismdmip = ValidateIpAddress(config.MDM)
+				mdmFin, ismdmip = ValidateIPAddress(config.MDM)
 				if !ismdmip {
 					return "", fmt.Errorf("Invalid MDM value. Ip address should be numeric and comma separated without space")
 				}
 				if i == 0 {
-					mdm_val += mdm_fin
+					mdmVal += mdmFin
 				} else {
-					mdm_val += "&" + mdm_fin
+					mdmVal += "&" + mdmFin
 				}
 			}
 			if config.AllSystemNames != "" {
@@ -380,10 +382,11 @@ func (r *CSIVXFlexOSReconciler) GetMDMFromSecret(ctx context.Context, instance s
 	} else {
 		return "", fmt.Errorf("Arrays details are not provided in vxflexos-config secret")
 	}
-	fmt.Printf("mdm_val_fin: %s", mdm_val)
-	return mdm_val, nil
+	fmt.Printf("mdmValFin: %s", mdmVal)
+	return mdmVal, nil
 }
 
+// SetupWithManager - sets up the controller
 func (r *CSIVXFlexOSReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	c, err := controller.New("CSIVXFlexOS", mgr, controller.Options{Reconciler: r})
 	if err != nil {
