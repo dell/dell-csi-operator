@@ -37,7 +37,8 @@ func NewSecret(secretName, namespace, username, password, chapsecret string) *co
 	return secret
 }
 
-func JsonPrettyPrint(obj interface{}) string {
+// JSONPrettyPrint - Indent the json output
+func JSONPrettyPrint(obj interface{}) string {
 	s, err := json.Marshal(obj)
 	if err != nil {
 		return "Not a instance"
@@ -58,6 +59,7 @@ var DefaultRetry = wait.Backoff{
 	Jitter:   0.1,
 }
 
+// SmallRetry holds parameters applied to a Backoff function
 var SmallRetry = wait.Backoff{
 	Steps:    5,
 	Duration: 8 * time.Second,
@@ -84,7 +86,7 @@ func Retry(backoff wait.Backoff, fn wait.ConditionFunc) error {
 	return err
 }
 
-// Waits for the given daemonset to available
+// WaitForDaemonSetAvailable - Waits for the given daemonset to available
 func WaitForDaemonSetAvailable(namespace string, daemonSetName string, backoff wait.Backoff, kubeClient kubernetes.Interface, log *logrus.Logger) error {
 	var err error
 	log.Infof("Waiting for daemonset '%s' to available...\n", daemonSetName)

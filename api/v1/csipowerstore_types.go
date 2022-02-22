@@ -33,8 +33,8 @@ type CSIPowerStoreSpec struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=csipowerstores,scope=Namespaced
 
-// +operator-sdk:csv:customresourcedefinitions:displayName="CSI PowerStore",resources={{Deployment,v1,powerstore-controller},{DameonSet,v1,powerstore-node}}
 // CSIPowerStore is the Schema for the csipowerstores API
+// +operator-sdk:csv:customresourcedefinitions:displayName="CSI PowerStore",resources={{Deployment,v1,powerstore-controller},{DameonSet,v1,powerstore-node}}
 type CSIPowerStore struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

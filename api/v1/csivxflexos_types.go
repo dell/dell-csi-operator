@@ -33,8 +33,8 @@ type CSIVXFlexOSSpec struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=csivxflexoses,scope=Namespaced
 
-// +operator-sdk:csv:customresourcedefinitions:displayName="CSI PowerFlex",resources={{Deployment,v1,vxflexos-controller},{DameonSet,v1,vxflexos-node}}
 // CSIVXFlexOS is the Schema for the csivxflexos API
+// +operator-sdk:csv:customresourcedefinitions:displayName="CSI PowerFlex",resources={{Deployment,v1,vxflexos-controller},{DameonSet,v1,vxflexos-node}}
 type CSIVXFlexOS struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

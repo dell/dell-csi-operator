@@ -4,11 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/dell/dell-csi-operator/pkg/ctrlconfig"
 	"hash/fnv"
 	"math"
 	"reflect"
 	"time"
+
+	"github.com/dell/dell-csi-operator/pkg/ctrlconfig"
 
 	csiv1 "github.com/dell/dell-csi-operator/api/v1"
 	"github.com/dell/dell-csi-operator/pkg/constants"
@@ -169,6 +170,7 @@ func getDaemonSetStatus(ctx context.Context, instance csiv1.CSIDriver, r Reconci
 			return node.Status.DesiredNumberScheduled, csiv1.PodStatus{}, err
 		}
 		for _, pod := range podList.Items {
+			pod := pod
 			if podutil.IsPodAvailable(&pod, node.Spec.MinReadySeconds, metav1.Now()) {
 				available = append(available, pod.Name)
 			} else if podutil.IsPodReady(&pod) {

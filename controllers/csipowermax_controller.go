@@ -73,6 +73,7 @@ type CSIPowerMaxReconciler struct {
 // +kubebuilder:rbac:groups="coordination.k8s.io",resources=leases,verbs=get;list;watch;create;update;delete
 // +kubebuilder:rbac:groups="security.openshift.io",resources=securitycontextconstraints,resourceNames=privileged,verbs=use
 
+// Reconcile function reconciles a CSIPowermax object
 func (r *CSIPowerMaxReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	log := r.Log.WithValues("csipowermax", req.NamespacedName)
 
@@ -80,6 +81,7 @@ func (r *CSIPowerMaxReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 	return utils.Reconcile(ctx, instance, req, r, log)
 }
 
+// SetupWithManager - sets up controller
 func (r *CSIPowerMaxReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	c, err := controller.New("CSIPowerMax", mgr, controller.Options{Reconciler: r})
 	if err != nil {

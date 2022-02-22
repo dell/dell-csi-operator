@@ -68,6 +68,7 @@ type CSIIsilonReconciler struct {
 // +kubebuilder:rbac:groups="coordination.k8s.io",resources=leases,verbs=get;list;watch;create;update;delete
 // +kubebuilder:rbac:groups="security.openshift.io",resources=securitycontextconstraints,resourceNames=privileged,verbs=use
 
+// Reconcile function reconciles a CSIIsilon object
 func (r *CSIIsilonReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	log := r.Log.WithValues("csiisilon", req.NamespacedName)
 
@@ -130,6 +131,7 @@ func (r *CSIIsilonReconciler) ValidateDriverSpec(ctx context.Context, instance s
 	return nil
 }
 
+// SetupWithManager - sets up the controller
 func (r *CSIIsilonReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	c, err := controller.New("CSIIsilon", mgr, controller.Options{Reconciler: r})
 	if err != nil {

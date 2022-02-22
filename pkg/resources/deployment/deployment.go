@@ -3,6 +3,7 @@ package deployment
 import (
 	"context"
 	"fmt"
+
 	csiv1 "github.com/dell/dell-csi-operator/api/v1"
 	"github.com/dell/dell-csi-operator/pkg/constants"
 	"github.com/dell/dell-csi-operator/pkg/ctrlconfig"
@@ -177,6 +178,7 @@ func SyncControllerDeployment(ctx context.Context, deployment *appsv1.Deployment
 
 		podTemplateSpec := found.Spec.Template.Spec
 		for _, controllerPod := range podList.Items {
+			controllerPod := controllerPod
 			podSpec := controllerPod.Spec
 			if !comparePodSpec(podTemplateSpec, podSpec, reqLogger) {
 				reqLogger.Info(fmt.Sprintf("Controller pod'spec doesn't match the spec from deployment. Pod Name: %s. Deleting it to force an update",

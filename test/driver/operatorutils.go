@@ -2,14 +2,16 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+
 	csiv1 "github.com/dell/dell-csi-operator/api/v1"
 	controllerutils "github.com/dell/dell-csi-operator/pkg/utils"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	k8sJson "k8s.io/apimachinery/pkg/runtime/serializer/json"
-	"os"
-	"strings"
 )
 
 type mockTyper struct {
@@ -28,9 +30,10 @@ func (t *mockTyper) Recognizes(_ schema.GroupVersionKind) bool {
 	return false
 }
 
+// SideCar - structure of SideCar
 type SideCar struct {
-	Name string
-	Args string
+	Name  string
+	Args  string
 	Image string
 }
 
@@ -108,7 +111,7 @@ func readEnv() {
 					parameterList := strings.TrimSuffix(pair[1], "]")
 					parameterList = strings.TrimPrefix(parameterList, "[")
 					args := strings.Split(parameterList, ",")
-					for i, _ := range args {
+					for i := range args {
 						tempArg := strings.TrimSuffix(args[i], "\"")
 						tempArg = strings.TrimPrefix(tempArg, "\"")
 						pv := strings.Split(tempArg, "=")
@@ -132,7 +135,7 @@ func readEnv() {
 					parameterList := strings.TrimSuffix(pair[1], "]")
 					parameterList = strings.TrimPrefix(parameterList, "[")
 					args := strings.Split(parameterList, ",")
-					for i, _ := range args {
+					for i := range args {
 						tempArg := strings.TrimSuffix(args[i], "\"")
 						tempArg = strings.TrimPrefix(tempArg, "\"")
 						pv := strings.Split(tempArg, "=")
@@ -146,12 +149,12 @@ func readEnv() {
 	}
 }
 
-func getDriver() csiv1.Driver{
+func getDriver() csiv1.Driver {
 	readEnv()
 	commonEnvs := make([]corev1.EnvVar, 0)
 	for k, v := range commonEnv {
 		env := corev1.EnvVar{
-			Name: k,
+			Name:  k,
 			Value: v,
 		}
 		commonEnvs = append(commonEnvs, env)
@@ -159,7 +162,7 @@ func getDriver() csiv1.Driver{
 	controllerEnvs := make([]corev1.EnvVar, 0)
 	for k, v := range controllerEnv {
 		env := corev1.EnvVar{
-			Name: k,
+			Name:  k,
 			Value: v,
 		}
 		controllerEnvs = append(controllerEnvs, env)
@@ -167,7 +170,7 @@ func getDriver() csiv1.Driver{
 	nodeEnvs := make([]corev1.EnvVar, 0)
 	for k, v := range nodeEnv {
 		env := corev1.EnvVar{
-			Name: k,
+			Name:  k,
 			Value: v,
 		}
 		nodeEnvs = append(nodeEnvs, env)
@@ -185,7 +188,7 @@ func getDriver() csiv1.Driver{
 			argList := strings.TrimSuffix(v.Args, "]")
 			argList = strings.TrimPrefix(argList, "[")
 			args := strings.Split(argList, ",")
-			for i, _ := range args {
+			for i := range args {
 				tempArg := strings.TrimSuffix(args[i], "\"")
 				tempArg = strings.TrimPrefix(tempArg, "\"")
 				args[i] = tempArg
@@ -207,16 +210,16 @@ func getDriver() csiv1.Driver{
 		Replicas:      2,
 		Common: csiv1.ContainerTemplate{
 			Image: driverMap["IMAGE"],
-			Envs: commonEnvs,
+			Envs:  commonEnvs,
 		},
-/*		Controller: csiv1.ContainerTemplate{
-			Envs: controllerEnvs,
-		},
-		Node: csiv1.ContainerTemplate{
-			Envs: nodeEnvs,
-		}, */
-		SideCars: sideCars,
-		StorageClass: storageClasses,
+		/*		Controller: csiv1.ContainerTemplate{
+					Envs: controllerEnvs,
+				},
+				Node: csiv1.ContainerTemplate{
+					Envs: nodeEnvs,
+				}, */
+		SideCars:      sideCars,
+		StorageClass:  storageClasses,
 		SnapshotClass: snapshotClasses,
 	}
 	return driver
@@ -269,8 +272,8 @@ func main() {
 	}
 	typer := &mockTyper{
 		gvk: &schema.GroupVersionKind{
-			Kind: "CSIPowerMax",
-			Group: "storage.dell.com",
+			Kind:    "CSIPowerMax",
+			Group:   "storage.dell.com",
 			Version: "v1",
 		},
 	}
@@ -285,7 +288,7 @@ func main() {
 		},
 	)
 	outfilename := driverMap["MANIFEST"]
-	outFile, err := os.Create(outfilename)
+	outFile, err := os.Create(filepath.Clean(outfilename))
 	if err != nil {
 		fmt.Println("Failed to create yaml file")
 	}
@@ -296,4 +299,3 @@ func main() {
 	}
 	fmt.Printf("Driver manifest: %s created successfully\n", outfilename)
 }
-

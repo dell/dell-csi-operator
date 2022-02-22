@@ -3,6 +3,7 @@ package rbac
 import (
 	"context"
 	"fmt"
+
 	csiv1 "github.com/dell/dell-csi-operator/api/v1"
 	"github.com/dell/dell-csi-operator/pkg/resources"
 	"github.com/go-logr/logr"
@@ -13,18 +14,20 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// NewDummyClusterRole - returns the cluster role
 func NewDummyClusterRole(name string) *rbacv1.ClusterRole {
 	labels := map[string]string{
 		"name": name,
 	}
 	clusterRole := &rbacv1.ClusterRole{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: name,
+			Name:   name,
 			Labels: labels,
 		},
 	}
 	return clusterRole
 }
+
 // NewControllerClusterRole - Returns a ClusterRole for the controller plugin
 func NewControllerClusterRole(instance csiv1.CSIDriver, customClusterRoleName bool, haRequired bool, dummyClusterRole *rbacv1.ClusterRole) *rbacv1.ClusterRole {
 	driverName := instance.GetName()

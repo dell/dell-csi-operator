@@ -390,6 +390,8 @@ func (cr *CSIPowerStore) GetDriverEnvName() string {
 
 // DriverType - type representing the type of the driver. e.g. - powermax, unity
 type DriverType string
+
+// K8sVersion - type representing the kubernetes version.
 type K8sVersion string
 
 // CSIOperatorConditionType defines the type of the last status update

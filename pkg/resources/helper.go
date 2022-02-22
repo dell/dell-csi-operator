@@ -3,8 +3,9 @@ package resources
 import (
 	"bytes"
 	"fmt"
-	rbacv1 "k8s.io/api/rbac/v1"
 	"os"
+
+	rbacv1 "k8s.io/api/rbac/v1"
 
 	"github.com/Jeffail/gabs"
 	csiv1 "github.com/dell/dell-csi-operator/api/v1"
@@ -85,6 +86,7 @@ func GetOwnerReferences(driver csiv1.CSIDriver) []metav1.OwnerReference {
 	return ownerReferences
 }
 
+// GetDummyOwnerReferences - returns owner references
 func GetDummyOwnerReferences(clusterRole *rbacv1.ClusterRole) []metav1.OwnerReference {
 	meta := &clusterRole.TypeMeta
 	ownerReferences := []metav1.OwnerReference{

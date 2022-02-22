@@ -103,7 +103,7 @@ const (
 func readConfig(configDirectory string, driverVersion string, log logr.Logger) (DriverConfig, error) {
 	var driverConfigMap DriverConfigMap
 	jsonFileName := filepath.Join(configDirectory, fmt.Sprintf("%s.json", driverVersion))
-	jsonFile, err := os.Open(jsonFileName)
+	jsonFile, err := os.Open(filepath.Clean(jsonFileName))
 	if err != nil {
 		log.Error(err, "unable to find config file for driver")
 		return DriverConfig{}, err

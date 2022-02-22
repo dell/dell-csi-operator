@@ -33,8 +33,8 @@ type CSIPowerMaxSpec struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=csipowermaxes,scope=Namespaced
 
-// +operator-sdk:csv:customresourcedefinitions:displayName="CSI PowerMax",resources={{Deployment,v1,powermax-controller},{DameonSet,v1,powermax-node}}
 // CSIPowerMax is the Schema for the csipowermaxes API
+// +operator-sdk:csv:customresourcedefinitions:displayName="CSI PowerMax",resources={{Deployment,v1,powermax-controller},{DameonSet,v1,powermax-node}}
 type CSIPowerMax struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

@@ -33,8 +33,8 @@ type CSIIsilonSpec struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=csiisilons,scope=Namespaced
 
-// +operator-sdk:csv:customresourcedefinitions:displayName="CSI PowerScale",resources={{Deployment,v1,isilon-controller},{DameonSet,v1,isilon-node}}
 // CSIIsilon is the Schema for the csiisilons API
+// +operator-sdk:csv:customresourcedefinitions:displayName="CSI PowerScale",resources={{Deployment,v1,isilon-controller},{DameonSet,v1,isilon-node}}
 type CSIIsilon struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
