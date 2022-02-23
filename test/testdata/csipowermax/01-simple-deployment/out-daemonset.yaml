@@ -78,9 +78,11 @@ spec:
               value: 5m
             - name: X_CSI_POWERMAX_CONFIG_PATH
               value: /powermax-config-params/driver-config-params.yaml
+            - name: X_CSI_HEALTH_MONITOR_ENABLED
+              value: "false"
             - name: X_CSI_POWERMAX_PORTGROUPS
               value: ""
-          image: dellemc/csi-powermax:v2.1.0.000R
+          image: dellemc/csi-powermax:v2.2.0.000R
           imagePullPolicy: IfNotPresent
           name: driver
           resources: {}

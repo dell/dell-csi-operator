@@ -196,7 +196,7 @@ function install_or_update_driver_crd() {
   log step "Install/Update CRDs"
   kubectl apply -f ${DEPLOYDIR}/crds/storage.dell.com.crds.all.yaml 2>&1 >/dev/null
   if [ $? -ne 0 ]; then
-    log error "Failed to create cluster role binding for operator"
+    log error "Failed to install/update CRD"
   fi
   log step_success
 }
@@ -228,7 +228,7 @@ function create_operator_deployment() {
   log step "Install Operator"
   kubectl apply -f ${DEPLOYDIR}/operator.yaml 2>&1 >/dev/null
   if [ $? -ne 0 ]; then
-    log error "Failed to create cluster role binding for operator"
+    log error "Failed to deploy operator"
   fi
   log step_success
 }

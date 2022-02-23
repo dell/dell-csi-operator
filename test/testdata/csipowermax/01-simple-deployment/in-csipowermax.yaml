@@ -5,15 +5,15 @@ metadata:
   namespace: test-powermax
 spec:
   driver:
-    # Config version for CSI PowerMax v2.1.0 driver
-    configVersion: v2.1.0
+    # Config version for CSI PowerMax v2.2.0 driver
+    configVersion: v2.2.0
     # Controller count. Don't increase it
     replicas: 1
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     common:
-      # Image for CSI PowerMax driver v2.1
-      image: "dellemc/csi-powermax:v2.1.0.000R"
+      # Image for CSI PowerMax driver v2.2
+      image: "dellemc/csi-powermax:v2.2.0.000R"
       imagePullPolicy: IfNotPresent
       envs:
         # Managed Arrays

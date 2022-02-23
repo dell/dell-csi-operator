@@ -3,7 +3,6 @@ package rbac
 import (
 	"context"
 	"fmt"
-
 	csiv1 "github.com/dell/dell-csi-operator/api/v1"
 	"github.com/dell/dell-csi-operator/pkg/resources"
 	"github.com/go-logr/logr"
@@ -101,7 +100,7 @@ func NewControllerClusterRole(instance csiv1.CSIDriver, customClusterRoleName bo
 			{
 				APIGroups: []string{"snapshot.storage.k8s.io"},
 				Resources: []string{"volumesnapshotcontents"},
-				Verbs:     []string{"create", "get", "list", "watch", "update", "delete"},
+				Verbs:     []string{"create", "get", "list", "watch", "update", "delete", "patch"},
 			},
 			{
 				APIGroups: []string{"snapshot.storage.k8s.io"},
@@ -111,7 +110,7 @@ func NewControllerClusterRole(instance csiv1.CSIDriver, customClusterRoleName bo
 			{
 				APIGroups: []string{"snapshot.storage.k8s.io"},
 				Resources: []string{"volumesnapshotcontents/status"},
-				Verbs:     []string{"update"},
+				Verbs:     []string{"update", "patch"},
 			},
 			{
 				APIGroups: []string{"snapshot.storage.k8s.io"},

@@ -1672,7 +1672,6 @@ spec:
           - snapshot.storage.k8s.io
           resources:
           - volumesnapshotclasses
-          - volumesnapshotcontents
           verbs:
           - create
           - delete
@@ -1683,8 +1682,21 @@ spec:
         - apiGroups:
           - snapshot.storage.k8s.io
           resources:
+          - volumesnapshotcontents
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
           - volumesnapshotcontents/status
           verbs:
+          - patch
           - update
         - apiGroups:
           - snapshot.storage.k8s.io

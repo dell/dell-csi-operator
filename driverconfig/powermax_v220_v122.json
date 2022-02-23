@@ -71,14 +71,6 @@
         "DefaultValueForNode": "node"
       },
       {
-        "Name": "X_CSI_DEBUG",
-        "CSIEnvType": "Boolean",
-        "SetForController": true,
-        "SetForNode": true,
-        "DefaultValueForController": "true",
-        "DefaultValueForNode": "true"
-      },
-      {
         "Name": "X_CSI_POWERMAX_SKIP_CERTIFICATE_VALIDATION",
         "CSIEnvType": "Boolean",
         "SetForController": true,
@@ -237,6 +229,30 @@
         "SetForNode": false,
         "DefaultValueForController": "replication.storage.dell.com/",
         "DefaultValueForNode": ""
+      },
+      {
+        "Name": "X_CSI_UNISPHERE_TIMEOUT",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "5m",
+        "DefaultValueForNode": "5m"
+      },
+      {
+        "Name": "X_CSI_POWERMAX_CONFIG_PATH",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "/powermax-config-params/driver-config-params.yaml",
+        "DefaultValueForNode": "/powermax-config-params/driver-config-params.yaml"
+      },
+      {
+        "Name": "X_CSI_HEALTH_MONITOR_ENABLED",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "false",
+        "DefaultValueForNode": "false"
       }
     ],
     "driverNodeVolumes": [
@@ -303,6 +319,12 @@
           "path": "/run/dbus/system_bus_socket",
           "type": "Socket"
         }
+      },
+      {
+        "name": "powermax-config-params",
+        "configMap": {
+          "name": "powermax-config-params"
+        }
       }
     ],
     "driverControllerVolumes": [
@@ -317,6 +339,12 @@
           "secretName": "powermax-certs",
           "optional": true
         }
+      },
+      {
+        "name": "powermax-config-params",
+        "configMap": {
+          "name": "powermax-config-params"
+        }
       }
     ],
     "driverControllerVolumeMounts": [
@@ -328,6 +356,10 @@
         "mountPath": "/certs",
         "name": "certs",
         "readOnly": true
+      },
+      {
+        "mountPath": "/powermax-config-params",
+        "name": "powermax-config-params"
       }
     ],
     "driverNodeVolumeMounts": [
@@ -365,6 +397,10 @@
       {
         "name": "dbus-socket",
         "mountPath": "/run/dbus/system_bus_socket"
+      },
+      {
+        "mountPath": "/powermax-config-params",
+        "name": "powermax-config-params"
       }
     ],
     "sidecarParams": [
@@ -491,6 +527,31 @@
           {
             "mountPath": "/csi",
             "name": "driver-path"
+          }
+        ]
+      },
+      {
+        "name": "external-health-monitor",
+        "optional": true,
+        "args": [
+          "--csi-address=$(ADDRESS)",
+          "--timeout=180s",
+          "--v=5",
+          "--leader-election",
+          "--monitor-interval=60s",
+          "--enable-node-watcher=true",
+          "--http-endpoint=:8080"
+        ],
+        "envs": [
+          {
+            "name": "ADDRESS",
+            "value": "/var/run/csi/csi.sock"
+          }
+        ],
+        "volumeMounts": [
+          {
+            "mountPath": "/var/run/csi",
+            "name": "socket-dir"
           }
         ]
       }

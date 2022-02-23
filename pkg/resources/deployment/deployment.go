@@ -3,7 +3,6 @@ package deployment
 import (
 	"context"
 	"fmt"
-
 	csiv1 "github.com/dell/dell-csi-operator/api/v1"
 	"github.com/dell/dell-csi-operator/pkg/constants"
 	"github.com/dell/dell-csi-operator/pkg/ctrlconfig"

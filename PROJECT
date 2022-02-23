@@ -16,6 +16,9 @@ resources:
   kind: CSIPowerMax
   path: github.com/dell/dell-csi-operator/api/v1
   version: v1
+  webhooks:
+    defaulting: true
+    webhookVersion: v1
 - api:
     crdVersion: v1
     namespaced: true
@@ -25,6 +28,9 @@ resources:
   kind: CSIPowerMaxRevProxy
   path: github.com/dell/dell-csi-operator/api/v1
   version: v1
+  webhooks:
+    defaulting: true
+    webhookVersion: v1
 - api:
     crdVersion: v1
     namespaced: true
@@ -34,6 +40,9 @@ resources:
   kind: CSIIsilon
   path: github.com/dell/dell-csi-operator/api/v1
   version: v1
+  webhooks:
+    defaulting: true
+    webhookVersion: v1
 - api:
     crdVersion: v1
     namespaced: true
@@ -43,6 +52,9 @@ resources:
   kind: CSIUnity
   path: github.com/dell/dell-csi-operator/api/v1
   version: v1
+  webhooks:
+    defaulting: true
+    webhookVersion: v1
 - api:
     crdVersion: v1
     namespaced: true
@@ -52,6 +64,9 @@ resources:
   kind: CSIVXFlexOS
   path: github.com/dell/dell-csi-operator/api/v1
   version: v1
+  webhooks:
+    defaulting: true
+    webhookVersion: v1
 - api:
     crdVersion: v1
     namespaced: true
@@ -61,5 +76,8 @@ resources:
   kind: CSIPowerStore
   path: github.com/dell/dell-csi-operator/api/v1
   version: v1
+  webhooks:
+    defaulting: true
+    webhookVersion: v1
 version: "3"
 

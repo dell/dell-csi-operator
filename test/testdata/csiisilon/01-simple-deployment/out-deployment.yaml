@@ -43,6 +43,8 @@ spec:
           value: "true"
         - name: X_CSI_ISI_SKIP_CERTIFICATE_VALIDATION
           value: "true"
+        - name: X_CSI_ISI_AUTH_TYPE
+          value: "0"
         - name: X_CSI_NODE_NAME
           valueFrom:
             fieldRef:

@@ -36,6 +36,14 @@
         "DefaultValueForNode": "true"
       },
       {
+        "Name": "X_CSI_ISI_AUTH_TYPE",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "0",
+        "DefaultValueForNode": "0"
+      },
+      {
         "Name": "X_CSI_NODE_NAME",
         "CSIEnvType": "EnvVarReferenceType",
         "SetForController": true,
