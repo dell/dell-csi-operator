@@ -67,8 +67,9 @@ type CSIVXFlexOSReconciler struct {
 // +kubebuilder:rbac:groups="storage.k8s.io",resources=storageclasses,verbs=get;list;watch;create;update;delete
 // +kubebuilder:rbac:groups="storage.k8s.io",resources=volumeattachments,verbs=get;list;watch;create;update;patch
 // +kubebuilder:rbac:groups="storage.k8s.io",resources=csinodes,verbs=get;list;watch;create;update
-// +kubebuilder:rbac:groups="snapshot.storage.k8s.io",resources=volumesnapshotclasses;volumesnapshotcontents,verbs=get;list;watch;create;update;delete
-// +kubebuilder:rbac:groups="snapshot.storage.k8s.io",resources=volumesnapshotcontents/status,verbs=update
+// +kubebuilder:rbac:groups="snapshot.storage.k8s.io",resources=volumesnapshotclasses,verbs=get;list;watch;create;update;delete
+// +kubebuilder:rbac:groups="snapshot.storage.k8s.io",resources=volumesnapshotcontents,verbs=get;list;watch;create;update;delete;patch
+// +kubebuilder:rbac:groups="snapshot.storage.k8s.io",resources=volumesnapshotcontents/status,verbs=update;patch
 // +kubebuilder:rbac:groups="snapshot.storage.k8s.io",resources=volumesnapshots;volumesnapshots/status,verbs=get;list;watch;update
 // +kubebuilder:rbac:groups="apiextensions.k8s.io",resources=customresourcedefinitions,verbs=create;list;watch;delete
 // +kubebuilder:rbac:groups="storage.k8s.io",resources=volumeattachments/status,verbs=patch
@@ -131,7 +132,7 @@ func (r *CSIVXFlexOSReconciler) InitializeDriverSpec(instance storagev1.CSIDrive
 	isDriverupdate := false
 	driver := instance.GetDriver()
 	ctx := context.Background()
-	if driver.ConfigVersion == "v5" {
+	if driver.ConfigVersion == "v2.1.0" {
 		var newmdm corev1.EnvVar
 		mdmVar, err := r.GetMDMFromSecret(ctx, instance, reqLogger)
 		if err != nil {

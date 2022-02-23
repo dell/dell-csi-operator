@@ -101,6 +101,7 @@ rules:
       - watch
       - update
       - delete
+      - patch
   - apiGroups:
       - snapshot.storage.k8s.io
     resources:
