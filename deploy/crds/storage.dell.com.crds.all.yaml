@@ -297,6 +297,9 @@ spec:
                   forceUpdate:
                     description: ForceUpdate is the boolean flag used to force an update of the driver instance
                     type: boolean
+                  fsGroupPolicy:
+                    description: FsGroupPolicy specifies fs group permission changes while mounting volume
+                    type: string
                   initContainers:
                     description: InitContainers is the specification for Driver InitContainers
                     items:
@@ -1143,6 +1146,9 @@ spec:
                   forceUpdate:
                     description: ForceUpdate is the boolean flag used to force an update of the driver instance
                     type: boolean
+                  fsGroupPolicy:
+                    description: FsGroupPolicy specifies fs group permission changes while mounting volume
+                    type: string
                   initContainers:
                     description: InitContainers is the specification for Driver InitContainers
                     items:
@@ -2212,6 +2218,9 @@ spec:
                   forceUpdate:
                     description: ForceUpdate is the boolean flag used to force an update of the driver instance
                     type: boolean
+                  fsGroupPolicy:
+                    description: FsGroupPolicy specifies fs group permission changes while mounting volume
+                    type: string
                   initContainers:
                     description: InitContainers is the specification for Driver InitContainers
                     items:
@@ -3058,6 +3067,9 @@ spec:
                   forceUpdate:
                     description: ForceUpdate is the boolean flag used to force an update of the driver instance
                     type: boolean
+                  fsGroupPolicy:
+                    description: FsGroupPolicy specifies fs group permission changes while mounting volume
+                    type: string
                   initContainers:
                     description: InitContainers is the specification for Driver InitContainers
                     items:
@@ -3904,6 +3916,9 @@ spec:
                   forceUpdate:
                     description: ForceUpdate is the boolean flag used to force an update of the driver instance
                     type: boolean
+                  fsGroupPolicy:
+                    description: FsGroupPolicy specifies fs group permission changes while mounting volume
+                    type: string
                   initContainers:
                     description: InitContainers is the specification for Driver InitContainers
                     items:
