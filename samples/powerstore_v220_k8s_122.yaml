@@ -11,6 +11,7 @@ spec:
     replicas: 2
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
+    fsGroupPolicy: ReadWriteOnceWithFSType
     common:
       # Image for CSI PowerStore driver v2.2
       image: "dellemc/csi-powerstore:v2.2.0"

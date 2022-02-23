@@ -16,6 +16,12 @@ import (
 
 // New - returns a instance of CSIDriver object
 func New(instance csiv1.CSIDriver, ephemeralEnabled bool, dummyClusterRole *rbacv1.ClusterRole) *storagev1.CSIDriver {
+	fsgrouppolicy := instance.GetDriver().FSGroupPolicy
+	if fsgrouppolicy == "" {
+		fsgrouppolicy = "ReadWriteOnceWithFSType"
+	}
+	fsgroup := storagev1.FSGroupPolicy(fsgrouppolicy)
+
 	b := true
 	modes := []storagev1.VolumeLifecycleMode{storagev1.VolumeLifecyclePersistent}
 
@@ -31,6 +37,7 @@ func New(instance csiv1.CSIDriver, ephemeralEnabled bool, dummyClusterRole *rbac
 		Spec: storagev1.CSIDriverSpec{
 			AttachRequired:       &b,
 			PodInfoOnMount:       &b,
+			FSGroupPolicy:        &fsgroup,
 			VolumeLifecycleModes: modes,
 		},
 	}

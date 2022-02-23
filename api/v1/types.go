@@ -462,6 +462,10 @@ type Driver struct {
 	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="DNSPolicy"
 	DNSPolicy string `json:"dnsPolicy,omitempty" yaml:"dnsPolicy"`
 
+	// FsGroupPolicy specifies fs group permission changes while mounting volume
+	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="FSGroupPolicy"
+	FSGroupPolicy string `json:"fsGroupPolicy,omitempty" yaml:"fsGroupPolicy"`
+
 	// Common is the common specification for both controller and node plugins
 	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="Common specification"
 	Common ContainerTemplate `json:"common" yaml:"common"`
