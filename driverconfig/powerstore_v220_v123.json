@@ -114,6 +114,14 @@
           "SetForNode": true,
           "DefaultValueForController": "false",
           "DefaultValueForNode": "false"
+        },
+        {
+          "Name": "X_CSI_NFS_ACLS",
+          "CSIEnvType": "String",
+          "SetForController": true,
+          "SetForNode": false,
+          "DefaultValueForController": "0777",
+          "DefaultValueForNode": ""
         }
       ],
       "driverNodeVolumes": [

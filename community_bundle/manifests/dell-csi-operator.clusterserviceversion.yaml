@@ -201,6 +201,14 @@ metadata:
               "configVersion": "v2.2.0",
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
+              "controller": {
+                "envs": [
+                  {
+                    "name": "X_CSI_NFS_ACLS",
+                    "value": "0777"
+                  }
+                ]
+              },
               "node": {
                 "envs": [
                   {
