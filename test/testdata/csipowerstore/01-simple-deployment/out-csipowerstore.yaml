@@ -31,6 +31,10 @@ spec:
       image: dellemc/csi-powerstore:v2.2.0
       imagePullPolicy: IfNotPresent
     configVersion: v2.2.0
+    controller:
+      envs:
+        - name: X_CSI_NFS_ACLS
+          value: "0777"
     node:
       envs:
         - name: "X_CSI_POWERSTORE_ENABLE_CHAP"

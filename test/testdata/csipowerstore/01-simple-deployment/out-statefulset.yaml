@@ -48,6 +48,8 @@ spec:
               value: /powerstore-config-params/driver-config-params.yaml
             - name: X_CSI_HEALTH_MONITOR_ENABLED
               value: "false"
+            - name: X_CSI_NFS_ACLS
+              value: "0777"
             - name: X_CSI_POWERSTORE_NODE_NAME_PREFIX
               value: csi
             - name: X_CSI_FC_PORTS_FILTER_FILE_PATH
