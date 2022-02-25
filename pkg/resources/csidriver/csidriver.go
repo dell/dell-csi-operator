@@ -29,17 +29,22 @@ func New(instance csiv1.CSIDriver, ephemeralEnabled bool, dummyClusterRole *rbac
 		modes = append(modes, storagev1.VolumeLifecycleEphemeral)
 	}
 
+	spec := storagev1.CSIDriverSpec{
+		AttachRequired:       &b,
+		PodInfoOnMount:       &b,
+		VolumeLifecycleModes: modes,
+	}
+
+	if instance.GetDriverType() == "powerstore" || instance.GetDriverType() == "isilon" {
+		spec.FSGroupPolicy = &fsgroup
+	}
+
 	return &storagev1.CSIDriver{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:            instance.GetDefaultDriverName(),
 			OwnerReferences: resources.GetDummyOwnerReferences(dummyClusterRole),
 		},
-		Spec: storagev1.CSIDriverSpec{
-			AttachRequired:       &b,
-			PodInfoOnMount:       &b,
-			FSGroupPolicy:        &fsgroup,
-			VolumeLifecycleModes: modes,
-		},
+		Spec: spec,
 	}
 }
 
