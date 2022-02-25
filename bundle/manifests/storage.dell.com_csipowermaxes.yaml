@@ -20,10 +20,14 @@ spec:
         description: CSIPowerMax is the Schema for the csipowermaxes API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -34,10 +38,12 @@ spec:
                 description: Driver is the specification for the CSI PowerMax Driver
                 properties:
                   authSecret:
-                    description: AuthSecret is the name of the credentials secret for the driver
+                    description: AuthSecret is the name of the credentials secret
+                      for the driver
                     type: string
                   common:
-                    description: Common is the common specification for both controller and node plugins
+                    description: Common is the common specification for both controller
+                      and node plugins
                     properties:
                       args:
                         description: Args is the set of arguments for the container
@@ -45,18 +51,31 @@ spec:
                           type: string
                         type: array
                       envs:
-                        description: Envs is the set of environment variables for the container
+                        description: Envs is the set of environment variables for
+                          the container
                         items:
-                          description: EnvVar represents an environment variable present in a Container.
+                          description: EnvVar represents an environment variable present
+                            in a Container.
                           properties:
                             name:
-                              description: Name of the environment variable. Must be a C_IDENTIFIER.
+                              description: Name of the environment variable. Must
+                                be a C_IDENTIFIER.
                               type: string
                             value:
-                              description: 'Variable references $(VAR_NAME) are expanded using the previous defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "".'
+                              description: 'Variable references $(VAR_NAME) are expanded
+                                using the previously defined environment variables
+                                in the container and any service environment variables.
+                                If a variable cannot be resolved, the reference in
+                                the input string will be unchanged. Double $$ are
+                                reduced to a single $, which allows for escaping the
+                                $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will produce
+                                the string literal "$(VAR_NAME)". Escaped references
+                                will never be expanded, regardless of whether the
+                                variable exists or not. Defaults to "".'
                               type: string
                             valueFrom:
-                              description: Source for the environment variable's value. Cannot be used if value is not empty.
+                              description: Source for the environment variable's value.
+                                Cannot be used if value is not empty.
                               properties:
                                 configMapKeyRef:
                                   description: Selects a key of a ConfigMap.
@@ -65,37 +84,53 @@ spec:
                                       description: The key to select.
                                       type: string
                                     name:
-                                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
+                                      description: 'Name of the referent. More info:
+                                        https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion,
+                                        kind, uid?'
                                       type: string
                                     optional:
-                                      description: Specify whether the ConfigMap or its key must be defined
+                                      description: Specify whether the ConfigMap or
+                                        its key must be defined
                                       type: boolean
                                   required:
                                   - key
                                   type: object
                                 fieldRef:
-                                  description: 'Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels[''<KEY>'']`, `metadata.annotations[''<KEY>'']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.'
+                                  description: 'Selects a field of the pod: supports
+                                    metadata.name, metadata.namespace, `metadata.labels[''<KEY>'']`,
+                                    `metadata.annotations[''<KEY>'']`, spec.nodeName,
+                                    spec.serviceAccountName, status.hostIP, status.podIP,
+                                    status.podIPs.'
                                   properties:
                                     apiVersion:
-                                      description: Version of the schema the FieldPath is written in terms of, defaults to "v1".
+                                      description: Version of the schema the FieldPath
+                                        is written in terms of, defaults to "v1".
                                       type: string
                                     fieldPath:
-                                      description: Path of the field to select in the specified API version.
+                                      description: Path of the field to select in
+                                        the specified API version.
                                       type: string
                                   required:
                                   - fieldPath
                                   type: object
                                 resourceFieldRef:
-                                  description: 'Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.'
+                                  description: 'Selects a resource of the container:
+                                    only resources limits and requests (limits.cpu,
+                                    limits.memory, limits.ephemeral-storage, requests.cpu,
+                                    requests.memory and requests.ephemeral-storage)
+                                    are currently supported.'
                                   properties:
                                     containerName:
-                                      description: 'Container name: required for volumes, optional for env vars'
+                                      description: 'Container name: required for volumes,
+                                        optional for env vars'
                                       type: string
                                     divisor:
                                       anyOf:
                                       - type: integer
                                       - type: string
-                                      description: Specifies the output format of the exposed resources, defaults to "1"
+                                      description: Specifies the output format of
+                                        the exposed resources, defaults to "1"
                                       pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                                       x-kubernetes-int-or-string: true
                                     resource:
@@ -105,16 +140,22 @@ spec:
                                   - resource
                                   type: object
                                 secretKeyRef:
-                                  description: Selects a key of a secret in the pod's namespace
+                                  description: Selects a key of a secret in the pod's
+                                    namespace
                                   properties:
                                     key:
-                                      description: The key of the secret to select from.  Must be a valid secret key.
+                                      description: The key of the secret to select
+                                        from.  Must be a valid secret key.
                                       type: string
                                     name:
-                                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
+                                      description: 'Name of the referent. More info:
+                                        https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion,
+                                        kind, uid?'
                                       type: string
                                     optional:
-                                      description: Specify whether the Secret or its key must be defined
+                                      description: Specify whether the Secret or its
+                                        key must be defined
                                       type: boolean
                                   required:
                                   - key
@@ -128,7 +169,8 @@ spec:
                         description: Image is the image tag for the Container
                         type: string
                       imagePullPolicy:
-                        description: ImagePullPolicy is the image pull policy for the image
+                        description: ImagePullPolicy is the image pull policy for
+                          the image
                         type: string
                       name:
                         description: Name is the name of Container
@@ -136,37 +178,61 @@ spec:
                       nodeSelector:
                         additionalProperties:
                           type: string
-                        description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+                        description: NodeSelector is a selector which must be true
+                          for the pod to fit on a node. Selector which must match
+                          a node's labels for the pod to be scheduled on that node.
                         type: object
                       tolerations:
-                        description: Tolerations is the list of tolerations for the driver pods
+                        description: Tolerations is the list of tolerations for the
+                          driver pods
                         items:
-                          description: The pod this Toleration is attached to tolerates any taint that matches the triple <key,value,effect> using the matching operator <operator>.
+                          description: The pod this Toleration is attached to tolerates
+                            any taint that matches the triple <key,value,effect> using
+                            the matching operator <operator>.
                           properties:
                             effect:
-                              description: Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute.
+                              description: Effect indicates the taint effect to match.
+                                Empty means match all taint effects. When specified,
+                                allowed values are NoSchedule, PreferNoSchedule and
+                                NoExecute.
                               type: string
                             key:
-                              description: Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys.
+                              description: Key is the taint key that the toleration
+                                applies to. Empty means match all taint keys. If the
+                                key is empty, operator must be Exists; this combination
+                                means to match all values and all keys.
                               type: string
                             operator:
-                              description: Operator represents a key's relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.
+                              description: Operator represents a key's relationship
+                                to the value. Valid operators are Exists and Equal.
+                                Defaults to Equal. Exists is equivalent to wildcard
+                                for value, so that a pod can tolerate all taints of
+                                a particular category.
                               type: string
                             tolerationSeconds:
-                              description: TolerationSeconds represents the period of time the toleration (which must be of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default, it is not set, which means tolerate the taint forever (do not evict). Zero and negative values will be treated as 0 (evict immediately) by the system.
+                              description: TolerationSeconds represents the period
+                                of time the toleration (which must be of effect NoExecute,
+                                otherwise this field is ignored) tolerates the taint.
+                                By default, it is not set, which means tolerate the
+                                taint forever (do not evict). Zero and negative values
+                                will be treated as 0 (evict immediately) by the system.
                               format: int64
                               type: integer
                             value:
-                              description: Value is the taint value the toleration matches to. If the operator is Exists, the value should be empty, otherwise just a regular string.
+                              description: Value is the taint value the toleration
+                                matches to. If the operator is Exists, the value should
+                                be empty, otherwise just a regular string.
                               type: string
                           type: object
                         type: array
                     type: object
                   configVersion:
-                    description: ConfigVersion is the configuration version of the driver
+                    description: ConfigVersion is the configuration version of the
+                      driver
                     type: string
                   controller:
-                    description: Controller is the specification for Controller plugin only
+                    description: Controller is the specification for Controller plugin
+                      only
                     properties:
                       args:
                         description: Args is the set of arguments for the container
@@ -174,18 +240,31 @@ spec:
                           type: string
                         type: array
                       envs:
-                        description: Envs is the set of environment variables for the container
+                        description: Envs is the set of environment variables for
+                          the container
                         items:
-                          description: EnvVar represents an environment variable present in a Container.
+                          description: EnvVar represents an environment variable present
+                            in a Container.
                           properties:
                             name:
-                              description: Name of the environment variable. Must be a C_IDENTIFIER.
+                              description: Name of the environment variable. Must
+                                be a C_IDENTIFIER.
                               type: string
                             value:
-                              description: 'Variable references $(VAR_NAME) are expanded using the previous defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "".'
+                              description: 'Variable references $(VAR_NAME) are expanded
+                                using the previously defined environment variables
+                                in the container and any service environment variables.
+                                If a variable cannot be resolved, the reference in
+                                the input string will be unchanged. Double $$ are
+                                reduced to a single $, which allows for escaping the
+                                $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will produce
+                                the string literal "$(VAR_NAME)". Escaped references
+                                will never be expanded, regardless of whether the
+                                variable exists or not. Defaults to "".'
                               type: string
                             valueFrom:
-                              description: Source for the environment variable's value. Cannot be used if value is not empty.
+                              description: Source for the environment variable's value.
+                                Cannot be used if value is not empty.
                               properties:
                                 configMapKeyRef:
                                   description: Selects a key of a ConfigMap.
@@ -194,37 +273,53 @@ spec:
                                       description: The key to select.
                                       type: string
                                     name:
-                                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
+                                      description: 'Name of the referent. More info:
+                                        https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion,
+                                        kind, uid?'
                                       type: string
                                     optional:
-                                      description: Specify whether the ConfigMap or its key must be defined
+                                      description: Specify whether the ConfigMap or
+                                        its key must be defined
                                       type: boolean
                                   required:
                                   - key
                                   type: object
                                 fieldRef:
-                                  description: 'Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels[''<KEY>'']`, `metadata.annotations[''<KEY>'']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.'
+                                  description: 'Selects a field of the pod: supports
+                                    metadata.name, metadata.namespace, `metadata.labels[''<KEY>'']`,
+                                    `metadata.annotations[''<KEY>'']`, spec.nodeName,
+                                    spec.serviceAccountName, status.hostIP, status.podIP,
+                                    status.podIPs.'
                                   properties:
                                     apiVersion:
-                                      description: Version of the schema the FieldPath is written in terms of, defaults to "v1".
+                                      description: Version of the schema the FieldPath
+                                        is written in terms of, defaults to "v1".
                                       type: string
                                     fieldPath:
-                                      description: Path of the field to select in the specified API version.
+                                      description: Path of the field to select in
+                                        the specified API version.
                                       type: string
                                   required:
                                   - fieldPath
                                   type: object
                                 resourceFieldRef:
-                                  description: 'Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.'
+                                  description: 'Selects a resource of the container:
+                                    only resources limits and requests (limits.cpu,
+                                    limits.memory, limits.ephemeral-storage, requests.cpu,
+                                    requests.memory and requests.ephemeral-storage)
+                                    are currently supported.'
                                   properties:
                                     containerName:
-                                      description: 'Container name: required for volumes, optional for env vars'
+                                      description: 'Container name: required for volumes,
+                                        optional for env vars'
                                       type: string
                                     divisor:
                                       anyOf:
                                       - type: integer
                                       - type: string
-                                      description: Specifies the output format of the exposed resources, defaults to "1"
+                                      description: Specifies the output format of
+                                        the exposed resources, defaults to "1"
                                       pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                                       x-kubernetes-int-or-string: true
                                     resource:
@@ -234,16 +329,22 @@ spec:
                                   - resource
                                   type: object
                                 secretKeyRef:
-                                  description: Selects a key of a secret in the pod's namespace
+                                  description: Selects a key of a secret in the pod's
+                                    namespace
                                   properties:
                                     key:
-                                      description: The key of the secret to select from.  Must be a valid secret key.
+                                      description: The key of the secret to select
+                                        from.  Must be a valid secret key.
                                       type: string
                                     name:
-                                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
+                                      description: 'Name of the referent. More info:
+                                        https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion,
+                                        kind, uid?'
                                       type: string
                                     optional:
-                                      description: Specify whether the Secret or its key must be defined
+                                      description: Specify whether the Secret or its
+                                        key must be defined
                                       type: boolean
                                   required:
                                   - key
@@ -257,7 +358,8 @@ spec:
                         description: Image is the image tag for the Container
                         type: string
                       imagePullPolicy:
-                        description: ImagePullPolicy is the image pull policy for the image
+                        description: ImagePullPolicy is the image pull policy for
+                          the image
                         type: string
                       name:
                         description: Name is the name of Container
@@ -265,38 +367,66 @@ spec:
                       nodeSelector:
                         additionalProperties:
                           type: string
-                        description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+                        description: NodeSelector is a selector which must be true
+                          for the pod to fit on a node. Selector which must match
+                          a node's labels for the pod to be scheduled on that node.
                         type: object
                       tolerations:
-                        description: Tolerations is the list of tolerations for the driver pods
+                        description: Tolerations is the list of tolerations for the
+                          driver pods
                         items:
-                          description: The pod this Toleration is attached to tolerates any taint that matches the triple <key,value,effect> using the matching operator <operator>.
+                          description: The pod this Toleration is attached to tolerates
+                            any taint that matches the triple <key,value,effect> using
+                            the matching operator <operator>.
                           properties:
                             effect:
-                              description: Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute.
+                              description: Effect indicates the taint effect to match.
+                                Empty means match all taint effects. When specified,
+                                allowed values are NoSchedule, PreferNoSchedule and
+                                NoExecute.
                               type: string
                             key:
-                              description: Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys.
+                              description: Key is the taint key that the toleration
+                                applies to. Empty means match all taint keys. If the
+                                key is empty, operator must be Exists; this combination
+                                means to match all values and all keys.
                               type: string
                             operator:
-                              description: Operator represents a key's relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.
+                              description: Operator represents a key's relationship
+                                to the value. Valid operators are Exists and Equal.
+                                Defaults to Equal. Exists is equivalent to wildcard
+                                for value, so that a pod can tolerate all taints of
+                                a particular category.
                               type: string
                             tolerationSeconds:
-                              description: TolerationSeconds represents the period of time the toleration (which must be of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default, it is not set, which means tolerate the taint forever (do not evict). Zero and negative values will be treated as 0 (evict immediately) by the system.
+                              description: TolerationSeconds represents the period
+                                of time the toleration (which must be of effect NoExecute,
+                                otherwise this field is ignored) tolerates the taint.
+                                By default, it is not set, which means tolerate the
+                                taint forever (do not evict). Zero and negative values
+                                will be treated as 0 (evict immediately) by the system.
                               format: int64
                               type: integer
                             value:
-                              description: Value is the taint value the toleration matches to. If the operator is Exists, the value should be empty, otherwise just a regular string.
+                              description: Value is the taint value the toleration
+                                matches to. If the operator is Exists, the value should
+                                be empty, otherwise just a regular string.
                               type: string
                           type: object
                         type: array
                     type: object
                   dnsPolicy:
-                    description: DNSPolicy is the dnsPolicy of the daemonset for Node plugin
+                    description: DNSPolicy is the dnsPolicy of the daemonset for Node
+                      plugin
                     type: string
                   forceUpdate:
-                    description: ForceUpdate is the boolean flag used to force an update of the driver instance
+                    description: ForceUpdate is the boolean flag used to force an
+                      update of the driver instance
                     type: boolean
+                  fsGroupPolicy:
+                    description: FsGroupPolicy specifies fs group permission changes
+                      while mounting volume
+                    type: string
                   initContainers:
                     description: InitContainers is the specification for Driver InitContainers
                     items:
@@ -308,18 +438,32 @@ spec:
                             type: string
                           type: array
                         envs:
-                          description: Envs is the set of environment variables for the container
+                          description: Envs is the set of environment variables for
+                            the container
                           items:
-                            description: EnvVar represents an environment variable present in a Container.
+                            description: EnvVar represents an environment variable
+                              present in a Container.
                             properties:
                               name:
-                                description: Name of the environment variable. Must be a C_IDENTIFIER.
+                                description: Name of the environment variable. Must
+                                  be a C_IDENTIFIER.
                                 type: string
                               value:
-                                description: 'Variable references $(VAR_NAME) are expanded using the previous defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "".'
+                                description: 'Variable references $(VAR_NAME) are
+                                  expanded using the previously defined environment
+                                  variables in the container and any service environment
+                                  variables. If a variable cannot be resolved, the
+                                  reference in the input string will be unchanged.
+                                  Double $$ are reduced to a single $, which allows
+                                  for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)"
+                                  will produce the string literal "$(VAR_NAME)". Escaped
+                                  references will never be expanded, regardless of
+                                  whether the variable exists or not. Defaults to
+                                  "".'
                                 type: string
                               valueFrom:
-                                description: Source for the environment variable's value. Cannot be used if value is not empty.
+                                description: Source for the environment variable's
+                                  value. Cannot be used if value is not empty.
                                 properties:
                                   configMapKeyRef:
                                     description: Selects a key of a ConfigMap.
@@ -328,37 +472,53 @@ spec:
                                         description: The key to select.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion,
+                                          kind, uid?'
                                         type: string
                                       optional:
-                                        description: Specify whether the ConfigMap or its key must be defined
+                                        description: Specify whether the ConfigMap
+                                          or its key must be defined
                                         type: boolean
                                     required:
                                     - key
                                     type: object
                                   fieldRef:
-                                    description: 'Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels[''<KEY>'']`, `metadata.annotations[''<KEY>'']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.'
+                                    description: 'Selects a field of the pod: supports
+                                      metadata.name, metadata.namespace, `metadata.labels[''<KEY>'']`,
+                                      `metadata.annotations[''<KEY>'']`, spec.nodeName,
+                                      spec.serviceAccountName, status.hostIP, status.podIP,
+                                      status.podIPs.'
                                     properties:
                                       apiVersion:
-                                        description: Version of the schema the FieldPath is written in terms of, defaults to "v1".
+                                        description: Version of the schema the FieldPath
+                                          is written in terms of, defaults to "v1".
                                         type: string
                                       fieldPath:
-                                        description: Path of the field to select in the specified API version.
+                                        description: Path of the field to select in
+                                          the specified API version.
                                         type: string
                                     required:
                                     - fieldPath
                                     type: object
                                   resourceFieldRef:
-                                    description: 'Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.'
+                                    description: 'Selects a resource of the container:
+                                      only resources limits and requests (limits.cpu,
+                                      limits.memory, limits.ephemeral-storage, requests.cpu,
+                                      requests.memory and requests.ephemeral-storage)
+                                      are currently supported.'
                                     properties:
                                       containerName:
-                                        description: 'Container name: required for volumes, optional for env vars'
+                                        description: 'Container name: required for
+                                          volumes, optional for env vars'
                                         type: string
                                       divisor:
                                         anyOf:
                                         - type: integer
                                         - type: string
-                                        description: Specifies the output format of the exposed resources, defaults to "1"
+                                        description: Specifies the output format of
+                                          the exposed resources, defaults to "1"
                                         pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                                         x-kubernetes-int-or-string: true
                                       resource:
@@ -368,16 +528,22 @@ spec:
                                     - resource
                                     type: object
                                   secretKeyRef:
-                                    description: Selects a key of a secret in the pod's namespace
+                                    description: Selects a key of a secret in the
+                                      pod's namespace
                                     properties:
                                       key:
-                                        description: The key of the secret to select from.  Must be a valid secret key.
+                                        description: The key of the secret to select
+                                          from.  Must be a valid secret key.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion,
+                                          kind, uid?'
                                         type: string
                                       optional:
-                                        description: Specify whether the Secret or its key must be defined
+                                        description: Specify whether the Secret or
+                                          its key must be defined
                                         type: boolean
                                     required:
                                     - key
@@ -391,7 +557,8 @@ spec:
                           description: Image is the image tag for the Container
                           type: string
                         imagePullPolicy:
-                          description: ImagePullPolicy is the image pull policy for the image
+                          description: ImagePullPolicy is the image pull policy for
+                            the image
                           type: string
                         name:
                           description: Name is the name of Container
@@ -399,28 +566,51 @@ spec:
                         nodeSelector:
                           additionalProperties:
                             type: string
-                          description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+                          description: NodeSelector is a selector which must be true
+                            for the pod to fit on a node. Selector which must match
+                            a node's labels for the pod to be scheduled on that node.
                           type: object
                         tolerations:
-                          description: Tolerations is the list of tolerations for the driver pods
+                          description: Tolerations is the list of tolerations for
+                            the driver pods
                           items:
-                            description: The pod this Toleration is attached to tolerates any taint that matches the triple <key,value,effect> using the matching operator <operator>.
+                            description: The pod this Toleration is attached to tolerates
+                              any taint that matches the triple <key,value,effect>
+                              using the matching operator <operator>.
                             properties:
                               effect:
-                                description: Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute.
+                                description: Effect indicates the taint effect to
+                                  match. Empty means match all taint effects. When
+                                  specified, allowed values are NoSchedule, PreferNoSchedule
+                                  and NoExecute.
                                 type: string
                               key:
-                                description: Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys.
+                                description: Key is the taint key that the toleration
+                                  applies to. Empty means match all taint keys. If
+                                  the key is empty, operator must be Exists; this
+                                  combination means to match all values and all keys.
                                 type: string
                               operator:
-                                description: Operator represents a key's relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.
+                                description: Operator represents a key's relationship
+                                  to the value. Valid operators are Exists and Equal.
+                                  Defaults to Equal. Exists is equivalent to wildcard
+                                  for value, so that a pod can tolerate all taints
+                                  of a particular category.
                                 type: string
                               tolerationSeconds:
-                                description: TolerationSeconds represents the period of time the toleration (which must be of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default, it is not set, which means tolerate the taint forever (do not evict). Zero and negative values will be treated as 0 (evict immediately) by the system.
+                                description: TolerationSeconds represents the period
+                                  of time the toleration (which must be of effect
+                                  NoExecute, otherwise this field is ignored) tolerates
+                                  the taint. By default, it is not set, which means
+                                  tolerate the taint forever (do not evict). Zero
+                                  and negative values will be treated as 0 (evict
+                                  immediately) by the system.
                                 format: int64
                                 type: integer
                               value:
-                                description: Value is the taint value the toleration matches to. If the operator is Exists, the value should be empty, otherwise just a regular string.
+                                description: Value is the taint value the toleration
+                                  matches to. If the operator is Exists, the value
+                                  should be empty, otherwise just a regular string.
                                 type: string
                             type: object
                           type: array
@@ -435,18 +625,31 @@ spec:
                           type: string
                         type: array
                       envs:
-                        description: Envs is the set of environment variables for the container
+                        description: Envs is the set of environment variables for
+                          the container
                         items:
-                          description: EnvVar represents an environment variable present in a Container.
+                          description: EnvVar represents an environment variable present
+                            in a Container.
                           properties:
                             name:
-                              description: Name of the environment variable. Must be a C_IDENTIFIER.
+                              description: Name of the environment variable. Must
+                                be a C_IDENTIFIER.
                               type: string
                             value:
-                              description: 'Variable references $(VAR_NAME) are expanded using the previous defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "".'
+                              description: 'Variable references $(VAR_NAME) are expanded
+                                using the previously defined environment variables
+                                in the container and any service environment variables.
+                                If a variable cannot be resolved, the reference in
+                                the input string will be unchanged. Double $$ are
+                                reduced to a single $, which allows for escaping the
+                                $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will produce
+                                the string literal "$(VAR_NAME)". Escaped references
+                                will never be expanded, regardless of whether the
+                                variable exists or not. Defaults to "".'
                               type: string
                             valueFrom:
-                              description: Source for the environment variable's value. Cannot be used if value is not empty.
+                              description: Source for the environment variable's value.
+                                Cannot be used if value is not empty.
                               properties:
                                 configMapKeyRef:
                                   description: Selects a key of a ConfigMap.
@@ -455,37 +658,53 @@ spec:
                                       description: The key to select.
                                       type: string
                                     name:
-                                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
+                                      description: 'Name of the referent. More info:
+                                        https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion,
+                                        kind, uid?'
                                       type: string
                                     optional:
-                                      description: Specify whether the ConfigMap or its key must be defined
+                                      description: Specify whether the ConfigMap or
+                                        its key must be defined
                                       type: boolean
                                   required:
                                   - key
                                   type: object
                                 fieldRef:
-                                  description: 'Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels[''<KEY>'']`, `metadata.annotations[''<KEY>'']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.'
+                                  description: 'Selects a field of the pod: supports
+                                    metadata.name, metadata.namespace, `metadata.labels[''<KEY>'']`,
+                                    `metadata.annotations[''<KEY>'']`, spec.nodeName,
+                                    spec.serviceAccountName, status.hostIP, status.podIP,
+                                    status.podIPs.'
                                   properties:
                                     apiVersion:
-                                      description: Version of the schema the FieldPath is written in terms of, defaults to "v1".
+                                      description: Version of the schema the FieldPath
+                                        is written in terms of, defaults to "v1".
                                       type: string
                                     fieldPath:
-                                      description: Path of the field to select in the specified API version.
+                                      description: Path of the field to select in
+                                        the specified API version.
                                       type: string
                                   required:
                                   - fieldPath
                                   type: object
                                 resourceFieldRef:
-                                  description: 'Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.'
+                                  description: 'Selects a resource of the container:
+                                    only resources limits and requests (limits.cpu,
+                                    limits.memory, limits.ephemeral-storage, requests.cpu,
+                                    requests.memory and requests.ephemeral-storage)
+                                    are currently supported.'
                                   properties:
                                     containerName:
-                                      description: 'Container name: required for volumes, optional for env vars'
+                                      description: 'Container name: required for volumes,
+                                        optional for env vars'
                                       type: string
                                     divisor:
                                       anyOf:
                                       - type: integer
                                       - type: string
-                                      description: Specifies the output format of the exposed resources, defaults to "1"
+                                      description: Specifies the output format of
+                                        the exposed resources, defaults to "1"
                                       pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                                       x-kubernetes-int-or-string: true
                                     resource:
@@ -495,16 +714,22 @@ spec:
                                   - resource
                                   type: object
                                 secretKeyRef:
-                                  description: Selects a key of a secret in the pod's namespace
+                                  description: Selects a key of a secret in the pod's
+                                    namespace
                                   properties:
                                     key:
-                                      description: The key of the secret to select from.  Must be a valid secret key.
+                                      description: The key of the secret to select
+                                        from.  Must be a valid secret key.
                                       type: string
                                     name:
-                                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
+                                      description: 'Name of the referent. More info:
+                                        https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion,
+                                        kind, uid?'
                                       type: string
                                     optional:
-                                      description: Specify whether the Secret or its key must be defined
+                                      description: Specify whether the Secret or its
+                                        key must be defined
                                       type: boolean
                                   required:
                                   - key
@@ -518,7 +743,8 @@ spec:
                         description: Image is the image tag for the Container
                         type: string
                       imagePullPolicy:
-                        description: ImagePullPolicy is the image pull policy for the image
+                        description: ImagePullPolicy is the image pull policy for
+                          the image
                         type: string
                       name:
                         description: Name is the name of Container
@@ -526,34 +752,57 @@ spec:
                       nodeSelector:
                         additionalProperties:
                           type: string
-                        description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+                        description: NodeSelector is a selector which must be true
+                          for the pod to fit on a node. Selector which must match
+                          a node's labels for the pod to be scheduled on that node.
                         type: object
                       tolerations:
-                        description: Tolerations is the list of tolerations for the driver pods
+                        description: Tolerations is the list of tolerations for the
+                          driver pods
                         items:
-                          description: The pod this Toleration is attached to tolerates any taint that matches the triple <key,value,effect> using the matching operator <operator>.
+                          description: The pod this Toleration is attached to tolerates
+                            any taint that matches the triple <key,value,effect> using
+                            the matching operator <operator>.
                           properties:
                             effect:
-                              description: Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute.
+                              description: Effect indicates the taint effect to match.
+                                Empty means match all taint effects. When specified,
+                                allowed values are NoSchedule, PreferNoSchedule and
+                                NoExecute.
                               type: string
                             key:
-                              description: Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys.
+                              description: Key is the taint key that the toleration
+                                applies to. Empty means match all taint keys. If the
+                                key is empty, operator must be Exists; this combination
+                                means to match all values and all keys.
                               type: string
                             operator:
-                              description: Operator represents a key's relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.
+                              description: Operator represents a key's relationship
+                                to the value. Valid operators are Exists and Equal.
+                                Defaults to Equal. Exists is equivalent to wildcard
+                                for value, so that a pod can tolerate all taints of
+                                a particular category.
                               type: string
                             tolerationSeconds:
-                              description: TolerationSeconds represents the period of time the toleration (which must be of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default, it is not set, which means tolerate the taint forever (do not evict). Zero and negative values will be treated as 0 (evict immediately) by the system.
+                              description: TolerationSeconds represents the period
+                                of time the toleration (which must be of effect NoExecute,
+                                otherwise this field is ignored) tolerates the taint.
+                                By default, it is not set, which means tolerate the
+                                taint forever (do not evict). Zero and negative values
+                                will be treated as 0 (evict immediately) by the system.
                               format: int64
                               type: integer
                             value:
-                              description: Value is the taint value the toleration matches to. If the operator is Exists, the value should be empty, otherwise just a regular string.
+                              description: Value is the taint value the toleration
+                                matches to. If the operator is Exists, the value should
+                                be empty, otherwise just a regular string.
                               type: string
                           type: object
                         type: array
                     type: object
                   replicas:
-                    description: Replicas is the count of controllers for Controller plugin
+                    description: Replicas is the count of controllers for Controller
+                      plugin
                     format: int32
                     type: integer
                   sideCars:
@@ -567,18 +816,32 @@ spec:
                             type: string
                           type: array
                         envs:
-                          description: Envs is the set of environment variables for the container
+                          description: Envs is the set of environment variables for
+                            the container
                           items:
-                            description: EnvVar represents an environment variable present in a Container.
+                            description: EnvVar represents an environment variable
+                              present in a Container.
                             properties:
                               name:
-                                description: Name of the environment variable. Must be a C_IDENTIFIER.
+                                description: Name of the environment variable. Must
+                                  be a C_IDENTIFIER.
                                 type: string
                               value:
-                                description: 'Variable references $(VAR_NAME) are expanded using the previous defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "".'
+                                description: 'Variable references $(VAR_NAME) are
+                                  expanded using the previously defined environment
+                                  variables in the container and any service environment
+                                  variables. If a variable cannot be resolved, the
+                                  reference in the input string will be unchanged.
+                                  Double $$ are reduced to a single $, which allows
+                                  for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)"
+                                  will produce the string literal "$(VAR_NAME)". Escaped
+                                  references will never be expanded, regardless of
+                                  whether the variable exists or not. Defaults to
+                                  "".'
                                 type: string
                               valueFrom:
-                                description: Source for the environment variable's value. Cannot be used if value is not empty.
+                                description: Source for the environment variable's
+                                  value. Cannot be used if value is not empty.
                                 properties:
                                   configMapKeyRef:
                                     description: Selects a key of a ConfigMap.
@@ -587,37 +850,53 @@ spec:
                                         description: The key to select.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion,
+                                          kind, uid?'
                                         type: string
                                       optional:
-                                        description: Specify whether the ConfigMap or its key must be defined
+                                        description: Specify whether the ConfigMap
+                                          or its key must be defined
                                         type: boolean
                                     required:
                                     - key
                                     type: object
                                   fieldRef:
-                                    description: 'Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels[''<KEY>'']`, `metadata.annotations[''<KEY>'']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.'
+                                    description: 'Selects a field of the pod: supports
+                                      metadata.name, metadata.namespace, `metadata.labels[''<KEY>'']`,
+                                      `metadata.annotations[''<KEY>'']`, spec.nodeName,
+                                      spec.serviceAccountName, status.hostIP, status.podIP,
+                                      status.podIPs.'
                                     properties:
                                       apiVersion:
-                                        description: Version of the schema the FieldPath is written in terms of, defaults to "v1".
+                                        description: Version of the schema the FieldPath
+                                          is written in terms of, defaults to "v1".
                                         type: string
                                       fieldPath:
-                                        description: Path of the field to select in the specified API version.
+                                        description: Path of the field to select in
+                                          the specified API version.
                                         type: string
                                     required:
                                     - fieldPath
                                     type: object
                                   resourceFieldRef:
-                                    description: 'Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.'
+                                    description: 'Selects a resource of the container:
+                                      only resources limits and requests (limits.cpu,
+                                      limits.memory, limits.ephemeral-storage, requests.cpu,
+                                      requests.memory and requests.ephemeral-storage)
+                                      are currently supported.'
                                     properties:
                                       containerName:
-                                        description: 'Container name: required for volumes, optional for env vars'
+                                        description: 'Container name: required for
+                                          volumes, optional for env vars'
                                         type: string
                                       divisor:
                                         anyOf:
                                         - type: integer
                                         - type: string
-                                        description: Specifies the output format of the exposed resources, defaults to "1"
+                                        description: Specifies the output format of
+                                          the exposed resources, defaults to "1"
                                         pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                                         x-kubernetes-int-or-string: true
                                       resource:
@@ -627,16 +906,22 @@ spec:
                                     - resource
                                     type: object
                                   secretKeyRef:
-                                    description: Selects a key of a secret in the pod's namespace
+                                    description: Selects a key of a secret in the
+                                      pod's namespace
                                     properties:
                                       key:
-                                        description: The key of the secret to select from.  Must be a valid secret key.
+                                        description: The key of the secret to select
+                                          from.  Must be a valid secret key.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion,
+                                          kind, uid?'
                                         type: string
                                       optional:
-                                        description: Specify whether the Secret or its key must be defined
+                                        description: Specify whether the Secret or
+                                          its key must be defined
                                         type: boolean
                                     required:
                                     - key
@@ -650,7 +935,8 @@ spec:
                           description: Image is the image tag for the Container
                           type: string
                         imagePullPolicy:
-                          description: ImagePullPolicy is the image pull policy for the image
+                          description: ImagePullPolicy is the image pull policy for
+                            the image
                           type: string
                         name:
                           description: Name is the name of Container
@@ -658,28 +944,51 @@ spec:
                         nodeSelector:
                           additionalProperties:
                             type: string
-                          description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+                          description: NodeSelector is a selector which must be true
+                            for the pod to fit on a node. Selector which must match
+                            a node's labels for the pod to be scheduled on that node.
                           type: object
                         tolerations:
-                          description: Tolerations is the list of tolerations for the driver pods
+                          description: Tolerations is the list of tolerations for
+                            the driver pods
                           items:
-                            description: The pod this Toleration is attached to tolerates any taint that matches the triple <key,value,effect> using the matching operator <operator>.
+                            description: The pod this Toleration is attached to tolerates
+                              any taint that matches the triple <key,value,effect>
+                              using the matching operator <operator>.
                             properties:
                               effect:
-                                description: Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute.
+                                description: Effect indicates the taint effect to
+                                  match. Empty means match all taint effects. When
+                                  specified, allowed values are NoSchedule, PreferNoSchedule
+                                  and NoExecute.
                                 type: string
                               key:
-                                description: Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys.
+                                description: Key is the taint key that the toleration
+                                  applies to. Empty means match all taint keys. If
+                                  the key is empty, operator must be Exists; this
+                                  combination means to match all values and all keys.
                                 type: string
                               operator:
-                                description: Operator represents a key's relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.
+                                description: Operator represents a key's relationship
+                                  to the value. Valid operators are Exists and Equal.
+                                  Defaults to Equal. Exists is equivalent to wildcard
+                                  for value, so that a pod can tolerate all taints
+                                  of a particular category.
                                 type: string
                               tolerationSeconds:
-                                description: TolerationSeconds represents the period of time the toleration (which must be of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default, it is not set, which means tolerate the taint forever (do not evict). Zero and negative values will be treated as 0 (evict immediately) by the system.
+                                description: TolerationSeconds represents the period
+                                  of time the toleration (which must be of effect
+                                  NoExecute, otherwise this field is ignored) tolerates
+                                  the taint. By default, it is not set, which means
+                                  tolerate the taint forever (do not evict). Zero
+                                  and negative values will be treated as 0 (evict
+                                  immediately) by the system.
                                 format: int64
                                 type: integer
                               value:
-                                description: Value is the taint value the toleration matches to. If the operator is Exists, the value should be empty, otherwise just a regular string.
+                                description: Value is the taint value the toleration
+                                  matches to. If the operator is Exists, the value
+                                  should be empty, otherwise just a regular string.
                                 type: string
                             type: object
                           type: array
@@ -696,7 +1005,8 @@ spec:
                         parameters:
                           additionalProperties:
                             type: string
-                          description: Parameters is a map of driver specific parameters for snapshot class
+                          description: Parameters is a map of driver specific parameters
+                            for snapshot class
                           type: object
                       required:
                       - name
@@ -708,23 +1018,35 @@ spec:
                       description: StorageClass represents a kubernetes storage class
                       properties:
                         allowVolumeExpansion:
-                          description: AllowVolumeExpansion is a boolean flag which indicates if volumes can be expanded
+                          description: AllowVolumeExpansion is a boolean flag which
+                            indicates if volumes can be expanded
                           type: boolean
                         allowedTopologies:
-                          description: Restrict the node topologies where volumes can be dynamically provisioned.
+                          description: Restrict the node topologies where volumes
+                            can be dynamically provisioned.
                           items:
-                            description: A topology selector term represents the result of label queries. A null or empty topology selector term matches no objects. The requirements of them are ANDed. It provides a subset of functionality as NodeSelectorTerm. This is an alpha feature and may change in the future.
+                            description: A topology selector term represents the result
+                              of label queries. A null or empty topology selector
+                              term matches no objects. The requirements of them are
+                              ANDed. It provides a subset of functionality as NodeSelectorTerm.
+                              This is an alpha feature and may change in the future.
                             properties:
                               matchLabelExpressions:
-                                description: A list of topology selector requirements by labels.
+                                description: A list of topology selector requirements
+                                  by labels.
                                 items:
-                                  description: A topology selector requirement is a selector that matches given label. This is an alpha feature and may change in the future.
+                                  description: A topology selector requirement is
+                                    a selector that matches given label. This is an
+                                    alpha feature and may change in the future.
                                   properties:
                                     key:
-                                      description: The label key that the selector applies to.
+                                      description: The label key that the selector
+                                        applies to.
                                       type: string
                                     values:
-                                      description: An array of string values. One value must match the label to be selected. Each entry in Values is ORed.
+                                      description: An array of string values. One
+                                        value must match the label to be selected.
+                                        Each entry in Values is ORed.
                                       items:
                                         type: string
                                       type: array
@@ -736,7 +1058,8 @@ spec:
                             type: object
                           type: array
                         default:
-                          description: DefaultSc is a boolean flag to indicate if the storage class is going to be marked as default
+                          description: DefaultSc is a boolean flag to indicate if
+                            the storage class is going to be marked as default
                           type: boolean
                         name:
                           description: Name is the name of the StorageClass
@@ -744,13 +1067,16 @@ spec:
                         parameters:
                           additionalProperties:
                             type: string
-                          description: Parameters is a map of driver specific storage class
+                          description: Parameters is a map of driver specific storage
+                            class
                           type: object
                         reclaimPolicy:
-                          description: ReclaimPolicy is the reclaim policy for the storage class
+                          description: ReclaimPolicy is the reclaim policy for the
+                            storage class
                           type: string
                         volumeBindingMode:
-                          description: VolumeBindingMode field controls when volume binding and dynamic provisioning should occur.
+                          description: VolumeBindingMode field controls when volume
+                            binding and dynamic provisioning should occur.
                           type: string
                       required:
                       - name
@@ -798,10 +1124,12 @@ spec:
                 description: LastUpdate is the last updated state of the driver
                 properties:
                   condition:
-                    description: Condition is the last known condition of the Custom Resource
+                    description: Condition is the last known condition of the Custom
+                      Resource
                     type: string
                   errorMessage:
-                    description: ErrorMessage is the last error message associated with the condition
+                    description: ErrorMessage is the last error message associated
+                      with the condition
                     type: string
                   time:
                     description: Time is the time stamp for the last condition update

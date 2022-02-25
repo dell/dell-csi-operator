@@ -40,6 +40,10 @@ metadata:
                     "value": "true"
                   },
                   {
+                    "name": "X_CSI_ISI_AUTH_TYPE",
+                    "value": "0"
+                  },
+                  {
                     "name": "X_CSI_CUSTOM_TOPOLOGY_ENABLED",
                     "value": "false"
                   }
@@ -130,10 +134,10 @@ metadata:
                     "value": "4"
                   }
                 ],
-                "image": "dellemc/csi-powermax:v2.1.0",
+                "image": "dellemc/csi-powermax:v2.2.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.1.0",
+              "configVersion": "v2.2.0",
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
               "node": {
@@ -199,6 +203,14 @@ metadata:
                 "imagePullPolicy": "IfNotPresent"
               },
               "configVersion": "v2.2.0",
+              "controller": {
+                "envs": [
+                  {
+                    "name": "X_CSI_NFS_ACLS",
+                    "value": "0777"
+                  }
+                ]
+              },
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
               "node": {
@@ -347,7 +359,8 @@ spec:
       - description: AuthSecret is the name of the credentials secret for the driver
         displayName: Auth Secret
         path: driver.authSecret
-      - description: Common is the common specification for both controller and node plugins
+      - description: Common is the common specification for both controller and node
+          plugins
         displayName: Common specification
         path: driver.common
       - description: Args is the set of arguments for the container
@@ -367,7 +380,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.common.name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.common.nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -396,7 +411,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.controller.name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.controller.nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -405,9 +422,14 @@ spec:
       - description: DNSPolicy is the dnsPolicy of the daemonset for Node plugin
         displayName: DNSPolicy
         path: driver.dnsPolicy
-      - description: ForceUpdate is the boolean flag used to force an update of the driver instance
+      - description: ForceUpdate is the boolean flag used to force an update of the
+          driver instance
         displayName: Force update
         path: driver.forceUpdate
+      - description: FsGroupPolicy specifies fs group permission changes while mounting
+          volume
+        displayName: FSGroupPolicy
+        path: driver.fsGroupPolicy
       - description: Args is the set of arguments for the container
         displayName: Container Arguments
         path: driver.initContainers[0].args
@@ -425,7 +447,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.initContainers[0].name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.initContainers[0].nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -451,7 +475,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.node.name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.node.nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -480,7 +506,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.sideCars[0].name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.sideCars[0].nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -492,19 +520,23 @@ spec:
       - description: Name is the name of the Snapshot Class
         displayName: Snapshot Class Name
         path: driver.snapshotClass[0].name
-      - description: Parameters is a map of driver specific parameters for snapshot class
+      - description: Parameters is a map of driver specific parameters for snapshot
+          class
         displayName: Snapshot Class Parameters
         path: driver.snapshotClass[0].parameters
       - description: StorageClass is the specification for Storage Classes
         displayName: Storage Classes
         path: driver.storageClass
-      - description: AllowVolumeExpansion is a boolean flag which indicates if volumes can be expanded
+      - description: AllowVolumeExpansion is a boolean flag which indicates if volumes
+          can be expanded
         displayName: Allow Volume Expansion
         path: driver.storageClass[0].allowVolumeExpansion
-      - description: Restrict the node topologies where volumes can be dynamically provisioned.
+      - description: Restrict the node topologies where volumes can be dynamically
+          provisioned.
         displayName: Allowed Topologies
         path: driver.storageClass[0].allowedTopologies
-      - description: DefaultSc is a boolean flag to indicate if the storage class is going to be marked as default
+      - description: DefaultSc is a boolean flag to indicate if the storage class
+          is going to be marked as default
         displayName: Default
         path: driver.storageClass[0].default
       - description: Name is the name of the StorageClass
@@ -516,7 +548,8 @@ spec:
       - description: ReclaimPolicy is the reclaim policy for the storage class
         displayName: PersistentVolumeReclaimPolicy
         path: driver.storageClass[0].reclaimPolicy
-      - description: VolumeBindingMode field controls when volume binding and dynamic provisioning should occur.
+      - description: VolumeBindingMode field controls when volume binding and dynamic
+          provisioning should occur.
         displayName: Volume Binding Mode
         path: driver.storageClass[0].volumeBindingMode
       - description: TLSCertSecret is the name of the TLS Cert secret
@@ -580,7 +613,8 @@ spec:
       - description: AuthSecret is the name of the credentials secret for the driver
         displayName: Auth Secret
         path: driver.authSecret
-      - description: Common is the common specification for both controller and node plugins
+      - description: Common is the common specification for both controller and node
+          plugins
         displayName: Common specification
         path: driver.common
       - description: Args is the set of arguments for the container
@@ -600,7 +634,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.common.name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.common.nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -629,7 +665,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.controller.name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.controller.nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -638,9 +676,14 @@ spec:
       - description: DNSPolicy is the dnsPolicy of the daemonset for Node plugin
         displayName: DNSPolicy
         path: driver.dnsPolicy
-      - description: ForceUpdate is the boolean flag used to force an update of the driver instance
+      - description: ForceUpdate is the boolean flag used to force an update of the
+          driver instance
         displayName: Force update
         path: driver.forceUpdate
+      - description: FsGroupPolicy specifies fs group permission changes while mounting
+          volume
+        displayName: FSGroupPolicy
+        path: driver.fsGroupPolicy
       - description: Args is the set of arguments for the container
         displayName: Container Arguments
         path: driver.initContainers[0].args
@@ -658,7 +701,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.initContainers[0].name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.initContainers[0].nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -684,7 +729,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.node.name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.node.nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -713,7 +760,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.sideCars[0].name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.sideCars[0].nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -725,19 +774,23 @@ spec:
       - description: Name is the name of the Snapshot Class
         displayName: Snapshot Class Name
         path: driver.snapshotClass[0].name
-      - description: Parameters is a map of driver specific parameters for snapshot class
+      - description: Parameters is a map of driver specific parameters for snapshot
+          class
         displayName: Snapshot Class Parameters
         path: driver.snapshotClass[0].parameters
       - description: StorageClass is the specification for Storage Classes
         displayName: Storage Classes
         path: driver.storageClass
-      - description: AllowVolumeExpansion is a boolean flag which indicates if volumes can be expanded
+      - description: AllowVolumeExpansion is a boolean flag which indicates if volumes
+          can be expanded
         displayName: Allow Volume Expansion
         path: driver.storageClass[0].allowVolumeExpansion
-      - description: Restrict the node topologies where volumes can be dynamically provisioned.
+      - description: Restrict the node topologies where volumes can be dynamically
+          provisioned.
         displayName: Allowed Topologies
         path: driver.storageClass[0].allowedTopologies
-      - description: DefaultSc is a boolean flag to indicate if the storage class is going to be marked as default
+      - description: DefaultSc is a boolean flag to indicate if the storage class
+          is going to be marked as default
         displayName: Default
         path: driver.storageClass[0].default
       - description: Name is the name of the StorageClass
@@ -749,7 +802,8 @@ spec:
       - description: ReclaimPolicy is the reclaim policy for the storage class
         displayName: PersistentVolumeReclaimPolicy
         path: driver.storageClass[0].reclaimPolicy
-      - description: VolumeBindingMode field controls when volume binding and dynamic provisioning should occur.
+      - description: VolumeBindingMode field controls when volume binding and dynamic
+          provisioning should occur.
         displayName: Volume Binding Mode
         path: driver.storageClass[0].volumeBindingMode
       - description: TLSCertSecret is the name of the TLS Cert secret
@@ -795,7 +849,8 @@ spec:
         x-descriptors:
         - urn:alm:descriptor:text
       version: v1
-    - description: CSIPowerMaxRevProxy is the Schema for the csipowermaxrevproxies API
+    - description: CSIPowerMaxRevProxy is the Schema for the csipowermaxrevproxies
+        API
       displayName: CSI PowerMax ReverseProxy
       kind: CSIPowerMaxRevProxy
       name: csipowermaxrevproxies.storage.dell.com
@@ -838,7 +893,8 @@ spec:
       - description: AuthSecret is the name of the credentials secret for the driver
         displayName: Auth Secret
         path: driver.authSecret
-      - description: Common is the common specification for both controller and node plugins
+      - description: Common is the common specification for both controller and node
+          plugins
         displayName: Common specification
         path: driver.common
       - description: Args is the set of arguments for the container
@@ -858,7 +914,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.common.name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.common.nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -887,7 +945,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.controller.name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.controller.nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -896,9 +956,14 @@ spec:
       - description: DNSPolicy is the dnsPolicy of the daemonset for Node plugin
         displayName: DNSPolicy
         path: driver.dnsPolicy
-      - description: ForceUpdate is the boolean flag used to force an update of the driver instance
+      - description: ForceUpdate is the boolean flag used to force an update of the
+          driver instance
         displayName: Force update
         path: driver.forceUpdate
+      - description: FsGroupPolicy specifies fs group permission changes while mounting
+          volume
+        displayName: FSGroupPolicy
+        path: driver.fsGroupPolicy
       - description: Args is the set of arguments for the container
         displayName: Container Arguments
         path: driver.initContainers[0].args
@@ -916,7 +981,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.initContainers[0].name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.initContainers[0].nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -942,7 +1009,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.node.name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.node.nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -971,7 +1040,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.sideCars[0].name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.sideCars[0].nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -983,19 +1054,23 @@ spec:
       - description: Name is the name of the Snapshot Class
         displayName: Snapshot Class Name
         path: driver.snapshotClass[0].name
-      - description: Parameters is a map of driver specific parameters for snapshot class
+      - description: Parameters is a map of driver specific parameters for snapshot
+          class
         displayName: Snapshot Class Parameters
         path: driver.snapshotClass[0].parameters
       - description: StorageClass is the specification for Storage Classes
         displayName: Storage Classes
         path: driver.storageClass
-      - description: AllowVolumeExpansion is a boolean flag which indicates if volumes can be expanded
+      - description: AllowVolumeExpansion is a boolean flag which indicates if volumes
+          can be expanded
         displayName: Allow Volume Expansion
         path: driver.storageClass[0].allowVolumeExpansion
-      - description: Restrict the node topologies where volumes can be dynamically provisioned.
+      - description: Restrict the node topologies where volumes can be dynamically
+          provisioned.
         displayName: Allowed Topologies
         path: driver.storageClass[0].allowedTopologies
-      - description: DefaultSc is a boolean flag to indicate if the storage class is going to be marked as default
+      - description: DefaultSc is a boolean flag to indicate if the storage class
+          is going to be marked as default
         displayName: Default
         path: driver.storageClass[0].default
       - description: Name is the name of the StorageClass
@@ -1007,7 +1082,8 @@ spec:
       - description: ReclaimPolicy is the reclaim policy for the storage class
         displayName: PersistentVolumeReclaimPolicy
         path: driver.storageClass[0].reclaimPolicy
-      - description: VolumeBindingMode field controls when volume binding and dynamic provisioning should occur.
+      - description: VolumeBindingMode field controls when volume binding and dynamic
+          provisioning should occur.
         displayName: Volume Binding Mode
         path: driver.storageClass[0].volumeBindingMode
       - description: TLSCertSecret is the name of the TLS Cert secret
@@ -1071,7 +1147,8 @@ spec:
       - description: AuthSecret is the name of the credentials secret for the driver
         displayName: Auth Secret
         path: driver.authSecret
-      - description: Common is the common specification for both controller and node plugins
+      - description: Common is the common specification for both controller and node
+          plugins
         displayName: Common specification
         path: driver.common
       - description: Args is the set of arguments for the container
@@ -1091,7 +1168,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.common.name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.common.nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -1120,7 +1199,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.controller.name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.controller.nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -1129,9 +1210,14 @@ spec:
       - description: DNSPolicy is the dnsPolicy of the daemonset for Node plugin
         displayName: DNSPolicy
         path: driver.dnsPolicy
-      - description: ForceUpdate is the boolean flag used to force an update of the driver instance
+      - description: ForceUpdate is the boolean flag used to force an update of the
+          driver instance
         displayName: Force update
         path: driver.forceUpdate
+      - description: FsGroupPolicy specifies fs group permission changes while mounting
+          volume
+        displayName: FSGroupPolicy
+        path: driver.fsGroupPolicy
       - description: Args is the set of arguments for the container
         displayName: Container Arguments
         path: driver.initContainers[0].args
@@ -1149,7 +1235,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.initContainers[0].name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.initContainers[0].nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -1175,7 +1263,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.node.name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.node.nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -1204,7 +1294,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.sideCars[0].name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.sideCars[0].nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -1216,19 +1308,23 @@ spec:
       - description: Name is the name of the Snapshot Class
         displayName: Snapshot Class Name
         path: driver.snapshotClass[0].name
-      - description: Parameters is a map of driver specific parameters for snapshot class
+      - description: Parameters is a map of driver specific parameters for snapshot
+          class
         displayName: Snapshot Class Parameters
         path: driver.snapshotClass[0].parameters
       - description: StorageClass is the specification for Storage Classes
         displayName: Storage Classes
         path: driver.storageClass
-      - description: AllowVolumeExpansion is a boolean flag which indicates if volumes can be expanded
+      - description: AllowVolumeExpansion is a boolean flag which indicates if volumes
+          can be expanded
         displayName: Allow Volume Expansion
         path: driver.storageClass[0].allowVolumeExpansion
-      - description: Restrict the node topologies where volumes can be dynamically provisioned.
+      - description: Restrict the node topologies where volumes can be dynamically
+          provisioned.
         displayName: Allowed Topologies
         path: driver.storageClass[0].allowedTopologies
-      - description: DefaultSc is a boolean flag to indicate if the storage class is going to be marked as default
+      - description: DefaultSc is a boolean flag to indicate if the storage class
+          is going to be marked as default
         displayName: Default
         path: driver.storageClass[0].default
       - description: Name is the name of the StorageClass
@@ -1240,7 +1336,8 @@ spec:
       - description: ReclaimPolicy is the reclaim policy for the storage class
         displayName: PersistentVolumeReclaimPolicy
         path: driver.storageClass[0].reclaimPolicy
-      - description: VolumeBindingMode field controls when volume binding and dynamic provisioning should occur.
+      - description: VolumeBindingMode field controls when volume binding and dynamic
+          provisioning should occur.
         displayName: Volume Binding Mode
         path: driver.storageClass[0].volumeBindingMode
       - description: TLSCertSecret is the name of the TLS Cert secret
@@ -1304,7 +1401,8 @@ spec:
       - description: AuthSecret is the name of the credentials secret for the driver
         displayName: Auth Secret
         path: driver.authSecret
-      - description: Common is the common specification for both controller and node plugins
+      - description: Common is the common specification for both controller and node
+          plugins
         displayName: Common specification
         path: driver.common
       - description: Args is the set of arguments for the container
@@ -1324,7 +1422,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.common.name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.common.nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -1353,7 +1453,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.controller.name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.controller.nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -1362,9 +1464,14 @@ spec:
       - description: DNSPolicy is the dnsPolicy of the daemonset for Node plugin
         displayName: DNSPolicy
         path: driver.dnsPolicy
-      - description: ForceUpdate is the boolean flag used to force an update of the driver instance
+      - description: ForceUpdate is the boolean flag used to force an update of the
+          driver instance
         displayName: Force update
         path: driver.forceUpdate
+      - description: FsGroupPolicy specifies fs group permission changes while mounting
+          volume
+        displayName: FSGroupPolicy
+        path: driver.fsGroupPolicy
       - description: Args is the set of arguments for the container
         displayName: Container Arguments
         path: driver.initContainers[0].args
@@ -1382,7 +1489,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.initContainers[0].name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.initContainers[0].nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -1408,7 +1517,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.node.name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.node.nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -1437,7 +1548,9 @@ spec:
       - description: Name is the name of Container
         displayName: Container Name
         path: driver.sideCars[0].name
-      - description: NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+      - description: NodeSelector is a selector which must be true for the pod to
+          fit on a node. Selector which must match a node's labels for the pod to
+          be scheduled on that node.
         displayName: NodeSelector
         path: driver.sideCars[0].nodeSelector
       - description: Tolerations is the list of tolerations for the driver pods
@@ -1449,19 +1562,23 @@ spec:
       - description: Name is the name of the Snapshot Class
         displayName: Snapshot Class Name
         path: driver.snapshotClass[0].name
-      - description: Parameters is a map of driver specific parameters for snapshot class
+      - description: Parameters is a map of driver specific parameters for snapshot
+          class
         displayName: Snapshot Class Parameters
         path: driver.snapshotClass[0].parameters
       - description: StorageClass is the specification for Storage Classes
         displayName: Storage Classes
         path: driver.storageClass
-      - description: AllowVolumeExpansion is a boolean flag which indicates if volumes can be expanded
+      - description: AllowVolumeExpansion is a boolean flag which indicates if volumes
+          can be expanded
         displayName: Allow Volume Expansion
         path: driver.storageClass[0].allowVolumeExpansion
-      - description: Restrict the node topologies where volumes can be dynamically provisioned.
+      - description: Restrict the node topologies where volumes can be dynamically
+          provisioned.
         displayName: Allowed Topologies
         path: driver.storageClass[0].allowedTopologies
-      - description: DefaultSc is a boolean flag to indicate if the storage class is going to be marked as default
+      - description: DefaultSc is a boolean flag to indicate if the storage class
+          is going to be marked as default
         displayName: Default
         path: driver.storageClass[0].default
       - description: Name is the name of the StorageClass
@@ -1473,7 +1590,8 @@ spec:
       - description: ReclaimPolicy is the reclaim policy for the storage class
         displayName: PersistentVolumeReclaimPolicy
         path: driver.storageClass[0].reclaimPolicy
-      - description: VolumeBindingMode field controls when volume binding and dynamic provisioning should occur.
+      - description: VolumeBindingMode field controls when volume binding and dynamic
+          provisioning should occur.
         displayName: Volume Binding Mode
         path: driver.storageClass[0].volumeBindingMode
       - description: TLSCertSecret is the name of the TLS Cert secret
@@ -1841,7 +1959,9 @@ spec:
               - command:
                 - sh
                 - -c
-                - 'if [ -e /configmap/config.tar.gz ]; then /bin/tar -C /etc/config/dell-csi-operator -xzvf /configmap/config.tar.gz --strip-components 1; else echo "Warning: ConfigMap not mounted"; fi'
+                - 'if [ -e /configmap/config.tar.gz ]; then /bin/tar -C /etc/config/dell-csi-operator
+                  -xzvf /configmap/config.tar.gz --strip-components 1; else echo "Warning:
+                  ConfigMap not mounted"; fi'
                 image: docker.io/busybox:1.32.0
                 name: config-copy
                 resources: {}

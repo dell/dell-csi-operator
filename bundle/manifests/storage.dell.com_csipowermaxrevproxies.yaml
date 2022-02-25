@@ -17,13 +17,18 @@ spec:
   - name: v1
     schema:
       openAPIV3Schema:
-        description: CSIPowerMaxRevProxy is the Schema for the csipowermaxrevproxies API
+        description: CSIPowerMaxRevProxy is the Schema for the csipowermaxrevproxies
+          API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -34,17 +39,20 @@ spec:
                 description: RevProxyConfig represents the reverse proxy configuration
                 properties:
                   linkConfig:
-                    description: LinkConfig is one of the configuration modes for reverse proxy
+                    description: LinkConfig is one of the configuration modes for
+                      reverse proxy
                     properties:
                       backup:
-                        description: ManagementServerConfig - represents a management server configuration for the management server
+                        description: ManagementServerConfig - represents a management
+                          server configuration for the management server
                         properties:
                           arrayCredentialSecret:
                             type: string
                           certSecret:
                             type: string
                           limits:
-                            description: 'EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN! NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized. ProxyLimits is used for storing the various types of limits applied for a particular proxy instance'
+                            description: ProxyLimits is used for storing the various
+                              types of limits applied for a particular proxy instance
                             properties:
                               maxActiveRead:
                                 type: integer
@@ -63,14 +71,16 @@ spec:
                         - url
                         type: object
                       primary:
-                        description: ManagementServerConfig - represents a management server configuration for the management server
+                        description: ManagementServerConfig - represents a management
+                          server configuration for the management server
                         properties:
                           arrayCredentialSecret:
                             type: string
                           certSecret:
                             type: string
                           limits:
-                            description: 'EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN! NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized. ProxyLimits is used for storing the various types of limits applied for a particular proxy instance'
+                            description: ProxyLimits is used for storing the various
+                              types of limits applied for a particular proxy instance
                             properties:
                               maxActiveRead:
                                 type: integer
@@ -97,18 +107,21 @@ spec:
                     format: int32
                     type: integer
                   standAloneConfig:
-                    description: StandAloneConfig is one of the configuration modes for reverse proxy
+                    description: StandAloneConfig is one of the configuration modes
+                      for reverse proxy
                     properties:
                       managementServers:
                         items:
-                          description: ManagementServerConfig - represents a management server configuration for the management server
+                          description: ManagementServerConfig - represents a management
+                            server configuration for the management server
                           properties:
                             arrayCredentialSecret:
                               type: string
                             certSecret:
                               type: string
                             limits:
-                              description: 'EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN! NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized. ProxyLimits is used for storing the various types of limits applied for a particular proxy instance'
+                              description: ProxyLimits is used for storing the various
+                                types of limits applied for a particular proxy instance
                               properties:
                                 maxActiveRead:
                                   type: integer
@@ -129,7 +142,8 @@ spec:
                         type: array
                       storageArrays:
                         items:
-                          description: StorageArrayConfig represents a storage array managed by reverse proxy
+                          description: StorageArrayConfig represents a storage array
+                            managed by reverse proxy
                           properties:
                             backupURL:
                               type: string
@@ -155,7 +169,8 @@ spec:
               image:
                 type: string
               imagePullPolicy:
-                description: PullPolicy describes a policy for if/when to pull a container image
+                description: PullPolicy describes a policy for if/when to pull a container
+                  image
                 type: string
               tlsSecret:
                 type: string
@@ -171,10 +186,12 @@ spec:
                 description: LastUpdate is the last updated state of the driver
                 properties:
                   condition:
-                    description: Condition is the last known condition of the Custom Resource
+                    description: Condition is the last known condition of the Custom
+                      Resource
                     type: string
                   errorMessage:
-                    description: ErrorMessage is the last error message associated with the condition
+                    description: ErrorMessage is the last error message associated
+                      with the condition
                     type: string
                   time:
                     description: Time is the time stamp for the last condition update
@@ -186,7 +203,11 @@ spec:
                 format: int64
                 type: integer
               proxyStatus:
-                description: 'INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run "operator-sdk generate k8s" to regenerate code after modifying this file Add custom validation using kubebuilder tags: https://book-v1.book.kubebuilder.io/beyond_basics/generating_crd.html ProxyStatus is the status of proxy pod'
+                description: 'INSERT ADDITIONAL STATUS FIELD - define observed state
+                  of cluster Important: Run "operator-sdk generate k8s" to regenerate
+                  code after modifying this file Add custom validation using kubebuilder
+                  tags: https://book-v1.book.kubebuilder.io/beyond_basics/generating_crd.html
+                  ProxyStatus is the status of proxy pod'
                 properties:
                   available:
                     items:
