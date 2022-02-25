@@ -6,12 +6,12 @@
   - [Uninstall CSI Drivers](#uninstall-csi-drivers)
 
 # Dell CSI Operator
-Dell CSI Operator is a Kubernetes native application which helps in installing and managing CSI Drivers provided by Dell EMC for its various storage platforms. 
-Dell CSI Operator uses Kubernetes CRDs (Custom Resource Definitions) to define a manifest that describes the deployment specifications for each driver to be deployed. Multiple CSI drivers provided by Dell EMC and multiple instances of each driver can be deployed by the operator by defining a manifest for each deployment.
+Dell CSI Operator is a Kubernetes native application which helps in installing and managing CSI Drivers provided by Dell for its various storage platforms. 
+Dell CSI Operator uses Kubernetes CRDs (Custom Resource Definitions) to define a manifest that describes the deployment specifications for each driver to be deployed. Multiple CSI drivers provided by Dell and multiple instances of each driver can be deployed by the operator by defining a manifest for each deployment.
 
 Dell CSI Operator is built using the [operator framework](https://github.com/operator-framework) and runs custom Kubernetes controllers to manage the driver installations. These controllers listen for any create/update/delete request for the respective CRDs and try to reconcile the request.
 
-Currently, the Dell CSI Operator can be used to deploy the following CSI drivers provided by Dell EMC
+Currently, the Dell CSI Operator can be used to deploy the following CSI drivers provided by Dell 
 
 * CSI Driver for Dell PowerMax
 * CSI Driver for Dell PowerScale
