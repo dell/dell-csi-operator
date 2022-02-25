@@ -26,17 +26,15 @@ The Dell CSI Operator is itself installed as a Kubernetes deployment.
 
 ## Table of Contents
 
-* [Code of Conduct](./docs/CODE_OF_CONDUCT.md)
-* [Maintainer Guide](./docs/MAINTAINER_GUIDE.md)
-* [Committer Guide](./docs/COMMITTER_GUIDE.md)
-* [Contributing Guide](./docs/CONTRIBUTING.md)
-* [Branching Strategy](./docs/BRANCHING.md)
-* [List of Adopters](./docs/ADOPTERS.md)
-* [Maintainers](./docs/MAINTAINERS.md)
-* [Support](./docs/SUPPORT.md)
-* [Security](./docs/SECURITY.md)
-* [Container Storage Modules - Components](#container-storage-modules---components)
-
+* [Code of Conduct](https://github.com/dell/csm/blob/main/docs/CODE_OF_CONDUCT.md)
+* [Maintainer Guide](https://github.com/dell/csm/blob/main/docs/MAINTAINER_GUIDE.md)
+* [Committer Guide](https://github.com/dell/csm/blob/main/docs/COMMITTER_GUIDE.md)
+* [Contributing Guide](https://github.com/dell/csm/blob/main/docs/CONTRIBUTING.md)
+* [Branching Strategy](https://github.com/dell/csm/blob/main/docs/BRANCHING.md)
+* [List of Adopters](https://github.com/dell/csm/blob/main/docs/ADOPTERS.md)
+* [Maintainers](https://github.com/dell/csm/blob/main/docs/MAINTAINERS.md)
+* [Support](https://dell.github.io/csm-docs/docs/support/)
+* [Security](https://github.com/dell/csm/blob/main/docs/SECURITY.md)
 
 ## Supported Platforms
 Dell CSI Operator has been tested and qualified with 
