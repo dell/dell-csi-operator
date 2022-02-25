@@ -14,25 +14,36 @@ Dell CSI Operator is built using the [operator framework](https://github.com/ope
 
 Currently, the Dell CSI Operator can be used to deploy the following CSI drivers provided by Dell EMC
 
-* CSI Driver for Dell EMC PowerMax
-* CSI Driver for Dell EMC PowerScale
-* CSI Driver for Dell EMC Unity
-* CSI Driver for Dell EMC PowerFlex (formerly VxFlex OS)
-* CSI Driver for Dell EMC PowerStore
+* CSI Driver for Dell PowerMax
+* CSI Driver for Dell PowerScale
+* CSI Driver for Dell Unity
+* CSI Driver for Dell PowerFlex (formerly VxFlex OS)
+* CSI Driver for Dell PowerStore
 
 Additionally, the Dell CSI Operator can also deploy Storage Classes and Volume Snapshot Classes as part of the driver deployment.
 The Dell CSI Operator is itself installed as a Kubernetes deployment.
 
 **NOTE**: You can refer to additional information about the Dell CSI Operator on the new documentation website [here](https://dell.github.io/csm-docs/docs/csidriver/installation/operator/)
 
-## Support
-The Dell CSI Operator image is available on Dockerhub and is officially supported by Dell EMC.
-For any CSI operator and driver issues, questions or feedback, join the [Dell EMC Container community](https://www.dell.com/community/Containers/bd-p/Containers).
+## Table of Contents
+
+* [Code of Conduct](./docs/CODE_OF_CONDUCT.md)
+* [Maintainer Guide](./docs/MAINTAINER_GUIDE.md)
+* [Committer Guide](./docs/COMMITTER_GUIDE.md)
+* [Contributing Guide](./docs/CONTRIBUTING.md)
+* [Branching Strategy](./docs/BRANCHING.md)
+* [List of Adopters](./docs/ADOPTERS.md)
+* [Maintainers](./docs/MAINTAINERS.md)
+* [Support](./docs/SUPPORT.md)
+* [Security](./docs/SECURITY.md)
+* [Container Storage Modules - Components](#container-storage-modules---components)
+* [About](#about)
+
 
 ## Supported Platforms
 Dell CSI Operator has been tested and qualified with 
 
-    * Upstream Kubernetes cluster v1.20, v1.21, v1.22
+    * Upstream Kubernetes cluster v1.21, v1.22, v1.23
     * OpenShift Clusters 4.8, 4.8 EUS, 4.9 with RHEL 7.x & RHCOS worker nodes
 
 ## Installation
