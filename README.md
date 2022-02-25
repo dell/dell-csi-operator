@@ -1,5 +1,4 @@
 - [Dell CSI Operator](#dell-csi-operator)
-  - [Support](#support)
   - [Supported Platforms](#supported-platforms)
   - [Installation](#installation)
   - [Upgrading Dell CSI Operator](#upgrading-dell-csi-operator)
@@ -37,7 +36,6 @@ The Dell CSI Operator is itself installed as a Kubernetes deployment.
 * [Support](./docs/SUPPORT.md)
 * [Security](./docs/SECURITY.md)
 * [Container Storage Modules - Components](#container-storage-modules---components)
-* [About](#about)
 
 
 ## Supported Platforms
