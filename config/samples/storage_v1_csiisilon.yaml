@@ -5,14 +5,15 @@ metadata:
   namespace: test-isilon
 spec:
   driver:
-    # Config version for CSI PowerScale v2.1.0 driver
-    configVersion: v2.1.0
+    # Config version for CSI PowerScale v2.2.0 driver
+    configVersion: v2.2.0
     replicas: 2
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
+    fsGroupPolicy: ReadWriteOnceWithFSType
     common:
-      # Image for CSI PowerScale driver v2.1.0
-      image: "dellemc/csi-isilon:v2.1.0"
+      # Image for CSI PowerScale driver v2.2.0
+      image: "dellemc/csi-isilon:v2.2.0"
       imagePullPolicy: IfNotPresent
       envs:
         # X_CSI_VERBOSE: Indicates what content of the OneFS REST API message should be logged in debug level logs
@@ -110,6 +111,25 @@ spec:
       - name: X_CSI_ISI_VOLUME_PATH_PERMISSIONS
         value: "0777"
 
+      # nodeSelector: Define node selection constraints for pods of controller deployment.
+      # For the pod to be eligible to run on a node, the node must have each
+      # of the indicated key-value pairs as labels.
+      # Leave as blank to consider all nodes
+      # Allowed values: map of key-value pairs
+      # Default value: None
+      # Examples:
+      #   node-role.kubernetes.io/master: ""
+      nodeSelector:
+      #  node-role.kubernetes.io/master: ""
+
+      # tolerations: Define tolerations for the controller deployment, if required.
+      # Default value: None
+      tolerations:
+      #  - key: "node-role.kubernetes.io/master"
+      #    operator: "Equal"
+      #    value: "true"
+      #    effect: "NoSchedule"
+
     node:
       envs:
       # X_CSI_MAX_VOLUMES_PER_NODE: Specify default value for maximum number of volumes that controller can publish to the node.
@@ -129,6 +149,30 @@ spec:
       # eg: "[192.168.1.0/24, 192.168.100.0/22]"
       - name: X_CSI_ALLOWED_NETWORKS
         value: ""
+
+      # nodeSelector: Define node selection constraints for pods of node daemonset
+      # For the pod to be eligible to run on a node, the node must have each
+      # of the indicated key-value pairs as labels.
+      # Leave as blank to consider all nodes
+      # Allowed values: map of key-value pairs
+      # Default value: None
+      # Examples:
+      #   node-role.kubernetes.io/master: ""
+      nodeSelector:
+      #  node-role.kubernetes.io/master: ""
+
+      # tolerations: Define tolerations for the node daemonset, if required.
+      # Default value: None
+      tolerations:
+      #  - key: "node.kubernetes.io/memory-pressure"
+      #    operator: "Exists"
+      #    effect: "NoExecute"
+      #  - key: "node.kubernetes.io/disk-pressure"
+      #    operator: "Exists"
+      #    effect: "NoExecute"
+      #  - key: "node.kubernetes.io/network-unavailable"
+      #    operator: "Exists"
+      #    effect: "NoExecute"
 
     sideCars:
       - name: provisioner
