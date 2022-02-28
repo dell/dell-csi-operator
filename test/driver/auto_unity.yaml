@@ -7,7 +7,7 @@ metadata:
 spec:
   driver:
     common:
-      image: amaas-eos-mw1.cec.lab.emc.com:5028/csi-unity/csi-unity-root:20200820032423
+      image: dellemc/csi-unity:latest
     configVersion: v2
     controller: {}
     node: {}
