@@ -48,10 +48,10 @@ metadata:
                     "value": "false"
                   }
                 ],
-                "image": "dellemc/csi-isilon:v2.1.0",
+                "image": "dellemc/csi-isilon:v2.2.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.1.0",
+              "configVersion": "v2.2.0",
               "controller": {
                 "envs": [
                   {
@@ -66,10 +66,13 @@ metadata:
                     "name": "X_CSI_ISI_VOLUME_PATH_PERMISSIONS",
                     "value": "0777"
                   }
-                ]
+                ],
+                "nodeSelector": null,
+                "tolerations": null
               },
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
+              "fsGroupPolicy": "ReadWriteOnceWithFSType",
               "node": {
                 "envs": [
                   {
@@ -80,7 +83,9 @@ metadata:
                     "name": "X_CSI_ALLOWED_NETWORKS",
                     "value": ""
                   }
-                ]
+                ],
+                "nodeSelector": null,
+                "tolerations": null
               },
               "replicas": 2,
               "sideCars": [
@@ -209,17 +214,22 @@ metadata:
                     "name": "X_CSI_NFS_ACLS",
                     "value": "0777"
                   }
-                ]
+                ],
+                "nodeSelector": null,
+                "tolerations": null
               },
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
+              "fsGroupPolicy": "ReadWriteOnceWithFSType",
               "node": {
                 "envs": [
                   {
                     "name": "X_CSI_POWERSTORE_ENABLE_CHAP",
                     "value": "true"
                   }
-                ]
+                ],
+                "nodeSelector": null,
+                "tolerations": null
               },
               "replicas": 2
             }
@@ -235,10 +245,10 @@ metadata:
           "spec": {
             "driver": {
               "common": {
-                "image": "dellemc/csi-unity:v2.1.0",
+                "image": "dellemc/csi-unity:v2.2.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.1.0",
+              "configVersion": "v2.2.0",
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
               "replicas": 2,
@@ -288,10 +298,10 @@ metadata:
                     "value": "false"
                   }
                 ],
-                "image": "dellemc/csi-vxflexos:v2.1.0",
+                "image": "dellemc/csi-vxflexos:v2.2.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.1.0",
+              "configVersion": "v2.2.0",
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
               "initContainers": [

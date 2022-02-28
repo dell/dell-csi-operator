@@ -13,5 +13,5 @@ Files present
 4. Execute the following command with operator build number (in the format of dell-csi-operator:v1.2.0) to create csi-operator and then csi drivers (controller and node)
     1. sh install_csi_driver.sh "<operator build name>"
 5. Wait for the script to finish and check the existence of csi-operator and controller/node by normal kubectl commands.
-6. This script will pull the specified operator build  (for e.g., amaas-eos-mw1.cec.lab.emc.com:5035/csi-operator/dell-csi-operator:v1.2.0).
+6. This script will pull the specified operator build
 5.As of unity/powermax driver has been tested. Other drivers are yet to be tested.
