@@ -175,6 +175,8 @@ spec:
       #    effect: "NoExecute"
 
     sideCars:
+      - name: common
+        args: ["--leader-election-renew-deadline=15s", "--leader-election-lease-duration=20s", "--leader-election-retry-period=10s"]
       - name: provisioner
         args: ["--volume-name-prefix=csipscale"]
 ---

@@ -36,7 +36,19 @@ func New(instance csiv1.CSIDriver, driverEnv []corev1.EnvVar, driverVolumeMounts
 	labels["app"] = controllerName
 	containers := make([]corev1.Container, 0)
 
+	var commonArgs []string
+	if instance.GetDriverType() == csiv1.Isilon {
+		for _, sideCarContainer := range driver.SideCars {
+			if sideCarContainer.Name == "common" {
+				commonArgs = sideCarContainer.Args
+				break
+			}
+		}
+	}
+
 	args = append(args, "--leader-election")
+	args = append(args, commonArgs...)
+
 	containers = append(containers, resources.CreateContainerElement(
 		csiv1.ImageTypeDriver, driver.Common.Image, driver.Common.ImagePullPolicy,
 		args, driverEnv, driverVolumeMounts, nil, nil))
@@ -45,12 +57,15 @@ func New(instance csiv1.CSIDriver, driverEnv []corev1.EnvVar, driverVolumeMounts
 		// Add all sidecars except registrar and sdc-monitor for controller
 		if sideCarContainer.Name != csiv1.ImageTypeRegistrar {
 			if sideCarContainer.Name != csiv1.ImageTypeSdcmonitor {
-				containerName := sideCarContainer.Name
-				imageName := sideCarContainer.Image
-				containers = append(containers, resources.CreateContainerElement(
-					containerName, imageName, sideCarContainer.ImagePullPolicy,
-					sidecarMap[containerName].Args, sidecarMap[containerName].Envs,
-					sidecarMap[containerName].VolumeMounts, nil, nil))
+				if sideCarContainer.Name != "common" {
+					containerName := sideCarContainer.Name
+					imageName := sideCarContainer.Image
+					sidecarArgs := append(sidecarMap[containerName].Args, commonArgs...)
+					containers = append(containers, resources.CreateContainerElement(
+						containerName, imageName, sideCarContainer.ImagePullPolicy,
+						sidecarArgs, sidecarMap[containerName].Envs,
+						sidecarMap[containerName].VolumeMounts, nil, nil))
+				}
 			}
 		}
 	}
