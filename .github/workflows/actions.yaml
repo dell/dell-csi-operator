@@ -29,6 +29,11 @@ jobs:
     name: Run Go unit tests and check package coverage
     runs-on: ubuntu-latest
     steps:
+      - name: Set up Go 1.17+
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.17
+        id: go
       - name: Checkout the code
         uses: actions/checkout@v2
       - name: Checkout dell-csi-operator
@@ -37,11 +42,7 @@ jobs:
           repository: 'dell/dell-csi-operator'
           path: 'dell-csi-operator'
       - name: Run unit tests and check package coverage
-        uses: dell/common-github-actions/go-code-tester@main
-        with:
-          threshold: 60
-          test-folder: "./test"
-          skip-list: "./test/integration-tests"
+        run: make unit-test
   malware_security_scan:
     name: Malware Scanner
     runs-on: ubuntu-latest
@@ -53,4 +54,23 @@ jobs:
         with:
           directories: .
           options: -ri
-
+  image_security_scan:
+    name: Image Scanner
+    runs-on: ubuntu-latest
+    env:
+      BASE_IMG : ubuntu:latest
+    steps:
+      - name: Set up Go 1.17+
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.17
+        id: go
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Build Docker Images
+        run: docker build . -t dell-csi-operator:latest
+      - name: Scan operator Image
+        uses: Azure/container-scan@v0
+        with:
+          image-name: dell-csi-operator:latest
+          severity-threshold: HIGH
