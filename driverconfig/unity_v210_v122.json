@@ -100,7 +100,7 @@
         "DefaultValueForNode": "0"
       },
       {
-        "Name": "X_CSI_ENABLE_VOL_HEALTH_MONITOR",
+        "Name": "X_CSI_HEALTH_MONITOR_ENABLED",
         "CSIEnvType": "Boolean",
         "SetForController": true,
         "SetForNode": true,
