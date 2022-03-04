@@ -41,6 +41,10 @@ jobs:
         with:
           repository: 'dell/dell-csi-operator'
           path: 'dell-csi-operator'
+      # Not able to use dell common git hub actions as there is
+      # no way to skip integration tests currently. And this
+      # way of using 'run' to execute run do not allow us to 
+      # check for threshold.But it ensures there are no failures
       - name: Run unit tests and check package coverage
         run: make unit-test
   malware_security_scan:
