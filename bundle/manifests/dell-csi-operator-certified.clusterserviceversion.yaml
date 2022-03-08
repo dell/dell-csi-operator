@@ -91,6 +91,14 @@ metadata:
               "sideCars": [
                 {
                   "args": [
+                    "--leader-election-lease-duration=15s",
+                    "--leader-election-renew-deadline=10s",
+                    "--leader-election-retry-period=5s"
+                  ],
+                  "name": "common"
+                },
+                {
+                  "args": [
                     "--volume-name-prefix=csipscale"
                   ],
                   "name": "provisioner"
@@ -249,8 +257,16 @@ metadata:
                 "imagePullPolicy": "IfNotPresent"
               },
               "configVersion": "v2.2.0",
+              "controller": {
+                "nodeSelector": null,
+                "tolerations": null
+              },
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
+              "node": {
+                "nodeSelector": null,
+                "tolerations": null
+              },
               "replicas": 2,
               "sideCars": [
                 {

@@ -84,4 +84,3 @@ spec:
       #  - key: "node-role.kubernetes.io/worker"
       #    operator: "Exists"
       #    effect: "NoSchedule"
-
