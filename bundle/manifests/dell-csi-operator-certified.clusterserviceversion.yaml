@@ -2030,7 +2030,7 @@ spec:
   - email: dell.csi.operator@dell.com
     name: Dell CSI Operator
   maturity: stable
-  minKubeVersion: 1.20.0
+  minKubeVersion: 1.21.0
   provider:
     name: Dell EMC
   replaces: dell-csi-operator-certified.v1.6.0
