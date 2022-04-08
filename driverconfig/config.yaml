@@ -6,6 +6,7 @@ supportedK8sVersions:
   - v121
   - v122
   - v123
+  - v124
 drivers:
   - name: powermax
     configVersions:
@@ -117,8 +118,14 @@ drivers:
         registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
   - name: isilon
     configVersions:
-      - configVersion: v2.2.0
+      - configVersion: v2.3.0
         useDefaults: true
+        supportedVersions:
+          - version: v122
+          - version: v123
+          - version: v124
+      - configVersion: v2.2.0
+        useDefaults: false
         supportedVersions:
           - version: v121
           - version: v122
