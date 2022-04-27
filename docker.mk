@@ -30,6 +30,8 @@ OPERATOR_IMAGE ?= dell-csi-operator
 BUNDLE_IMAGE ?= csiopbundle_ops_certified
 # Default Index Image name
 INDEX_IMAGE ?= dellemcregistry_certified
+SOURCE_INDEX_IMG ?= dellemc/dell-csi-operator/dellemcregistry_certified:v1.7.0
+
 
 # Operator Images
 # Operator image taffed with patch number. FOr e.g. - v1.2.0.001
@@ -108,7 +110,7 @@ bundle-push: bundle-build
 	docker push $(BUNDLE_IMG)
 
 index: docker-push bundle-push
-	opm index add --bundles $(BUNDLE_IMG) --from-index dellemc/dell-csi-operator --tag $(INDEX_IMG) --container-tool docker
+	opm index add --bundles $(BUNDLE_IMG) --from-index $(SOURCE_INDEX_IMG) --tag $(INDEX_IMG) --container-tool docker
 	docker tag $(INDEX_IMG) $(INDEX_REL_IMG)
 	docker push $(INDEX_IMG)
 	docker push $(INDEX_REL_IMG)

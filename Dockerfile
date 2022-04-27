@@ -38,7 +38,7 @@ LABEL vendor="Dell Inc." \
       name="dell-csi-operator" \
       summary="Operator for installing Dell EMC CSI drivers" \
       description="Common Operator for installing various Dell EMC CSI drivers" \
-      version="1.7.0" \
+      version="1.8.0" \
       license="Dell CSI Operator EULA"
 # copy the licenses folder
 COPY licenses /licenses
