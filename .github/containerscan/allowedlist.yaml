@@ -2,10 +2,10 @@ general:
   vulnerabilities:
     # list of CVEs that are currently unfixed
     - CVE-2022-24407
+    - CVE-2021-25741
     - CVE-2022-26280
     - CVE-2022-0778
     - CVE-2018-25032
-    - CVE-2021-25741
   bestPracticeViolations:
     # list of best practies violatied that needs a fix
     - DKL-DI-0006
@@ -13,3 +13,4 @@ general:
     - CIS-DI-0006
     - CIS-DI-0008
     - DKL-LI-0003
+~
