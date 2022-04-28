@@ -187,7 +187,7 @@ func (suite *ControllerTestSuite) SetupSuite() {
 			reconciler: &controllers.CSIIsilonReconciler{
 				Log: ctrl.Log.WithName("controllers").WithName("CSIIsilon"),
 			},
-			k8sVersion: "v121",
+			k8sVersion: "v122",
 			findCR: func(inObjects []runtime.Object) (string, string) {
 				for _, o := range inObjects {
 					if cr, ok := o.(*v1.CSIIsilon); ok {

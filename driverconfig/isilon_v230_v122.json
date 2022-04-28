@@ -36,6 +36,14 @@
         "DefaultValueForNode": "true"
       },
       {
+        "Name": "X_CSI_ISI_AUTH_TYPE",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "0",
+        "DefaultValueForNode": "0"
+      },
+      {
         "Name": "X_CSI_NODE_NAME",
         "CSIEnvType": "EnvVarReferenceType",
         "SetForController": true,
@@ -107,6 +115,14 @@
         "SetForNode": false,
         "DefaultValueForController": "0777",
         "DefaultValueForNode": ""
+      },
+      {
+        "Name": "X_CSI_HEALTH_MONITOR_ENABLED",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "false",
+        "DefaultValueForNode": "false"
       }
     ],
     "driverArgs": [
@@ -312,6 +328,31 @@
           "--timeout=15s",
           "--v=5",
           "--leader-election"
+        ],
+        "envs": [
+          {
+            "name": "ADDRESS",
+            "value": "/var/run/csi/csi.sock"
+          }
+        ],
+        "volumeMounts": [
+          {
+            "mountPath": "/var/run/csi",
+            "name": "socket-dir"
+          }
+        ]
+      },
+      {
+        "name": "external-health-monitor",
+        "optional": true,
+        "args": [
+          "--csi-address=$(ADDRESS)",
+          "--timeout=180s",
+          "--v=5",
+          "--leader-election",
+          "--monitor-interval=60s",
+          "--enable-node-watcher=true",
+          "--http-endpoint=:8080"
         ],
         "envs": [
           {
