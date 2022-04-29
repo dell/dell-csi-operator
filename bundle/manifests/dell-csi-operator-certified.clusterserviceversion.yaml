@@ -147,10 +147,10 @@ metadata:
                     "value": "4"
                   }
                 ],
-                "image": "dellemc/csi-powermax:v2.2.0",
+                "image": "dellemc/csi-powermax:v2.3.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.2.0",
+              "configVersion": "v2.3.0",
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
               "node": {

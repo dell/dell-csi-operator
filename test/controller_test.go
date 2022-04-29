@@ -78,7 +78,7 @@ func (suite *ControllerTestSuite) SetupSuite() {
 			reconciler: &controllers.CSIPowerMaxReconciler{
 				Log: ctrl.Log.WithName("controllers").WithName("CSIPowerMax"),
 			},
-			k8sVersion: "v121",
+			k8sVersion: "v122",
 			findCR: func(inObjects []runtime.Object) (string, string) {
 				for _, o := range inObjects {
 					if cr, ok := o.(*v1.CSIPowerMax); ok {
@@ -551,7 +551,7 @@ func (revSuite *ReverseProxyControllerTestSuite) SetupSuite() {
 	revSuite.revProxyReconciler = &controllers.CSIPowerMaxRevProxyReconciler{
 		Log: ctrl.Log.WithName("controllers").WithName("CSIPowerMaxRevProxy"),
 	}
-	revSuite.k8sVersion = "v117"
+	revSuite.k8sVersion = "v122"
 	revSuite.name = "powermaxrevproxy"
 }
 

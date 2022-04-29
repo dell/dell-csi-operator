@@ -5,18 +5,18 @@ metadata:
   namespace: test-powermax
 spec:
   driver:
-    # Config version for CSI PowerMax v2.0.0 driver
-    configVersion: v2.0.0
-      # replica: Define the number of PowerMax controller nodes
-      # to deploy to the Kubernetes release
+    # Config version for CSI PowerMax v2.3.0 driver
+    configVersion: v2.3.0
+    # replica: Define the number of PowerMax controller nodes
+    # to deploy to the Kubernetes release
     # Allowed values: n, where n > 0
     # Default value: None
     replicas: 2
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     common:
-      # Image for CSI PowerMax driver v2.0.0
-      image: dellemc/csi-powermax:v2.0.0
+      # Image for CSI PowerMax driver v2.3.0
+      image: dellemc/csi-powermax:v2.3.0
       # imagePullPolicy: Policy to determine if the image should be pulled prior to starting the container.
       # Allowed values:
       #  Always: Always pull the image.
@@ -73,6 +73,7 @@ spec:
         # default values: None
         - name: "X_CSI_GRPC_MAX_THREADS"
           value: "4"
+
     node:
       envs:
         # X_CSI_POWERMAX_ISCSI_ENABLE_CHAP: Determine if the driver is going to configure
