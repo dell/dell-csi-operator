@@ -1,9 +1,9 @@
 
-# Dell CSI Operator for Dell EMC CSI Drivers
-**Repository for development of common operator for Dell EMC CSI Drivers**
+# Dell CSI Operator for Dell CSI Drivers
+**Repository for development of common operator for Dell CSI Drivers**
 
 ## Description
-`dell-csi-operator` is a Kubernetes operator which can be used to install and manage various CSI Drivers provided by Dell EMC for different storage arrays. 
+`dell-csi-operator` is a Kubernetes operator which can be used to install and manage various CSI Drivers provided by Dell for different storage arrays. 
 
 It is built, deployed and tested using the toolset provided by Operator [framework](https://github.com/operator-framework) which include:
 * [operator-sdk](https://github.com/operator-framework/operator-sdk)

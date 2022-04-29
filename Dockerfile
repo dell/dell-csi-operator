@@ -36,8 +36,8 @@ COPY --from=builder /workspace/manager .
 COPY driverconfig/ /etc/config/local/dell-csi-operator
 LABEL vendor="Dell Inc." \
       name="dell-csi-operator" \
-      summary="Operator for installing Dell EMC CSI drivers" \
-      description="Common Operator for installing various Dell EMC CSI drivers" \
+      summary="Operator for installing Dell CSI drivers" \
+      description="Common Operator for installing various Dell CSI drivers" \
       version="1.8.0" \
       license="Dell CSI Operator EULA"
 # copy the licenses folder
