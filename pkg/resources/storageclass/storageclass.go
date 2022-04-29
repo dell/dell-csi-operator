@@ -27,7 +27,7 @@ func New(instance csiv1.CSIDriver, customProvisionerName string, dummyClusterRol
 	for _, sc := range driver.StorageClass {
 		annotations := make(map[string]string)
 		if sc.DefaultSc {
-			annotations["storageclass.beta.kubernetes.io/is-default-class"] = "true"
+			annotations["storageclass.kubernetes.io/is-default-class"] = "true"
 		}
 		reclaimPolicy := corev1.PersistentVolumeReclaimDelete
 		if sc.ReclaimPolicy == corev1.PersistentVolumeReclaimRetain {
