@@ -82,7 +82,7 @@ spec:
               value: "false"
             - name: X_CSI_POWERMAX_PORTGROUPS
               value: ""
-          image: dellemc/csi-powermax:v2.2.0.000R
+          image: dellemc/csi-powermax:v2.3.0
           imagePullPolicy: IfNotPresent
           name: driver
           resources: {}

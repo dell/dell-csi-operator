@@ -88,7 +88,7 @@ spec:
               value: /powermax-config-params/driver-config-params.yaml
             - name: X_CSI_HEALTH_MONITOR_ENABLED
               value: "false"
-          image: dellemc/csi-powermax:v2.2.0.000R
+          image: dellemc/csi-powermax:v2.3.0
           imagePullPolicy: IfNotPresent
           name: driver
           resources: {}
