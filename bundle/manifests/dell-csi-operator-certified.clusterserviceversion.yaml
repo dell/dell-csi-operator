@@ -153,6 +153,7 @@ metadata:
               "configVersion": "v2.3.0",
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
+              "fsGroupPolicy": "ReadWriteOnceWithFSType",
               "node": {
                 "envs": [
                   {
