@@ -5,12 +5,12 @@ metadata:
   namespace: test-unity
 spec:
   driver:
-    configVersion: v2.0.0
+    configVersion: v2.3.0
     replicas: 2
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     common:
-      image: "dellemc/csi-unity:v2.0.0"
+      image: "dellemc/csi-unity:v2.3.0"
       imagePullPolicy: IfNotPresent
     sideCars:
       - name: provisioner
@@ -28,4 +28,5 @@ data:
     CSI_LOG_LEVEL: "info"
     ALLOW_RWO_MULTIPOD_ACCESS: "false"
     MAX_UNITY_VOLUMES_PER_NODE: "0"
-    SYNC_NODE_INFO_TIME_INTERVAL: "0"
+    SYNC_NODE_INFO_TIME_INTERVAL: "15"
+    TENANT_NAME: ""

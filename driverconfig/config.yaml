@@ -45,12 +45,23 @@ drivers:
         registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
   - name: unity
     configVersions:
-      - configVersion: v2.2.0
+      - configVersion: v2.3.0
         useDefaults: true
         supportedVersions:
           - version: v121
           - version: v122
           - version: v123
+      - configVersion: v2.2.0
+        useDefaults: false
+        supportedVersions:
+          - version: v121
+          - version: v122
+          - version: v123
+        attacher: k8s.gcr.io/sig-storage/csi-attacher:v3.4.0
+        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0
+        snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+        resizer: k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
+        registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.0
       - configVersion: v2.1.0
         useDefaults: false
         supportedVersions:
