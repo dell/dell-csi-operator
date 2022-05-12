@@ -80,6 +80,10 @@ spec:
               value: /powermax-config-params/driver-config-params.yaml
             - name: X_CSI_HEALTH_MONITOR_ENABLED
               value: "false"
+            - name: X_CSI_TOPOLOGY_CONTROL_ENABLED
+              value: "false"
+            - name: X_CSI_POWERMAX_TOPOLOGY_CONFIG_PATH
+              value: /node-topology-config/topologyConfig.yaml
             - name: X_CSI_POWERMAX_PORTGROUPS
               value: ""
           image: dellemc/csi-powermax:v2.3.0
@@ -115,6 +119,8 @@ spec:
               name: dbus-socket
             - mountPath: /powermax-config-params
               name: powermax-config-params
+            - mountPath: /node-topology-config
+              name: node-topology-config
         - args:
             - --v=5
             - --csi-address=$(ADDRESS)
@@ -196,6 +202,9 @@ spec:
         - name: powermax-config-params
           configMap:
             name: powermax-config-params
+        - name: node-topology-config
+          configMap:
+            name: node-topology-config
   updateStrategy:
     rollingUpdate:
       maxUnavailable: 1
