@@ -14,6 +14,7 @@ spec:
     replicas: 2
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
+    fsGroupPolicy: ReadWriteOnceWithFSType
     common:
       # Image for CSI PowerMax driver v2.3.0
       image: dellemc/csi-powermax:v2.3.0
