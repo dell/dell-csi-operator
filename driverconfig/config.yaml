@@ -60,9 +60,9 @@ drivers:
       - configVersion: v2.3.0
         useDefaults: true
         supportedVersions:
-          - version: v121
           - version: v122
           - version: v123
+          - version: v124
       - configVersion: v2.2.0
         useDefaults: false
         supportedVersions:
