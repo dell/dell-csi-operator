@@ -253,6 +253,22 @@
         "SetForNode": true,
         "DefaultValueForController": "false",
         "DefaultValueForNode": "false"
+      },
+      {
+        "Name": "X_CSI_TOPOLOGY_CONTROL_ENABLED",
+        "CSIEnvType": "String",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "false",
+        "DefaultValueForNode": "false"
+      },
+      {
+        "Name": "X_CSI_POWERMAX_TOPOLOGY_CONFIG_PATH",
+        "CSIEnvType": "String",
+        "SetForController": false,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": "/node-topology-config/topologyConfig.yaml"
       }
     ],
     "driverNodeVolumes": [
@@ -324,6 +340,12 @@
         "name": "powermax-config-params",
         "configMap": {
           "name": "powermax-config-params"
+        }
+      },
+      {
+        "name": "node-topology-config",
+        "configMap": {
+          "name": "node-topology-config"
         }
       }
     ],
@@ -401,6 +423,10 @@
       {
         "mountPath": "/powermax-config-params",
         "name": "powermax-config-params"
+      },
+      {
+        "mountPath": "/node-topology-config",
+        "name": "node-topology-config"
       }
     ],
     "sidecarParams": [
