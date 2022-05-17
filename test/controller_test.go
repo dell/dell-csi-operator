@@ -18,7 +18,7 @@ import (
 	operatorconfig "github.com/dell/dell-csi-operator/pkg/config"
 	"github.com/dell/dell-csi-operator/pkg/resources/statefulset"
 	"github.com/dell/dell-csi-operator/pkg/utils"
-	betasnaps "github.com/kubernetes-csi/external-snapshotter/client/v3/apis/volumesnapshot/v1beta1"
+	snaps "github.com/kubernetes-csi/external-snapshotter/client/v4/apis/volumesnapshot/v1"
 	"github.com/stretchr/testify/suite"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -54,7 +54,7 @@ type Driver struct {
 
 func (suite *ControllerTestSuite) SetupSuite() {
 	// Add VolumeSnapshots
-	if err := betasnaps.AddToScheme(scheme.Scheme); err != nil {
+	if err := snaps.AddToScheme(scheme.Scheme); err != nil {
 		suite.Fail("cannot add to scheme: ", err)
 	}
 
@@ -466,7 +466,7 @@ func (suite *ControllerTestSuite) checkObjects(driver *Driver, client *fakeClien
 				storagev1.SchemeGroupVersion,
 				rbacv1.SchemeGroupVersion,
 				v1.GroupVersion,
-				betasnaps.SchemeGroupVersion,
+				snaps.SchemeGroupVersion,
 				v1beta1.SchemeGroupVersion,
 			).Encode(gotObj, buf)
 
@@ -749,7 +749,7 @@ func (revSuite *ReverseProxyControllerTestSuite) checkObjects(client *fakeClient
 				storagev1.SchemeGroupVersion,
 				rbacv1.SchemeGroupVersion,
 				v1.GroupVersion,
-				betasnaps.SchemeGroupVersion,
+				snaps.SchemeGroupVersion,
 				v1beta1.SchemeGroupVersion,
 			).Encode(gotObj, buf)
 
