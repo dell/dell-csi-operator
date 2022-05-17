@@ -16,6 +16,7 @@ drivers:
           - version: v121
           - version: v122
           - version: v123
+          - version: v124
       - configVersion: v2.2.0
         useDefaults: false
         supportedVersions:
