@@ -13,7 +13,7 @@ spec:
     forceUpdate: false
     fsGroupPolicy: ReadWriteOnceWithFSType
     common:
-      # Image for CSI PowerStore driver v2.3
+      # Image for CSI PowerStore driver v2.2
       image: "dellemc/csi-powerstore:v2.3.0"
       imagePullPolicy: IfNotPresent
       envs:
@@ -84,3 +84,14 @@ spec:
       #  - key: "node-role.kubernetes.io/worker"
       #    operator: "Exists"
       #    effect: "NoSchedule"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: powerstore-config-params
+  namespace: test-powerstore
+data:
+  driver-config-params.yaml: |
+    CSI_LOG_LEVEL: "debug"
+    CSI_LOG_FORMAT: "JSON"

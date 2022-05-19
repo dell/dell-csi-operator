@@ -81,3 +81,5 @@ localver.mk
 /vendor/
 build/config
 .idea/*
+.vscode
+controller-gen

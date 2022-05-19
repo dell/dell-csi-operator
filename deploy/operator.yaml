@@ -433,7 +433,7 @@ spec:
         env:
         - name: OPERATOR_DRIVERS
           value: unity,powermax,isilon,vxflexos,powerstore
-        image: dellemc/dell-csi-operator:v1.8.0
+        image: amaas-eos-mw1.cec.lab.emc.com:5028/operator:1
         imagePullPolicy: Always
         name: dell-csi-operator-controller
         volumeMounts:
