@@ -16,7 +16,7 @@ Note - **operator-sdk-vv1.18.2-x86_64-linux-gnu** has been used to build the `de
 `dell-csi-operator` manages a set of [Custom Resource Definitions](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/) (CRDs)  
 These CRDs represent a specific CSI Driver installation and are part of the API group `storage.dell.com`  
 The current set of CRDs managed by the `dell-csi-operator` are:
-* CSIUnity
+* CSIUnityXT
 * CSIIsilon
 * CSIVXFlexOS
 * CSIPowerStore

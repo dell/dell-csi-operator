@@ -16,7 +16,7 @@ Currently, the Dell CSI Operator can be used to deploy the following CSI drivers
 
 * CSI Driver for Dell PowerMax
 * CSI Driver for Dell PowerScale
-* CSI Driver for Dell Unity
+* CSI Driver for Dell Unity XT
 * CSI Driver for Dell PowerFlex (formerly VxFlex OS)
 * CSI Driver for Dell PowerStore
 
