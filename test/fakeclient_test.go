@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"reflect"
 
-	betasnaps "github.com/kubernetes-csi/external-snapshotter/client/v3/apis/volumesnapshot/v1beta1"
+	snaps "github.com/kubernetes-csi/external-snapshotter/client/v4/apis/volumesnapshot/v1"
 
 	storagev1 "k8s.io/api/storage/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -111,8 +111,8 @@ func (f *fakeClient) List(ctx context.Context, list client.ObjectList, opts ...c
 	switch list.(type) {
 	case *storagev1.StorageClassList:
 		return f.listStorageClasses(list.(*storagev1.StorageClassList))
-	case *betasnaps.VolumeSnapshotClassList:
-		return f.listVolumeSnapshots(list.(*betasnaps.VolumeSnapshotClassList))
+	case *snaps.VolumeSnapshotClassList:
+		return f.listVolumeSnapshots(list.(*snaps.VolumeSnapshotClassList))
 	default:
 		return fmt.Errorf("Unknown type: %s", reflect.TypeOf(list))
 	}
@@ -127,10 +127,10 @@ func (f *fakeClient) listStorageClasses(list *storagev1.StorageClassList) error 
 	return nil
 }
 
-func (f *fakeClient) listVolumeSnapshots(list *betasnaps.VolumeSnapshotClassList) error {
+func (f *fakeClient) listVolumeSnapshots(list *snaps.VolumeSnapshotClassList) error {
 	for k, v := range f.objects {
 		if k.Kind == "VolumeSnapshot" {
-			list.Items = append(list.Items, *v.(*betasnaps.VolumeSnapshotClass))
+			list.Items = append(list.Items, *v.(*snaps.VolumeSnapshotClass))
 		}
 	}
 	return nil

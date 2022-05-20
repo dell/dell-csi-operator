@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/Jeffail/gabs v1.4.0
 	github.com/go-logr/logr v0.4.0
-	github.com/kubernetes-csi/external-snapshotter/client/v3 v3.0.0
+	github.com/kubernetes-csi/external-snapshotter/client/v4 v4.2.0
 	github.com/onsi/ginkgo v1.16.4
 	github.com/onsi/gomega v1.15.0
 	github.com/sirupsen/logrus v1.8.1

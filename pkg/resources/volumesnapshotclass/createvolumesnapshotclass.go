@@ -3,6 +3,7 @@ package volumesnapshotclass
 import (
 	"context"
 	"fmt"
+
 	rbacv1 "k8s.io/api/rbac/v1"
 
 	"k8s.io/apimachinery/pkg/types"
@@ -10,22 +11,22 @@ import (
 	csiv1 "github.com/dell/dell-csi-operator/api/v1"
 	"github.com/dell/dell-csi-operator/pkg/resources"
 	"github.com/go-logr/logr"
-	"github.com/kubernetes-csi/external-snapshotter/client/v3/apis/volumesnapshot/v1beta1"
+	v1 "github.com/kubernetes-csi/external-snapshotter/client/v4/apis/volumesnapshot/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // New - Returns a list of VolumeSnapshotClass objects
-func New(instance csiv1.CSIDriver, customSnapshotterName string, dummyClusterRole *rbacv1.ClusterRole) []*v1beta1.VolumeSnapshotClass {
-	var vsClass []*v1beta1.VolumeSnapshotClass
+func New(instance csiv1.CSIDriver, customSnapshotterName string, dummyClusterRole *rbacv1.ClusterRole) []*v1.VolumeSnapshotClass {
+	var vsClass []*v1.VolumeSnapshotClass
 	driver := instance.GetDriver()
 	snapshotterName := fmt.Sprintf("%s.dellemc.com", instance.GetPluginName())
 	if customSnapshotterName != "" {
 		snapshotterName = customSnapshotterName
 	}
 	for _, vc := range driver.SnapshotClass {
-		sc := &v1beta1.VolumeSnapshotClass{
+		sc := &v1.VolumeSnapshotClass{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:            fmt.Sprintf("%s-%s", instance.GetName(), vc.Name),
 				OwnerReferences: resources.GetDummyOwnerReferences(dummyClusterRole),
@@ -42,7 +43,7 @@ func New(instance csiv1.CSIDriver, customSnapshotterName string, dummyClusterRol
 }
 
 // SyncSnapshotClass - Syncs snapshot class objects
-func SyncSnapshotClass(ctx context.Context, instance csiv1.CSIDriver, snapClass []*v1beta1.VolumeSnapshotClass,
+func SyncSnapshotClass(ctx context.Context, instance csiv1.CSIDriver, snapClass []*v1.VolumeSnapshotClass,
 	client client.Client, reqLogger logr.Logger, customDriverName string) []error {
 	var errTemp = make([]error, 0)
 	driverName := fmt.Sprintf("%s.dellemc.com", instance.GetPluginName())
@@ -50,7 +51,7 @@ func SyncSnapshotClass(ctx context.Context, instance csiv1.CSIDriver, snapClass 
 		driverName = customDriverName
 	}
 	// List all snapshot classes
-	existingSnapshotClasses := &v1beta1.VolumeSnapshotClassList{}
+	existingSnapshotClasses := &v1.VolumeSnapshotClassList{}
 	err := client.List(ctx, existingSnapshotClasses)
 	if err != nil {
 		errTemp = append(errTemp, err)
@@ -79,7 +80,7 @@ func SyncSnapshotClass(ctx context.Context, instance csiv1.CSIDriver, snapClass 
 
 	for _, sc := range snapClass {
 		// Check if this snapshot class already exists
-		found := &v1beta1.VolumeSnapshotClass{}
+		found := &v1.VolumeSnapshotClass{}
 		err := client.Get(ctx, types.NamespacedName{Name: sc.Name}, found)
 		if err != nil && errors.IsNotFound(err) {
 			reqLogger.Info("Creating a new SnapshotClass", "SnapshotClass.Namespace", sc.Namespace, "SnapshotClass.Name", sc.Name)
@@ -103,7 +104,7 @@ func SyncSnapshotClass(ctx context.Context, instance csiv1.CSIDriver, snapClass 
 	}
 	// Delete any unwanted snapshot classes
 	for _, scName := range snapshotClassNamesToBeDeleted {
-		found := &v1beta1.VolumeSnapshotClass{}
+		found := &v1.VolumeSnapshotClass{}
 		err := client.Get(ctx, types.NamespacedName{Name: scName}, found)
 		if err != nil && errors.IsNotFound(err) {
 			reqLogger.Info("Snapshot class already deleted", scName)
