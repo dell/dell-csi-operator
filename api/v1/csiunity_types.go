@@ -24,7 +24,7 @@ import (
 
 // CSIUnitySpec defines the desired state of CSIUnity
 type CSIUnitySpec struct {
-	// Driver is the specification for the CSI Unity Driver
+	// Driver is the specification for the CSI Unity XT Driver
 	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="Driver"
 	Driver Driver `json:"driver" yaml:"driver"`
 }
@@ -34,7 +34,7 @@ type CSIUnitySpec struct {
 // +kubebuilder:resource:path=csiunities,scope=Namespaced
 
 // CSIUnity is the Schema for the csiunities API
-// +operator-sdk:csv:customresourcedefinitions:displayName="CSI Unity",resources={{Deployment,v1,unity-controller},{DameonSet,v1,unity-node}}
+// +operator-sdk:csv:customresourcedefinitions:displayName="CSI Unity XT",resources={{Deployment,v1,unity-controller},{DameonSet,v1,unity-node}}
 type CSIUnity struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
