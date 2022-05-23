@@ -54,7 +54,7 @@ spec:
               value: /powerstore-config-params/driver-config-params.yaml
             - name: X_CSI_HEALTH_MONITOR_ENABLED
               value: "false"
-          image: dellemc/csi-powerstore:v2.2.0
+          image: dellemc/csi-powerstore:v2.3.0
           imagePullPolicy: IfNotPresent
           name: driver
           resources: {}
