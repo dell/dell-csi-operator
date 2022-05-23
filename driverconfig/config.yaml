@@ -356,15 +356,4 @@ extensions:
         tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.4.0
       - version: v124
         tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.5.0
-  - name: vg-snapshotter
-    images:
-      - version: v120
-        tag: amaas-eos-mw1.cec.lab.emc.com:5028/vg-controller:1
-      - version: v121
-        tag: amaas-eos-mw1.cec.lab.emc.com:5028/vg-controller:1
-      - version: v122
-        tag: amaas-eos-mw1.cec.lab.emc.com:5028/vg-controller:1
-      - version: v123
-        tag: amaas-eos-mw1.cec.lab.emc.com:5028/vg-controller:1
-      - version: v124
-        tag: amaas-eos-mw1.cec.lab.emc.com:5028/vg-controller:1
+

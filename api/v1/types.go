@@ -423,14 +423,13 @@ type SideCarType string
 
 // Constants for each of the sidecar container type
 const (
-	Provisioner            = "provisioner"
-	Attacher               = "attacher"
-	Snapshotter            = "snapshotter"
-	Registrar              = "registrar"
-	Resizer                = "resizer"
-	Sdcmonitor             = "sdc-monitor"
-	Healthmonitor          = "external-health-monitor"
-	VolumeGroupSnapshotter = "vg-snapshotter"
+	Provisioner   = "provisioner"
+	Attacher      = "attacher"
+	Snapshotter   = "snapshotter"
+	Registrar     = "registrar"
+	Resizer       = "resizer"
+	Sdcmonitor    = "sdc-monitor"
+	Healthmonitor = "external-health-monitor"
 )
 
 // InitContainerType - type representing type of initcontainer
@@ -548,16 +547,15 @@ type ImageType string
 
 // Constants for image types
 const (
-	ImageTypeDriver                 ImageType = "driver"
-	ImageTypeProvisioner            ImageType = Provisioner
-	ImageTypeAttacher               ImageType = Attacher
-	ImageTypeRegistrar              ImageType = Registrar
-	ImageTypeSnapshotter            ImageType = Snapshotter
-	ImageTypeResizer                ImageType = Resizer
-	ImageTypeSdcmonitor             ImageType = Sdcmonitor
-	ImageTypeSdc                    ImageType = Sdc
-	ImageTypeHealthmonitor          ImageType = Healthmonitor
-	ImageTypeVolumeGroupSnapshotter ImageType = VolumeGroupSnapshotter
+	ImageTypeDriver        ImageType = "driver"
+	ImageTypeProvisioner   ImageType = Provisioner
+	ImageTypeAttacher      ImageType = Attacher
+	ImageTypeRegistrar     ImageType = Registrar
+	ImageTypeSnapshotter   ImageType = Snapshotter
+	ImageTypeResizer       ImageType = Resizer
+	ImageTypeSdcmonitor    ImageType = Sdcmonitor
+	ImageTypeSdc           ImageType = Sdc
+	ImageTypeHealthmonitor ImageType = Healthmonitor
 )
 
 // DriverState - type representing the state of the driver (in status)

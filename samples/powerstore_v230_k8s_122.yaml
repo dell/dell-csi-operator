@@ -25,8 +25,7 @@ spec:
       # Uncomment the following to install 'external-health-monitor' sidecar to enable health monitor of CSI volumes from Controller plugin.
       # Also set the env variable controller.envs.X_CSI_HEALTH_MONITOR_ENABLED to "true".
       # - name: external-health-monitor
-      #  args: ["--monitor-interval=60s"]
-      - name: vg-snapshotter
+      #  args: ["--monitor-interval=60s"]      
 
     controller:
       envs:
