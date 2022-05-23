@@ -85,6 +85,12 @@ spec:
         - name: X_CSI_CUSTOM_TOPOLOGY_ENABLED
           value: "false"
 
+        # X_CSI_MAX_PATH_LIMIT: this parameter is used for setting the maximum Path length for the given volume.
+        # Default value: 128
+        # Examples: 128, 256
+        - name: X_CSI_MAX_PATH_LIMIT
+          value: "128"
+
     controller:
       envs:
       # X_CSI_ISI_QUOTA_ENABLED: Indicates whether the provisioner should attempt to set (later unset) quota
