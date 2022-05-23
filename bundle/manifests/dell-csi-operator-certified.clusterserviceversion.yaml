@@ -314,9 +314,10 @@ metadata:
                 "image": "dellemc/csi-vxflexos:v2.2.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.2.0",
+              "configVersion": "v2.3.0",
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
+              "fsGroupPolicy": "File",
               "initContainers": [
                 {
                   "envs": [
