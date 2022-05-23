@@ -1,0 +1,50 @@
+apiVersion: storage.dell.com/v1
+kind: CSIVXFlexOS
+metadata:
+  name: test-vxflexos
+  namespace: test-vxflexos
+spec:
+  driver:
+    configVersion: v2.3.0
+    replicas: 1
+    dnsPolicy: ClusterFirstWithHostNet
+    forceUpdate: false
+    common:
+      image: "dellemc/csi-vxflexos:v2.3.0"
+      imagePullPolicy: IfNotPresent
+      envs:
+        - name: X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT
+          value: "false"
+        - name: X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE
+          value: "false"
+        - name: X_CSI_DEBUG
+          value: "true"
+        - name: X_CSI_ALLOW_RWO_MULTI_POD_ACCESS
+          value: "false"
+    sideCars:
+    # Comment the following section if you don't want to run the monitoring sidecar
+      - name: sdc-monitor
+        envs:
+        - name: HOST_PID
+          value: "1"
+        - name: MDM
+          value: ""
+
+    initContainers:
+      - image: dellemc/sdc:3.6
+        imagePullPolicy: IfNotPresent
+        name: sdc
+        envs:
+          - name: MDM
+            value: "10.x.x.x,10.x.x.x"  #provide MDM value
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vxflexos-config-params
+  namespace: test-vxflexos
+data:
+  driver-config-params.yaml: |
+    CSI_LOG_LEVEL: "debug"
+    CSI_LOG_FORMAT: "TEXT"
