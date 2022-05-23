@@ -48,10 +48,10 @@ metadata:
                     "value": "false"
                   }
                 ],
-                "image": "dellemc/csi-isilon:v2.2.0",
+                "image": "dellemc/csi-isilon:v2.3.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.2.0",
+              "configVersion": "v2.3.0",
               "controller": {
                 "envs": [
                   {
@@ -159,6 +159,10 @@ metadata:
                   {
                     "name": "X_CSI_POWERMAX_ISCSI_ENABLE_CHAP",
                     "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_TOPOLOGY_CONTROL_ENABLED",
+                    "value": "false"
                   }
                 ]
               },
@@ -254,20 +258,12 @@ metadata:
           "spec": {
             "driver": {
               "common": {
-                "image": "dellemc/csi-unity:v2.2.0",
+                "image": "dellemc/csi-unity:v2.3.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.2.0",
-              "controller": {
-                "nodeSelector": null,
-                "tolerations": null
-              },
+              "configVersion": "v2.3.0",
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
-              "node": {
-                "nodeSelector": null,
-                "tolerations": null
-              },
               "replicas": 2,
               "sideCars": [
                 {
@@ -1158,7 +1154,7 @@ spec:
         - urn:alm:descriptor:text
       version: v1
     - description: CSIUnity is the Schema for the csiunities API
-      displayName: CSI Unity
+      displayName: CSI Unity XT
       kind: CSIUnity
       name: csiunities.storage.dell.com
       resources:
@@ -1169,7 +1165,7 @@ spec:
         name: unity-node
         version: v1
       specDescriptors:
-      - description: Driver is the specification for the CSI Unity Driver
+      - description: Driver is the specification for the CSI Unity XT Driver
         displayName: Driver
         path: driver
       - description: AuthSecret is the name of the credentials secret for the driver
@@ -2019,7 +2015,7 @@ spec:
   keywords:
   - Dell CSI Operator
   - Dell CSI Driver
-  - Unity
+  - Unity XT
   - PowerMax
   - Isilon
   - VxFlexOS

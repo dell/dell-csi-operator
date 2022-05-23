@@ -2801,7 +2801,7 @@ spec:
             description: CSIUnitySpec defines the desired state of CSIUnity
             properties:
               driver:
-                description: Driver is the specification for the CSI Unity Driver
+                description: Driver is the specification for the CSI Unity XT Driver
                 properties:
                   authSecret:
                     description: AuthSecret is the name of the credentials secret for the driver

@@ -16,7 +16,7 @@ import (
 	"github.com/dell/dell-csi-operator/pkg/resources/rbac"
 	"github.com/dell/dell-csi-operator/test/integration-tests/framework"
 	util "github.com/dell/dell-csi-operator/test/integration-tests/utils"
-	snapv1beta1 "github.com/kubernetes-csi/external-snapshotter/client/v3/apis/volumesnapshot/v1beta1"
+	snapv1 "github.com/kubernetes-csi/external-snapshotter/client/v4/apis/volumesnapshot/v1"
 	coreV1 "k8s.io/api/core/v1"
 	storageV1 "k8s.io/api/storage/v1"
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -185,9 +185,9 @@ func TestSnapshotClass(t *testing.T) {
 	fmt.Printf("%+v", snapshotClass)
 }
 
-func getSnapshotClass(context *DriverContext) (*snapv1beta1.VolumeSnapshotClass, error) {
+func getSnapshotClass(context *DriverContext) (*snapv1.VolumeSnapshotClass, error) {
 	snapclassName := context.FinalSpec.GetNamespace() + "-" + context.FinalSpec.GetDriver().SnapshotClass[0].Name
-	return framework.Global.SnapshotClientBeta.SnapshotV1beta1().VolumeSnapshotClasses().Get(ctx.Background(), snapclassName, metaV1.GetOptions{})
+	return framework.Global.SnapshotClientBeta.SnapshotV1().VolumeSnapshotClasses().Get(ctx.Background(), snapclassName, metaV1.GetOptions{})
 }
 
 func TestCHAPAuthenticationV2(t *testing.T) {

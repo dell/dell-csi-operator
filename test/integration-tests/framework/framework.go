@@ -11,7 +11,7 @@ import (
 
 	"time"
 
-	betaSnapClient "github.com/kubernetes-csi/external-snapshotter/client/v3/clientset/versioned"
+	snapClient "github.com/kubernetes-csi/external-snapshotter/client/v4/clientset/versioned"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
@@ -33,7 +33,7 @@ var Global *Framework
 type Framework struct {
 	KubeClient         kubernetes.Interface
 	KubeClient2        kubernetes.Clientset
-	SnapshotClientBeta betaSnapClient.Clientset
+	SnapshotClientBeta snapClient.Clientset
 	RestClient         rest.RESTClient
 	Client             client.Client
 	Namespace          string
@@ -76,7 +76,7 @@ func Setup() error {
 		return err
 	}
 
-	betaSnapClient, err := betaSnapClient.NewForConfig(cfg)
+	snapClient, err := snapClient.NewForConfig(cfg)
 	if err != nil {
 		return err
 	}
@@ -85,7 +85,7 @@ func Setup() error {
 		KubeClient:         kubeClient,
 		KubeClient2:        *kubeClient,
 		RestClient:         *restClient,
-		SnapshotClientBeta: *betaSnapClient,
+		SnapshotClientBeta: *snapClient,
 		Namespace:          *namespace,
 		OperatorNamespace:  *operatorNamespace,
 		SkipTeardown:       *skipTeardown,

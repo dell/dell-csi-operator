@@ -38,7 +38,6 @@ import (
 
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 
-	"github.com/kubernetes-csi/external-snapshotter/client/v3/apis/volumesnapshot/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
@@ -49,6 +48,7 @@ import (
 
 	storagev1 "github.com/dell/dell-csi-operator/api/v1"
 	"github.com/dell/dell-csi-operator/controllers"
+	v1 "github.com/kubernetes-csi/external-snapshotter/client/v4/apis/volumesnapshot/v1"
 	// +kubebuilder:scaffold:imports
 )
 
@@ -68,7 +68,7 @@ func init() {
 
 	utilruntime.Must(storagev1.AddToScheme(scheme))
 
-	utilruntime.Must(v1beta1.AddToScheme(scheme))
+	utilruntime.Must(v1.AddToScheme(scheme))
 	// +kubebuilder:scaffold:scheme
 }
 
