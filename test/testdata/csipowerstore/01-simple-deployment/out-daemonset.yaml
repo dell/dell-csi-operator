@@ -54,7 +54,7 @@ spec:
               value: /powerstore-config-params/driver-config-params.yaml
             - name: X_CSI_HEALTH_MONITOR_ENABLED
               value: "false"
-          image: dellemc/csi-powerstore:v2.2.0
+          image: dellemc/csi-powerstore:v2.3.0
           imagePullPolicy: IfNotPresent
           name: driver
           resources: {}
@@ -109,7 +109,7 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: spec.nodeName
-          image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.0
+          image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1
           imagePullPolicy: IfNotPresent
           name: registrar
           resources: {}
