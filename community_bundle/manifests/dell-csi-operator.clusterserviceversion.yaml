@@ -1969,7 +1969,7 @@ spec:
                 env:
                 - name: OPERATOR_DRIVERS
                   value: unity,powermax,isilon,vxflexos,powerstore
-                image: dellemc/dell-csi-operator:v1.7.0
+                image: dellemc/dell-csi-operator:v1.8.0
                 imagePullPolicy: Always
                 name: dell-csi-operator-controller
                 resources: {}
