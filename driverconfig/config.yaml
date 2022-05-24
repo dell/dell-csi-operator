@@ -28,6 +28,7 @@ drivers:
         snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
         resizer: k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
         registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.0
+        external-health-monitor: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.4.0
       - configVersion: v2.1.0
         useDefaults: false
         supportedVersions:
