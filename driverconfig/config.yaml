@@ -306,11 +306,11 @@ csiSideCars:
       - version: v120
         tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
       - version: v121
-        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.0
+        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1
       - version: v122
-        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.0
+        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1
       - version: v123
-        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.0
+        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1
       - version: v124
         tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1
 extensions:
@@ -355,11 +355,11 @@ extensions:
       - version: v120
         tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.4.0
       - version: v121
-        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.4.0
+        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.5.0
       - version: v122
-        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.4.0
+        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.5.0
       - version: v123
-        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.4.0
+        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.5.0
       - version: v124
         tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.5.0
 
