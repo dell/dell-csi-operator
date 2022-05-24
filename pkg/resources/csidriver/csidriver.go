@@ -35,7 +35,7 @@ func New(instance csiv1.CSIDriver, ephemeralEnabled bool, dummyClusterRole *rbac
 		VolumeLifecycleModes: modes,
 	}
 
-	if instance.GetDriverType() == "powerstore" || instance.GetDriverType() == "isilon" || instance.GetDriverType() == "powermax" || instance.GetDriverType() == "vxflexos"  {
+	if instance.GetDriverType() == "powerstore" || instance.GetDriverType() == "isilon" || instance.GetDriverType() == "powermax" || instance.GetDriverType() == "vxflexos" {
 		spec.FSGroupPolicy = &fsgroup
 	}
 
