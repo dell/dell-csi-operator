@@ -5,7 +5,7 @@ metadata:
   namespace: test-powerstore
 spec:
   driver:
-    # Config version for CSI PowerStore v2.3 driver
+    # Config version for CSI PowerStore v2.3.0 driver
     configVersion: v2.3.0
     # Controller count
     replicas: 2
@@ -13,7 +13,7 @@ spec:
     forceUpdate: false
     fsGroupPolicy: ReadWriteOnceWithFSType
     common:
-      # Image for CSI PowerStore driver v2.3
+      # Image for CSI PowerStore driver v2.3.0
       image: "dellemc/csi-powerstore:v2.3.0"
       imagePullPolicy: IfNotPresent
       envs:

@@ -10,7 +10,7 @@ metadata:
     storage.dell.com/attacher.Image.IsDefault: "true"
     storage.dell.com/provisioner.Image: k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0
     storage.dell.com/provisioner.Image.IsDefault: "true"
-    storage.dell.com/registrar.Image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.0
+    storage.dell.com/registrar.Image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1
     storage.dell.com/registrar.Image.IsDefault: "true"
     storage.dell.com/resizer.Image: k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
     storage.dell.com/resizer.Image.IsDefault: "true"
@@ -58,7 +58,7 @@ spec:
       - image: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
         imagePullPolicy: IfNotPresent
         name: snapshotter
-      - image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.0
+      - image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1
         imagePullPolicy: IfNotPresent
         name: registrar
 status:
