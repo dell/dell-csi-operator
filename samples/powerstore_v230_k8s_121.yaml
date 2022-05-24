@@ -13,7 +13,7 @@ spec:
     forceUpdate: false
     fsGroupPolicy: ReadWriteOnceWithFSType
     common:
-      # Image for CSI PowerStore driver v2.3
+      # Image for CSI PowerStore driver v2.3.0
       image: "dellemc/csi-powerstore:v2.3.0"
       imagePullPolicy: IfNotPresent
       envs:
