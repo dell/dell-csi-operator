@@ -86,10 +86,10 @@ spec:
           value: "false"
 
         # X_CSI_MAX_PATH_LIMIT: this parameter is used for setting the maximum Path length for the given volume.
-        # Default value: 128
-        # Examples: 128, 256
+        # Default value: 192
+        # Examples: 192, 256
         - name: X_CSI_MAX_PATH_LIMIT
-          value: "128"
+          value: "192"
 
     controller:
       envs:
