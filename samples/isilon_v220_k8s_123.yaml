@@ -134,7 +134,7 @@ spec:
       # tolerations: Define tolerations for the controller deployment, if required.
       # Default value: None
       tolerations:
-      #  - key: "node-role.kubernetes.io/mcontrol-planeaster"
+      #  - key: "node-role.kubernetes.io/control-plane"
       #    operator: "Equal"
       #    value: "true"
       #    effect: "NoSchedule"
