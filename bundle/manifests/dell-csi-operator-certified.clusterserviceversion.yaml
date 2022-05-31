@@ -46,6 +46,10 @@ metadata:
                   {
                     "name": "X_CSI_CUSTOM_TOPOLOGY_ENABLED",
                     "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_MAX_PATH_LIMIT",
+                    "value": "192"
                   }
                 ],
                 "image": "dellemc/csi-isilon:v2.3.0",
@@ -262,8 +266,16 @@ metadata:
                 "imagePullPolicy": "IfNotPresent"
               },
               "configVersion": "v2.3.0",
+              "controller": {
+                "nodeSelector": null,
+                "tolerations": null
+              },
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
+              "node": {
+                "nodeSelector": null,
+                "tolerations": null
+              },
               "replicas": 2,
               "sideCars": [
                 {
@@ -311,12 +323,13 @@ metadata:
                     "value": "false"
                   }
                 ],
-                "image": "dellemc/csi-vxflexos:v2.2.0",
+                "image": "dellemc/csi-vxflexos:v2.3.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.2.0",
+              "configVersion": "v2.3.0",
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
+              "fsGroupPolicy": "File",
               "initContainers": [
                 {
                   "envs": [

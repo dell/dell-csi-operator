@@ -17,3 +17,47 @@ spec:
         args: ["--volume-name-prefix=csiunity","--default-fstype=ext4"]
       - name: snapshotter
         args: ["--snapshot-name-prefix=csiunitysnap"]
+    controller:
+      # nodeSelector: Define node selection constraints for controller pods.
+      # For the pod to be eligible to run on a node, the node must have each
+      # of the indicated key-value pairs as labels.
+      # Leave as blank to consider all nodes
+      # Allowed values: map of key-value pairs
+      # Default value: None
+      # Examples:
+      #   node-role.kubernetes.io/control-plane: ""
+      nodeSelector:
+      #   node-role.kubernetes.io/control-plane: ""
+
+      # tolerations: Define tolerations for the controllers, if required.
+      # Leave as blank to install controller on worker nodes
+      # Default value: None
+      tolerations:
+      #  - key: "node-role.kubernetes.io/control-plane"
+      #    operator: "Exists"
+      #    effect: "NoSchedule"
+
+    node:
+      # nodeSelector: Define node selection constraints for node pods.
+      # For the pod to be eligible to run on a node, the node must have each
+      # of the indicated key-value pairs as labels.
+      # Leave as blank to consider all nodes
+      # Allowed values: map of key-value pairs
+      # Default value: None
+      # Examples:
+      #   node-role.kubernetes.io/control-plane: ""
+      nodeSelector:
+      #   node-role.kubernetes.io/control-plane: ""
+
+      # tolerations: Define tolerations for the node daemonset, if required.
+      # Default value: None
+      tolerations:
+      #  - key: "node.kubernetes.io/memory-pressure"
+      #    operator: "Exists"
+      #    effect: "NoExecute"
+      #  - key: "node.kubernetes.io/disk-pressure"
+      #    operator: "Exists"
+      #    effect: "NoExecute"
+      #  - key: "node.kubernetes.io/network-unavailable"
+      #    operator: "Exists"
+      #    effect: "NoExecute"

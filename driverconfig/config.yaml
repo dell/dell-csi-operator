@@ -1,7 +1,4 @@
 supportedK8sVersions:
-  - v117
-  - v118
-  - v119
   - v120
   - v121
   - v122
@@ -169,12 +166,6 @@ drivers:
 csiSideCars:
   - name: attacher
     images:
-      - version: v117
-        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.0.0
-      - version: v118
-        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.1.0
-      - version: v119
-        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.1.0
       - version: v120
         tag: k8s.gcr.io/sig-storage/csi-attacher:v3.3.0
       - version: v121
@@ -187,12 +178,6 @@ csiSideCars:
         tag: k8s.gcr.io/sig-storage/csi-attacher:v3.4.0
   - name: provisioner
     images:
-      - version: v117
-        tag: k8s.gcr.io/sig-storage/csi-provisioner:v2.0.2
-      - version: v118
-        tag: k8s.gcr.io/sig-storage/csi-provisioner:v2.1.0
-      - version: v119
-        tag: k8s.gcr.io/sig-storage/csi-provisioner:v2.1.0
       - version: v120
         tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0
       - version: v121
@@ -205,12 +190,6 @@ csiSideCars:
         tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0
   - name: snapshotter
     images:
-      - version: v117
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v3.0.2
-      - version: v118
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v3.0.3
-      - version: v119
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v3.0.3
       - version: v120
         tag: k8s.gcr.io/sig-storage/csi-snapshotter:v4.2.1
       - version: v121
@@ -223,12 +202,6 @@ csiSideCars:
         tag: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
   - name: resizer
     images:
-      - version: v117
-        tag: quay.io/k8scsi/csi-resizer:v1.0.0
-      - version: v118
-        tag: quay.io/k8scsi/csi-resizer:v1.1.0
-      - version: v119
-        tag: quay.io/k8scsi/csi-resizer:v1.1.0
       - version: v120
         tag: k8s.gcr.io/sig-storage/csi-resizer:v1.3.0
       - version: v121
@@ -241,12 +214,6 @@ csiSideCars:
         tag: k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
   - name: registrar
     images:
-      - version: v117
-        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.0.1
-      - version: v118
-        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.1.0
-      - version: v119
-        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.1.0
       - version: v120
         tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
       - version: v121
@@ -260,12 +227,6 @@ csiSideCars:
 extensions:
   - name: sdc-monitor
     images:
-      - version: v117
-        tag: dellemc/sdc:3.5.1.1
-      - version: v118
-        tag: dellemc/sdc:3.5.1.1-1
-      - version: v119
-        tag: dellemc/sdc:3.6
       - version: v120
         tag: dellemc/sdc:3.6
       - version: v121
@@ -278,12 +239,6 @@ extensions:
         tag: dellemc/sdc:3.6
   - name: sdc
     images:
-      - version: v117
-        tag: dellemc/sdc:3.5.1.1
-      - version: v118
-        tag: dellemc/sdc:3.5.1.1-1
-      - version: v119
-        tag: dellemc/sdc:3.6
       - version: v120
         tag: dellemc/sdc:3.6
       - version: v121

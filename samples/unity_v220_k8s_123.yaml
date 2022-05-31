@@ -71,13 +71,18 @@ spec:
       nodeSelector:
       #   node-role.kubernetes.io/control-plane: ""
 
-      # tolerations: Define tolerations for the controllers, if required.
-      # Leave as blank to install controller on worker nodes
+      # tolerations: Define tolerations for the node daemonset, if required.
       # Default value: None
       tolerations:
-      #  - key: "node-role.kubernetes.io/control-plane"
+      #  - key: "node.kubernetes.io/memory-pressure"
       #    operator: "Exists"
-      #    effect: "NoSchedule"
+      #    effect: "NoExecute"
+      #  - key: "node.kubernetes.io/disk-pressure"
+      #    operator: "Exists"
+      #    effect: "NoExecute"
+      #  - key: "node.kubernetes.io/network-unavailable"
+      #    operator: "Exists"
+      #    effect: "NoExecute"
 
 ---
 apiVersion: v1

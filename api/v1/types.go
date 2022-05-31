@@ -412,10 +412,7 @@ const (
 	Error          CSIOperatorConditionType = "Error"
 	Updating       CSIOperatorConditionType = "Updating"
 	Failed         CSIOperatorConditionType = "Failed"
-	k8sv117        K8sVersion               = "v117"
-	k8sv118        K8sVersion               = "v118"
-	k8sv119        K8sVersion               = "v119"
-	BaseK8sVersion K8sVersion               = "v117"
+	BaseK8sVersion K8sVersion               = "v121"
 )
 
 // SideCarType - type representing type of the sidecar container
