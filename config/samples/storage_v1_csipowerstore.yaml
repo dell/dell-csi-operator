@@ -58,7 +58,7 @@ spec:
       tolerations:
       #  - key: "node-role.kubernetes.io/control-plane"
       #    operator: "Exists"
-      #    effect: "NoSchedule"      
+      #    effect: "NoSchedule"         
     node:
       envs:
         # Set to "true" to enable ISCSI CHAP Authentication
@@ -83,4 +83,4 @@ spec:
       tolerations:
       #  - key: "node-role.kubernetes.io/worker"
       #    operator: "Exists"
-      #    effect: "NoSchedule"
+      #    effect: "NoSchedule"    
