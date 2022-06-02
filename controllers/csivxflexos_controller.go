@@ -30,7 +30,8 @@ import (
 
 	"github.com/go-logr/logr"
 	appsv1 "k8s.io/api/apps/v1"
-	corev1 "k8s.io/api/core/v1"
+
+	//corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -129,10 +130,11 @@ func (r *CSIVXFlexOSReconciler) IncrUpdateCount() {
 // Also initialize the defaults if user didn't set the values
 func (r *CSIVXFlexOSReconciler) InitializeDriverSpec(instance storagev1.CSIDriver, reqLogger logr.Logger) (bool, error) {
 	// Getting the MDM value from Sdc-Initcontainer and Passing it to Sdc-monitor
-	isDriverupdate := false
+	return false, nil
+	/*isDriverupdate := false
 	driver := instance.GetDriver()
 	ctx := context.Background()
-	if driver.ConfigVersion == "v2.1.0" {
+	if driver.ConfigVersion == "v2.3.0" {
 		var newmdm corev1.EnvVar
 		mdmVar, err := r.GetMDMFromSecret(ctx, instance, reqLogger)
 		if err != nil {
@@ -210,12 +212,12 @@ func (r *CSIVXFlexOSReconciler) InitializeDriverSpec(instance storagev1.CSIDrive
 			isDriverupdate = true
 		}
 	}
-	return isDriverupdate, nil
+	return isDriverupdate, nil*/
 }
 
 // Getmdmipforsdc - Appends MDM value to sdc-monitor
 // Function to append MDM varibale to sdc-monitor environment varibale if not provided
-func Getmdmipforsdc(sidenv []corev1.EnvVar, mdmFin string, reqLogger logr.Logger) (corev1.EnvVar, error) {
+/*func Getmdmipforsdc(sidenv []corev1.EnvVar, mdmFin string, reqLogger logr.Logger) (corev1.EnvVar, error) {
 	var updatenv corev1.EnvVar
 	var mdmFound bool
 	for _, env := range sidenv {
@@ -239,7 +241,7 @@ func Getmdmipforsdc(sidenv []corev1.EnvVar, mdmFin string, reqLogger logr.Logger
 		}
 	}
 	return updatenv, nil
-}
+}*/
 
 // ValidateDriverSpec - Validates the driver spec
 // returns error if the spec is not valid

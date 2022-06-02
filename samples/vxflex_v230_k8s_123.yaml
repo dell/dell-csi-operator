@@ -11,7 +11,7 @@ spec:
     forceUpdate: false
     fsGroupPolicy: File
     common:
-      image: "dellemc/csi-vxflexos:v2.3.0"
+      image: 10.247.101.174:5000/csi-ops:enmon
       imagePullPolicy: IfNotPresent
       envs:
         - name: X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT
@@ -56,6 +56,8 @@ spec:
         # Default value: false
         - name: X_CSI_HEALTH_MONITOR_ENABLED
           value: "false"
+        - name: X_CSI_SDC_MONITOR_ENABLED
+          value: "false"
 
     initContainers:
       - image: dellemc/sdc:3.6
@@ -63,7 +65,7 @@ spec:
         name: sdc
         envs:
           - name: MDM
-            value: "10.xx.xx.xx,10.xx.xx.xx"  #provide MDM value
+            value: "10.247.38.41,10.247.38.44"  #provide MDM value
 
 ---
 apiVersion: v1
