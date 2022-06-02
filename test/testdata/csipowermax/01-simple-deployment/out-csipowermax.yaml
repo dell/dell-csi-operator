@@ -13,7 +13,7 @@ metadata:
     storage.dell.com/registrar.Image.IsDefault: "true"
     storage.dell.com/resizer.Image: k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
     storage.dell.com/resizer.Image.IsDefault: "true"
-    storage.dell.com/snapshotter.Image: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+    storage.dell.com/snapshotter.Image: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
     storage.dell.com/snapshotter.Image.IsDefault: "true"
   finalizers: 
     - "finalizer.dell.emc.com"
@@ -43,7 +43,7 @@ spec:
         - name: "X_CSI_POWERMAX_ISCSI_ENABLE_CHAP"
           value: "false"
     sideCars:
-      - image: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+      - image: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
         imagePullPolicy: IfNotPresent
         name: snapshotter
       - image: k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0

@@ -195,13 +195,13 @@ csiSideCars:
       - version: v120
         tag: k8s.gcr.io/sig-storage/csi-snapshotter:v4.2.1
       - version: v121
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
       - version: v122
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
       - version: v123
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
       - version: v124
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
   - name: resizer
     images:
       - version: v120

@@ -13,7 +13,7 @@ metadata:
     storage.dell.com/registrar.Image.IsDefault: "true"
     storage.dell.com/resizer.Image: k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
     storage.dell.com/resizer.Image.IsDefault: "true"
-    storage.dell.com/snapshotter.Image: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+    storage.dell.com/snapshotter.Image: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
     storage.dell.com/snapshotter.Image.IsDefault: "true"
   name: test-vxflexos
   namespace: test-vxflexos
@@ -58,7 +58,7 @@ spec:
     - image: k8s.gcr.io/sig-storage/csi-attacher:v3.4.0
       imagePullPolicy: IfNotPresent
       name: attacher
-    - image: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+    - image: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
       imagePullPolicy: IfNotPresent
       name: snapshotter 
     - image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1
