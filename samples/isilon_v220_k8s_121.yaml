@@ -127,14 +127,14 @@ spec:
       # Allowed values: map of key-value pairs
       # Default value: None
       # Examples:
-      #   node-role.kubernetes.io/control-plane: ""
+      #   node-role.kubernetes.io/master: ""
       nodeSelector:
-      #  node-role.kubernetes.io/control-plane: ""
+      #  node-role.kubernetes.io/master: ""
 
       # tolerations: Define tolerations for the controller deployment, if required.
       # Default value: None
       tolerations:
-      #  - key: "node-role.kubernetes.io/control-plane"
+      #  - key: "node-role.kubernetes.io/master"
       #    operator: "Equal"
       #    value: "true"
       #    effect: "NoSchedule"
@@ -174,9 +174,9 @@ spec:
       # Allowed values: map of key-value pairs
       # Default value: None
       # Examples:
-      #   node-role.kubernetes.io/control-plane: ""
+      #   node-role.kubernetes.io/master: ""
       nodeSelector:
-      #  node-role.kubernetes.io/control-plane: ""
+      #  node-role.kubernetes.io/master: ""
 
       # tolerations: Define tolerations for the node daemonset, if required.
       # Default value: None
