@@ -40,7 +40,7 @@ The Dell CSI Operator is itself installed as a Kubernetes deployment.
 Dell CSI Operator has been tested and qualified with 
 
     * Upstream Kubernetes cluster v1.22, v1.23, v1.24
-    * OpenShift Clusters 4.9, 4.10, 4.10 EUS with RHEL 7.x & RHCOS worker nodes
+    * OpenShift Clusters 4.9, 4.10 with RHEL 7.x (with OCP 4.9), RHEL 8.x (with OCP 4.10) & RHCOS worker nodes
 
 ## Installation
 To install Dell CSI Operator please refer the steps given here at [https://dell.github.io/csm-docs/docs/csidriver/installation/operator/](https://dell.github.io/csm-docs/docs/csidriver/installation/operator/)

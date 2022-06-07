@@ -65,7 +65,6 @@ spec:
       # - key: "node-role.kubernetes.io/control-plane"
       #   operator: "Exists"
       #   effect: "NoSchedule"
-
     node:
       envs:
         # Set to "true" to enable ISCSI CHAP Authentication
