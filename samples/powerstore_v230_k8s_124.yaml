@@ -63,15 +63,15 @@ spec:
       # Allowed values: map of key-value pairs
       # Default value: None
       # Examples:
-      #   node-role.kubernetes.io/control-plane: ""
+      #   node-role.kubernetes.io/master: ""
       nodeSelector:
-      #   node-role.kubernetes.io/control-plane: ""
+      #   node-role.kubernetes.io/master: ""
 
       # tolerations: Define tolerations for the controllers, if required.
       # Leave as blank to install controller on worker nodes
       # Default value: None
       tolerations:
-      #  - key: "node-role.kubernetes.io/control-plane"
+      #  - key: "node-role.kubernetes.io/master"
       #    operator: "Exists"
       #    effect: "NoSchedule"
 
