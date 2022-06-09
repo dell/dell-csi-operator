@@ -62,18 +62,18 @@ spec:
       # Leave as blank to consider all nodes
       # Allowed values: map of key-value pairs
       # Default value: None
-      # Examples:
-      #   node-role.kubernetes.io/master: ""
       nodeSelector:
-      #   node-role.kubernetes.io/master: ""
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      #  node-role.kubernetes.io/control-plane: ""
 
       # tolerations: Define tolerations for the controllers, if required.
       # Leave as blank to install controller on worker nodes
       # Default value: None
       tolerations:
-      #  - key: "node-role.kubernetes.io/master"
-      #    operator: "Exists"
-      #    effect: "NoSchedule"
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      # - key: "node-role.kubernetes.io/control-plane"
+      #   operator: "Exists"
+      #   effect: "NoSchedule"
 
     node:
       envs:
@@ -95,18 +95,18 @@ spec:
       # Leave as blank to consider all nodes
       # Allowed values: map of key-value pairs
       # Default value: None
-      # Examples:
-      #   node-role.kubernetes.io/worker: ""
       nodeSelector:
-      #   node-role.kubernetes.io/worker: ""
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      #  node-role.kubernetes.io/control-plane: ""
 
       # tolerations: Define tolerations for the controllers, if required.
       # Leave as blank to install controller on worker nodes
       # Default value: None
       tolerations:
-      #  - key: "node-role.kubernetes.io/worker"
-      #    operator: "Exists"
-      #    effect: "NoSchedule"
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      # - key: "node-role.kubernetes.io/control-plane"
+      #   operator: "Exists"
+      #   effect: "NoSchedule"
 
 ---
 apiVersion: v1
