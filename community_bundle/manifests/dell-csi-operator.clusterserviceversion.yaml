@@ -155,6 +155,10 @@ metadata:
                 "imagePullPolicy": "IfNotPresent"
               },
               "configVersion": "v2.3.0",
+              "controller": {
+                "nodeSelector": null,
+                "tolerations": null
+              },
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
               "fsGroupPolicy": "ReadWriteOnceWithFSType",
@@ -167,6 +171,24 @@ metadata:
                   {
                     "name": "X_CSI_TOPOLOGY_CONTROL_ENABLED",
                     "value": "false"
+                  }
+                ],
+                "nodeSelector": null,
+                "tolerations": [
+                  {
+                    "effect": "NoExecute",
+                    "key": "node.kubernetes.io/memory-pressure",
+                    "operator": "Exists"
+                  },
+                  {
+                    "effect": "NoExecute",
+                    "key": "node.kubernetes.io/disk-pressure",
+                    "operator": "Exists"
+                  },
+                  {
+                    "effect": "NoExecute",
+                    "key": "node.kubernetes.io/network-unavailable",
+                    "operator": "Exists"
                   }
                 ]
               },
@@ -327,6 +349,11 @@ metadata:
                 "imagePullPolicy": "IfNotPresent"
               },
               "configVersion": "v2.3.0",
+              "controller": {
+                "envs": null,
+                "nodeSelector": null,
+                "tolerations": null
+              },
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
               "fsGroupPolicy": "File",
@@ -343,6 +370,11 @@ metadata:
                   "name": "sdc"
                 }
               ],
+              "node": {
+                "envs": null,
+                "nodeSelector": null,
+                "tolerations": null
+              },
               "replicas": 1,
               "sideCars": [
                 {
