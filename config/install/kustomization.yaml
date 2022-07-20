@@ -14,4 +14,4 @@ bases:
 images:
   - name: controller
     newName: dellemc/dell-csi-operator
-    newTag: v1.8.0
+    newTag: v1.9.0
