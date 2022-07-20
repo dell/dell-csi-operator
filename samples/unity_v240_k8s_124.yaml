@@ -18,7 +18,21 @@ spec:
         args: ["--volume-name-prefix=csiunity","--default-fstype=ext4"]
       - name: snapshotter
         args: ["--snapshot-name-prefix=csiunitysnap"]
+      # Uncomment the following to install 'external-health-monitor' sidecar to enable health monitor of CSI volumes from Controller plugin.
+      # Also set the env variable controller.envs.X_CSI_HEALTH_MONITOR_ENABLED  to "true".
+      # - name: external-health-monitor
+      #   args: ["--monitor-interval=60s"]
+
     controller:
+      envs:
+        # X_CSI_HEALTH_MONITOR_ENABLED: Enable/Disable health monitor of CSI volumes from Controller plugin - volume condition.
+        # Install the 'external-health-monitor' sidecar accordingly.
+        # Allowed values:
+        #   true: enable checking of health condition of CSI volumes
+        #   false: disable checking of health condition of CSI volumes
+        # Default value: false
+        - name: X_CSI_HEALTH_MONITOR_ENABLED
+          value: "false"
       # nodeSelector: Define node selection constraints for controller pods.
       # For the pod to be eligible to run on a node, the node must have each
       # of the indicated key-value pairs as labels.
@@ -26,8 +40,6 @@ spec:
       # Allowed values: map of key-value pairs
       # Default value: None
       nodeSelector:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
-      #  node-role.kubernetes.io/master: ""
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       #  node-role.kubernetes.io/control-plane: ""
 
@@ -35,16 +47,20 @@ spec:
       # Leave as blank to install controller on worker nodes
       # Default value: None
       tolerations:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
-      #  - key: "node-role.kubernetes.io/master"
-      #    operator: "Exists"
-      #    effect: "NoSchedule"
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       #  - key: "node-role.kubernetes.io/control-plane"
       #    operator: "Exists"
       #    effect: "NoSchedule"
 
     node:
+      envs:
+        # X_CSI_HEALTH_MONITOR_ENABLED: Enable/Disable health monitor of CSI volumes from node plugin - volume usage
+        # Allowed values:
+        #   true: enable checking of health condition of CSI volumes
+        #   false: disable checking of health condition of CSI volumes
+        # Default value: false
+        - name: X_CSI_HEALTH_MONITOR_ENABLED
+          value: "false"
       # nodeSelector: Define node selection constraints for node pods.
       # For the pod to be eligible to run on a node, the node must have each
       # of the indicated key-value pairs as labels.
@@ -52,18 +68,12 @@ spec:
       # Allowed values: map of key-value pairs
       # Default value: None
       nodeSelector:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
-      #  node-role.kubernetes.io/master: ""
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       #  node-role.kubernetes.io/control-plane: ""
 
       # tolerations: Define tolerations for the node daemonset, if required.
       # Default value: None
       tolerations:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
-      #  - key: "node-role.kubernetes.io/master"
-      #    operator: "Exists"
-      #    effect: "NoSchedule"
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       #  - key: "node-role.kubernetes.io/control-plane"
       #    operator: "Exists"
@@ -77,3 +87,17 @@ spec:
       #  - key: "node.kubernetes.io/network-unavailable"
       #    operator: "Exists"
       #    effect: "NoExecute"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unity-config-params
+  namespace: test-unity
+data:
+  driver-config-params.yaml: |
+    CSI_LOG_LEVEL: "info"
+    ALLOW_RWO_MULTIPOD_ACCESS: "false"
+    MAX_UNITY_VOLUMES_PER_NODE: "0"
+    SYNC_NODE_INFO_TIME_INTERVAL: "15"
+    TENANT_NAME: ""
