@@ -284,17 +284,16 @@ metadata:
           "spec": {
             "driver": {
               "common": {
-                "image": "dellemc/csi-unity:v2.4.0",
+                "image": "dellemc/csi-unity:v2.3.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.4.0",
+              "configVersion": "v2.3.0",
               "controller": {
                 "nodeSelector": null,
                 "tolerations": null
               },
               "dnsPolicy": "ClusterFirstWithHostNet",
               "forceUpdate": false,
-              "fsGroupPolicy": "ReadWriteOnceWithFSType",
               "node": {
                 "nodeSelector": null,
                 "tolerations": null
