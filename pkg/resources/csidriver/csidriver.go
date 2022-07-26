@@ -2,6 +2,7 @@ package csidriver
 
 import (
 	"context"
+
 	rbacv1 "k8s.io/api/rbac/v1"
 	storagev1 "k8s.io/api/storage/v1"
 
@@ -35,9 +36,7 @@ func New(instance csiv1.CSIDriver, ephemeralEnabled bool, dummyClusterRole *rbac
 		VolumeLifecycleModes: modes,
 	}
 
-	if instance.GetDriverType() == "powerstore" || instance.GetDriverType() == "isilon" || instance.GetDriverType() == "powermax" || instance.GetDriverType() == "vxflexos" {
-		spec.FSGroupPolicy = &fsgroup
-	}
+	spec.FSGroupPolicy = &fsgroup
 
 	return &storagev1.CSIDriver{
 		ObjectMeta: metav1.ObjectMeta{
