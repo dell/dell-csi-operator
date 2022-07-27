@@ -34,16 +34,18 @@ type ConfigVersionParams struct {
 	Resizer           string                   `yaml:"resizer,omitempty"`
 	Snapshotter       string                   `yaml:"snapshotter,omitempty"`
 	Registrar         string                   `yaml:"registrar,omitempty"`
+	Healthmonitor     string                   `yaml:"external-health-monitor,omitempty"`
 }
 
 // SupportedVersionParams - Represents the supported versions and corresponding sidecars
 type SupportedVersionParams struct {
-	Version     csiv1.K8sVersion `yaml:"version"`
-	Attacher    string           `yaml:"attacher,omitempty"`
-	Provisioner string           `yaml:"provisioner,omitempty"`
-	Resizer     string           `yaml:"resizer,omitempty"`
-	Snapshotter string           `yaml:"snapshotter,omitempty"`
-	Registrar   string           `yaml:"registrar,omitempty"`
+	Version       csiv1.K8sVersion `yaml:"version"`
+	Attacher      string           `yaml:"attacher,omitempty"`
+	Provisioner   string           `yaml:"provisioner,omitempty"`
+	Resizer       string           `yaml:"resizer,omitempty"`
+	Snapshotter   string           `yaml:"snapshotter,omitempty"`
+	Registrar     string           `yaml:"registrar,omitempty"`
+	Healthmonitor string           `yaml:"external-health-monitor,omitempty"`
 }
 
 // ImageTag - Image tag with associated K8s version
@@ -152,6 +154,7 @@ func (opConfig *OpConfig) GetDefaultImageTags(driverType csiv1.DriverType, confi
 						imageMap[csiv1.Resizer] = configVersionParams.Resizer
 						imageMap[csiv1.Snapshotter] = configVersionParams.Snapshotter
 						imageMap[csiv1.Registrar] = configVersionParams.Registrar
+						imageMap[csiv1.Healthmonitor] = configVersionParams.Healthmonitor
 						for _, supportedVersion := range configVersionParams.SupportedVersions {
 							if supportedVersion.Version == k8sVersion {
 								if supportedVersion.Provisioner != "" {
@@ -168,6 +171,9 @@ func (opConfig *OpConfig) GetDefaultImageTags(driverType csiv1.DriverType, confi
 								}
 								if supportedVersion.Registrar != "" {
 									imageMap[csiv1.Registrar] = supportedVersion.Registrar
+								}
+								if supportedVersion.Healthmonitor != "" {
+									imageMap[csiv1.Healthmonitor] = supportedVersion.Healthmonitor
 								}
 							}
 						}
