@@ -218,7 +218,7 @@ metadata:
               },
               "mode": "Linked"
             },
-            "image": "dellemc/csipowermax-reverseproxy:v1.4.0",
+            "image": "dellemc/csipowermax-reverseproxy:v2.3.0",
             "imagePullPolicy": "IfNotPresent",
             "tlsSecret": "csirevproxy-tls-secret"
           }
