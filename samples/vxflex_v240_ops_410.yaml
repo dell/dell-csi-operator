@@ -38,6 +38,8 @@ spec:
       # Leave as blank to use all nodes
       # Allowed values: map of key-value pairs
       # Default value: None
+      # Examples:
+      #  node-role.kubernetes.io/control-plane: ""
       nodeSelector:
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
       #  node-role.kubernetes.io/master: ""
@@ -64,6 +66,8 @@ spec:
       # Leave as blank to use all nodes
       # Allowed values: map of key-value pairs
       # Default value: None
+      # Examples:
+      #  node-role.kubernetes.io/control-plane: ""
       nodeSelector:
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
       #  node-role.kubernetes.io/master: ""
@@ -90,3 +94,14 @@ spec:
         envs:
           - name: MDM
             value: "10.x.x.x,10.x.x.x"  #provide MDM value
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vxflexos-config-params
+  namespace: test-vxflexos
+data:
+  driver-config-params.yaml: |
+    CSI_LOG_LEVEL: "debug"
+    CSI_LOG_FORMAT: "TEXT"
