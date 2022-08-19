@@ -9,8 +9,8 @@ metadata:
 spec:
   # image: Define the container images used for the reverse proxy
   # Default value: None
-  # Example: "csipowermax-reverseproxy:v1.4.0"
-  image: dellemc/csipowermax-reverseproxy:v1.4.0
+  # Example: "csipowermax-reverseproxy:v2.3.0"
+  image: dellemc/csipowermax-reverseproxy:v2.3.0
   # imagePullPolicy: Policy to determine if the image should be pulled prior to starting the container.
   # Allowed values:
   #  Always: Always pull the image.
@@ -68,8 +68,8 @@ metadata:
   namespace: test-powermax
 spec:
   driver:
-    # Config version for CSI PowerMax v2.3.0 driver
-    configVersion: v2.3.0
+    # Config version for CSI PowerMax v2.4.0 driver
+    configVersion: v2.4.0
     # replica: Define the number of PowerMax controller nodes
     # to deploy to the Kubernetes release
     # Allowed values: n, where n > 0
@@ -79,8 +79,8 @@ spec:
     forceUpdate: false
     fsGroupPolicy: ReadWriteOnceWithFSType
     common:
-      # Image for CSI PowerMax driver v2.3.0
-      image: dellemc/csi-powermax:v2.3.0
+      # Image for CSI PowerMax driver v2.4.0
+      image: dellemc/csi-powermax:v2.4.0
       # imagePullPolicy: Policy to determine if the image should be pulled prior to starting the container.
       # Allowed values:
       #  Always: Always pull the image.
