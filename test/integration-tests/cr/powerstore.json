@@ -14,7 +14,7 @@
             "value": "https://10.230.42.95/api/rest"
           },
           {
-            "name": "X_CSI_POWERSTORE_NODE_NAME_PREFIX",
+            "name": "X_CSI_POWERSTORE_KUBE_NODE_NAME",
             "value": "csi"
           },
           {

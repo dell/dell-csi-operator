@@ -27,7 +27,7 @@
                 "DefaultValueForNode": "/var/lib/kubelet/plugins/csi-powerstore.dellemc.com/tmp"
             },
             {
-                "Name": "X_CSI_POWERSTORE_NODENAME",
+                "Name": "X_CSI_POWERSTORE_KUBE_NODE_NAME",
                 "CSIEnvType": "EnvVarReferenceType",
                 "SetForController": false,
                 "SetForNode": true,
@@ -35,7 +35,7 @@
                 "DefaultValueForNode": "v1/spec.nodeName"
             },
             {
-                "Name": "X_CSI_POWERSTORE_NODE_NAME_PREFIX",
+                "Name": "X_CSI_POWERSTORE_KUBE_NODE_NAME",
                 "CSIEnvType": "String",
                 "SetForController": false,
                 "SetForNode": true,
