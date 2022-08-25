@@ -275,6 +275,7 @@
           "--v=5",
           "--volume-name-prefix=csiunity",
           "--leader-election",
+          "--feature-gates=Topology=true",
           "--default-fstype=ext4"
         ],
         "envs": [
