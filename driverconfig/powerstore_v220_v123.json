@@ -347,6 +347,7 @@
             "--volume-name-prefix=csi-pstore",
             "--leader-election",
             "--default-fstype=ext4",
+            "--feature-gates=Topology=true",
             "--extra-create-metadata"
           ],
           "envs": [
