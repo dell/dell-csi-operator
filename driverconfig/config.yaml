@@ -1,5 +1,4 @@
 supportedK8sVersions:
-  - v120
   - v121
   - v122
   - v123
@@ -178,56 +177,46 @@ drivers:
 csiSideCars:
   - name: attacher
     images:
-      - version: v120
-        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.3.0
       - version: v121
-        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.4.0
+        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.5.0
       - version: v122
-        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.4.0
+        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.5.0
       - version: v123
-        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.4.0
+        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.5.0
       - version: v124
-        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.4.0
+        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.5.0
   - name: provisioner
     images:
-      - version: v120
-        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0
       - version: v121
-        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0
+        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.2.1
       - version: v122
-        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0
+        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.2.1
       - version: v123
-        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0
+        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.2.1
       - version: v124
-        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0
+        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.2.1
   - name: snapshotter
     images:
-      - version: v120
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v4.2.1
       - version: v121
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
       - version: v122
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
       - version: v123
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
       - version: v124
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
   - name: resizer
     images:
-      - version: v120
-        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.3.0
       - version: v121
-        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
+        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.5.0
       - version: v122
-        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
+        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.5.0
       - version: v123
-        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
+        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.5.0
       - version: v124
-        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
+        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.5.0
   - name: registrar
     images:
-      - version: v120
-        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
       - version: v121
         tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1
       - version: v122
@@ -238,21 +227,17 @@ csiSideCars:
         tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1
   - name: external-health-monitor
     images:
-      - version: v120
-        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.4.0
       - version: v121
-        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.5.0
+        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.6.0
       - version: v122
-        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.5.0
+        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.6.0
       - version: v123
-        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.5.0
+        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.6.0
       - version: v124
-        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.5.0
+        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.6.0
 extensions:
   - name: sdc-monitor
     images:
-      - version: v120
-        tag: dellemc/sdc:3.6
       - version: v121
         tag: dellemc/sdc:3.6
       - version: v122
@@ -263,8 +248,6 @@ extensions:
         tag: dellemc/sdc:3.6
   - name: sdc
     images:
-      - version: v120
-        tag: dellemc/sdc:3.6
       - version: v121
         tag: dellemc/sdc:3.6
       - version: v122
