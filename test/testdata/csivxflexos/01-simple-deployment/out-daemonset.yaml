@@ -40,7 +40,7 @@ spec:
           value: "false"
         - name: X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE
           value: "false"
-        image: dellemc/csi-vxflexos:v2.3.0
+        image: dellemc/csi-vxflexos:v2.4.0
         imagePullPolicy: IfNotPresent
         name: driver
         args: 
