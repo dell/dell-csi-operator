@@ -6,7 +6,7 @@ metadata:
 spec:
   driver:
     # Config version for CSI PowerStore v2.4.0 driver
-    configVersion: v2.4.0
+    configVersion: v2.5.0
     # Controller count
     replicas: 1
     dnsPolicy: ClusterFirstWithHostNet

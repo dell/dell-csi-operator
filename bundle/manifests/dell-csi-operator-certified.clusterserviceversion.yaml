@@ -246,7 +246,7 @@ metadata:
                 "image": "dellemc/csi-powerstore:v2.4.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.4.0",
+              "configVersion": "v2.5.0",
               "controller": {
                 "envs": [
                   {

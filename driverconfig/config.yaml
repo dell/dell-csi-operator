@@ -156,8 +156,16 @@ drivers:
         external-health-monitor: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.4.0
   - name: powerstore
     configVersions:
-      - configVersion: v2.4.0
+      - configVersion: v2.5.0
         useDefaults: true
+        supportedVersions:
+          - version: v121
+          - version: v122
+          - version: v123
+          - version: v124
+          - version: v125
+      - configVersion: v2.4.0
+        useDefaults: false
         supportedVersions:
           - version: v121
           - version: v122
@@ -272,6 +280,8 @@ extensions:
         tag: dellemc/sdc:3.6
       - version: v124
         tag: dellemc/sdc:3.6
+      - version: v125
+        tag: dellemc/sdc:3.6
   - name: sdc
     images:
       - version: v121
@@ -281,5 +291,7 @@ extensions:
       - version: v123
         tag: dellemc/sdc:3.6
       - version: v124
+        tag: dellemc/sdc:3.6
+      - version: v125
         tag: dellemc/sdc:3.6
 
