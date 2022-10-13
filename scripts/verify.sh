@@ -163,8 +163,8 @@ source $SCRIPTDIR/common.bash
 
 header
 log separator
-verify_min_k8s_version "1" "20"
-verify_max_k8s_version "1" "24"
+verify_min_k8s_version "1" "21"
+verify_max_k8s_version "1" "25"
 verify_snap_crds
 verify_snapshot_controller
 log separator
