@@ -137,6 +137,7 @@ spec:
       #   operator: "Exists"
       #   effect: "NoSchedule"
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      # tolerations:
       # - key: "node-role.kubernetes.io/control-plane"
       #   operator: "Exists"
       #   effect: "NoSchedule"
@@ -186,16 +187,27 @@ spec:
       #  - key: "node.kubernetes.io/network-unavailable"
       #    operator: "Exists"
       #    effect: "NoExecute"
-      #  - key: "node-role.kubernetes.io/master"
-      #    operator: "Exists"
-      #    effect: "NoSchedule"
+      # - key: "node-role.kubernetes.io/master"
+      #   operator: "Exists"
+      #   effect: "NoSchedule"
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
-      #  - key: "node-role.kubernetes.io/control-plane"
-      #    operator: "Exists"
-      #    effect: "NoSchedule"
+      # tolerations:
+      # - key: "node-role.kubernetes.io/control-plane"
+      #   operator: "Exists"
+      #   effect: "NoSchedule"
 
     sideCars:
       - name: common
         args: ["--leader-election-lease-duration=15s", "--leader-election-renew-deadline=10s", "--leader-election-retry-period=5s"]
       - name: provisioner
         args: ["--volume-name-prefix=csipscale"]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: isilon-config-params
+  namespace: test-isilon
+data:
+  driver-config-params.yaml: |
+    CSI_LOG_LEVEL: "debug"
+
