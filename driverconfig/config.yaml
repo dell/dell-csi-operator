@@ -3,6 +3,7 @@ supportedK8sVersions:
   - v122
   - v123
   - v124
+  - v125
 drivers:
   - name: powermax
     configVersions:
@@ -108,14 +109,15 @@ drivers:
         external-health-monitor: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.4.0
   - name: isilon
     configVersions:
-      - configVersion: v2.4.0
+      - configVersion: v2.5.0
         useDefaults: true
         supportedVersions:
           - version: v121
           - version: v122
           - version: v123
           - version: v124
-      - configVersion: v2.3.0
+          - version: v125
+      - configVersion: v2.4.0
         useDefaults: false
         supportedVersions:
           - version: v121
@@ -185,6 +187,8 @@ csiSideCars:
         tag: k8s.gcr.io/sig-storage/csi-attacher:v3.5.0
       - version: v124
         tag: k8s.gcr.io/sig-storage/csi-attacher:v3.5.0
+      - version: v125
+        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.5.0
   - name: provisioner
     images:
       - version: v121
@@ -194,6 +198,8 @@ csiSideCars:
       - version: v123
         tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.2.1
       - version: v124
+        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.2.1
+      - version: v125
         tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.2.1
   - name: snapshotter
     images:
@@ -205,6 +211,8 @@ csiSideCars:
         tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
       - version: v124
         tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
+      - version: v125
+        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
   - name: resizer
     images:
       - version: v121
@@ -214,6 +222,8 @@ csiSideCars:
       - version: v123
         tag: k8s.gcr.io/sig-storage/csi-resizer:v1.5.0
       - version: v124
+        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.5.0
+      - version: v125
         tag: k8s.gcr.io/sig-storage/csi-resizer:v1.5.0
   - name: registrar
     images:
@@ -225,6 +235,8 @@ csiSideCars:
         tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1
       - version: v124
         tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1
+      - version: v125
+        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1
   - name: external-health-monitor
     images:
       - version: v121
@@ -234,6 +246,8 @@ csiSideCars:
       - version: v123
         tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.6.0
       - version: v124
+        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.6.0
+      - version: v125
         tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.6.0
 extensions:
   - name: sdc-monitor
@@ -246,6 +260,8 @@ extensions:
         tag: dellemc/sdc:3.6
       - version: v124
         tag: dellemc/sdc:3.6
+      - version: v125
+        tag: dellemc/sdc:3.6
   - name: sdc
     images:
       - version: v121
@@ -255,5 +271,7 @@ extensions:
       - version: v123
         tag: dellemc/sdc:3.6
       - version: v124
+        tag: dellemc/sdc:3.6
+      - version: v125
         tag: dellemc/sdc:3.6
 
