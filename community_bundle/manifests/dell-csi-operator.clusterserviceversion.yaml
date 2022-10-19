@@ -243,7 +243,7 @@ metadata:
                     "value": "/etc/fc-ports-filter"
                   }
                 ],
-                "image": "dellemc/csi-powerstore:v2.4.0",
+                "image": "dellemc/csi-powerstore:v2.5.0",
                 "imagePullPolicy": "IfNotPresent"
               },
               "configVersion": "v2.5.0",
