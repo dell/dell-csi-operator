@@ -13,5 +13,5 @@ bases:
 
 images:
   - name: controller
-    newName: dellemc/dell-csi-operator
-    newTag: v1.9.0
+    newName: docker.io/dellemc/dell-csi-operator
+    newTag: v1.10.0

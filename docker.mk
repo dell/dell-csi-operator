@@ -22,7 +22,7 @@ endif
 BUNDLE_METADATA_OPTS ?= $(BUNDLE_CHANNELS) $(BUNDLE_DEFAULT_CHANNEL)
 
 # Registry for all images
-REGISTRY ?= "dellemc"
+REGISTRY ?= "docker.io/dellemc"
 
 # Default Operator image name
 OPERATOR_IMAGE ?= dell-csi-operator
@@ -30,7 +30,7 @@ OPERATOR_IMAGE ?= dell-csi-operator
 BUNDLE_IMAGE ?= csiopbundle_ops_certified
 # Default Index Image name
 INDEX_IMAGE ?= dellemcregistry_certified
-SOURCE_INDEX_IMG ?= dellemc/dell-csi-operator/dellemcregistry_certified:v1.8.0
+SOURCE_INDEX_IMG ?= dellemc/dell-csi-operator/dellemcregistry_certified:v1.9.0
 
 
 # Operator Images
