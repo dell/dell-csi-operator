@@ -6,7 +6,7 @@ metadata:
 spec:
   driver:
     configVersion: v2.5.0
-    replicas: 1
+    replicas: 2
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     # fsGroupPolicy: Defines if the underlying volume supports changing ownership and permission of the volume before being mounted.
@@ -19,7 +19,7 @@ spec:
     # Default value: ReadWriteOnceWithFSType    
     fsGroupPolicy: ReadWriteOnceWithFSType
     common:
-      image: "amaas-eos-mw1.cec.lab.emc.com:5028/csi-unity/csi-unity:20221017023627"
+      image: "dellemc/csi-unity:v2.5.0"
       imagePullPolicy: IfNotPresent
     sideCars:
       - name: provisioner
