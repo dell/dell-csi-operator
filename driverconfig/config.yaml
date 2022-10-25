@@ -45,7 +45,6 @@ drivers:
         useDefaults: true
         supportedVersions:
           - version: v121
-          - version: v122
           - version: v123
           - version: v124
           - version: v125
