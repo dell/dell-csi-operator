@@ -120,7 +120,7 @@ func (r *CSIVXFlexOSReconciler) SetConfig(c operatorconfig.Config) {
 	r.Config = c
 }
 
-// IncrUpdateCount - Increments the update count
+//IncrUpdateCount - Increments the update count
 func (r *CSIVXFlexOSReconciler) IncrUpdateCount() {
 	atomic.AddInt32(&r.updateCount, 1)
 }

@@ -153,7 +153,7 @@ func (r *CSIUnityReconciler) SetConfig(c operatorconfig.Config) {
 	r.Config = c
 }
 
-// IncrUpdateCount - Increments the update count
+//IncrUpdateCount - Increments the update count
 func (r *CSIUnityReconciler) IncrUpdateCount() {
 	atomic.AddInt32(&r.updateCount, 1)
 }
