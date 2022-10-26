@@ -55,7 +55,7 @@ type SidecarParams struct {
 	VolumeMounts []corev1.VolumeMount `json:"volumeMounts"`
 }
 
-//InitContainerParams - represents configuration for InitContainers
+// InitContainerParams - represents configuration for InitContainers
 type InitContainerParams struct {
 	Name             csiv1.ImageType      `json:"Name"`
 	Optional         bool                 `json:"optional"`
