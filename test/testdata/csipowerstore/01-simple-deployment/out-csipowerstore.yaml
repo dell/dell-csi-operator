@@ -5,7 +5,7 @@ metadata:
   name: test-powerstore
   namespace: test-powerstore
   annotations:
-    storage.dell.com/CSIDriverConfigVersion: v2.4.0
+    storage.dell.com/CSIDriverConfigVersion: v2.5.0
     storage.dell.com/attacher.Image: k8s.gcr.io/sig-storage/csi-attacher:v3.5.0
     storage.dell.com/attacher.Image.IsDefault: "true"
     storage.dell.com/provisioner.Image: k8s.gcr.io/sig-storage/csi-provisioner:v3.2.1
@@ -30,7 +30,7 @@ spec:
           value: /etc/fc-ports-filter
       image: dellemc/csi-powerstore:v2.4.0
       imagePullPolicy: IfNotPresent
-    configVersion: v2.4.0
+    configVersion: v2.5.0
     controller:
       envs:
         - name: X_CSI_NFS_ACLS
