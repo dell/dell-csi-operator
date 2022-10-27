@@ -30,10 +30,10 @@ jobs:
     name: Run Go unit tests and check package coverage
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Go 1.18+
+      - name: Set up Go 1.19+
         uses: actions/setup-go@v2
         with:
-          go-version: ^1.18
+          go-version: ^1.19
         id: go
       - name: Checkout the code
         uses: actions/checkout@v2
@@ -65,10 +65,10 @@ jobs:
     env:
       BASE_IMG : ubuntu:latest
     steps:
-      - name: Set up Go 1.18+
+      - name: Set up Go 1.19+
         uses: actions/setup-go@v2
         with:
-          go-version: ^1.18
+          go-version: ^1.19
         id: go
       - name: Checkout the code
         uses: actions/checkout@v2

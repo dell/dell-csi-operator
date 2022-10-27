@@ -45,7 +45,7 @@ Note - There is one controller per Custom Resource type and each controller runs
 ## Build and Deploy
 
 ### Pre-requisites
-* golang >= 1.18.x
+* golang >= 1.19.x
 * operator-sdk v1.15.0 [Download link](https://github.com/operator-framework/operator-sdk/releases/download/v1.15.0/operator-sdk_linux_amd64)
 * opm v1.14.0 [Download link](https://github.com/operator-framework/operator-registry/releases/download/v1.14.0/linux-amd64-opm)
 

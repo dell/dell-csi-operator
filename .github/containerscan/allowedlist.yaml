@@ -11,6 +11,7 @@ general:
     - CVE-2021-44716
     - CVE-2021-38561
     - CVE-2022-2526
+    - CVE-2022-3515
   bestPracticeViolations:
     # list of best practies violatied that needs a fix
     - DKL-DI-0006
