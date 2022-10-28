@@ -2,7 +2,7 @@ apiVersion: storage.dell.com/v1
 kind: CSIIsilon
 metadata:
   annotations:
-    storage.dell.com/CSIDriverConfigVersion: v2.5 .0
+    storage.dell.com/CSIDriverConfigVersion: v2.5.0
     storage.dell.com/attacher.Image: k8s.gcr.io/sig-storage/csi-attacher:v3.5.0
     storage.dell.com/attacher.Image.IsDefault: "true"
     storage.dell.com/provisioner.Image: k8s.gcr.io/sig-storage/csi-provisioner:v3.2.1
