@@ -10,6 +10,7 @@ spec:
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     fsGroupPolicy: File
+    storageCapacity: false
     common:
       image: "dellemc/csi-vxflexos:v2.4.0"
       imagePullPolicy: IfNotPresent
