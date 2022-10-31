@@ -185,6 +185,7 @@ spec:
       #  - key: "node.kubernetes.io/network-unavailable"
       #    operator: "Exists"
       #    effect: "NoExecute"
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
       # - key: "node-role.kubernetes.io/master"
       #   operator: "Exists"
       #   effect: "NoSchedule"
