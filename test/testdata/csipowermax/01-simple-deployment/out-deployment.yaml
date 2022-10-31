@@ -77,7 +77,7 @@ spec:
             - name: X_CSI_IG_MODIFY_HOSTNAME
               value: "false"
             - name: X_CSI_POWERMAX_PROXY_SERVICE_NAME
-              value: none
+              value: "powermax-reverseproxy"
             - name: X_CSI_ReplicationContextPrefix
               value: powermax/
             - name: X_CSI_ReplicationPrefix

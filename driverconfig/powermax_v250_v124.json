@@ -211,8 +211,8 @@
         "CSIEnvType": "String",
         "SetForController": true,
         "SetForNode": true,
-        "DefaultValueForController": "none",
-        "DefaultValueForNode": "none"
+        "DefaultValueForController": "powermax-reverseproxy",
+        "DefaultValueForNode": "powermax-reverseproxy"
       },
       {
         "Name": "X_CSI_ReplicationContextPrefix",

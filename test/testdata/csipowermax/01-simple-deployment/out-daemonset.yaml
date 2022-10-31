@@ -73,7 +73,7 @@ spec:
             - name: X_CSI_IG_MODIFY_HOSTNAME
               value: "false"
             - name: X_CSI_POWERMAX_PROXY_SERVICE_NAME
-              value: "none"
+              value: "powermax-reverseproxy"
             - name: X_CSI_UNISPHERE_TIMEOUT
               value: 5m
             - name: X_CSI_POWERMAX_CONFIG_PATH
