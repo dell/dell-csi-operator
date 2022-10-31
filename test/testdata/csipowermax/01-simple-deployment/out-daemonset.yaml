@@ -86,7 +86,7 @@ spec:
               value: /node-topology-config/topologyConfig.yaml
             - name: X_CSI_POWERMAX_PORTGROUPS
               value: ""
-          image: dellemc/csi-powermax:v2.4.0
+          image: dellemc/csi-powermax:v2.5.0
           imagePullPolicy: IfNotPresent
           name: driver
           resources: {}
