@@ -82,8 +82,6 @@ spec:
       # Allowed values: map of key-value pairs
       # Default value: None
       nodeSelector:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
-      #  node-role.kubernetes.io/master: ""
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       #  node-role.kubernetes.io/control-plane: ""
 
@@ -123,8 +121,6 @@ spec:
       # Allowed values: map of key-value pairs
       # Default value: None
       nodeSelector:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
-      #  node-role.kubernetes.io/master: ""
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       #  node-role.kubernetes.io/control-plane: ""
 
