@@ -11,6 +11,7 @@ spec:
     replicas: 1
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
+    storageCapacity: false
     common:
       # Image for CSI PowerStore driver v2.5.0
       # @TO-DO need to replace 2.4.0 with 2.5.0 once image is available

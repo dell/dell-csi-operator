@@ -31,6 +31,7 @@ func NewDummyClusterRole(name string) *rbacv1.ClusterRole {
 func NewControllerClusterRole(instance csiv1.CSIDriver, customClusterRoleName bool, haRequired bool, dummyClusterRole *rbacv1.ClusterRole) *rbacv1.ClusterRole {
 	driverName := instance.GetName()
 	driverNamespace := instance.GetNamespace()
+	driverType := instance.GetDriverType()
 	clusterRoleName := fmt.Sprintf("%s-controller", driverName)
 	if customClusterRoleName {
 		clusterRoleName = fmt.Sprintf("%s-%s-controller", driverNamespace, driverName)
@@ -134,6 +135,18 @@ func NewControllerClusterRole(instance csiv1.CSIDriver, customClusterRoleName bo
 			APIGroups: []string{"coordination.k8s.io"},
 			Resources: []string{"leases"},
 			Verbs:     []string{"create", "get", "list", "watch", "delete", "update"},
+		})
+	}
+	if driverType == "powerstore" {
+		clusterRole.Rules = append(clusterRole.Rules, rbacv1.PolicyRule{
+			APIGroups: []string{"storage.k8s.io"},
+			Resources: []string{"csistoragecapacities"},
+			Verbs:     []string{"get", "list", "watch", "create", "update", "patch", "delete"},
+		})
+		clusterRole.Rules = append(clusterRole.Rules, rbacv1.PolicyRule{
+			APIGroups: []string{"apps"},
+			Resources: []string{"replicasets"},
+			Verbs:     []string{"get"},
 		})
 	}
 	return clusterRole

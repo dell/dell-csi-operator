@@ -34,6 +34,7 @@ func New(instance csiv1.CSIDriver, ephemeralEnabled bool, dummyClusterRole *rbac
 		AttachRequired:       &b,
 		PodInfoOnMount:       &b,
 		VolumeLifecycleModes: modes,
+		StorageCapacity:      &instance.GetDriver().StorageCapacity,
 	}
 
 	spec.FSGroupPolicy = &fsgroup

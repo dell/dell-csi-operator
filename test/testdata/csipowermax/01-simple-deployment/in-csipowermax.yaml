@@ -11,6 +11,7 @@ spec:
     replicas: 1
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
+    storageCapacity: false
     common:
       # Image for CSI PowerMax driver v2.5.0
       image: "dellemc/csi-powermax:v2.5.0"

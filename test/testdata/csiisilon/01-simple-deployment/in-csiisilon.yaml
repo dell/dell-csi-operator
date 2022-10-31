@@ -10,6 +10,7 @@ spec:
     replicas: 1
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
+    storageCapacity: false
     common:
       # Image for CSI PowerScale driver v2.4.0
       image: "dellemc/csi-isilon:v2.4.0"

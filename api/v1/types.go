@@ -463,6 +463,10 @@ type Driver struct {
 	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="FSGroupPolicy"
 	FSGroupPolicy string `json:"fsGroupPolicy,omitempty" yaml:"fsGroupPolicy"`
 
+	// StorageCapacity enables/disables capacity tracking
+	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="Storage Capacity"
+	StorageCapacity bool `json:"storageCapacity,omitempty" yaml:"storageCapacity"`
+
 	// Common is the common specification for both controller and node plugins
 	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="Common specification"
 	Common ContainerTemplate `json:"common" yaml:"common"`
