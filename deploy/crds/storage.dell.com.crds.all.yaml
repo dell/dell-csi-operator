@@ -705,6 +705,9 @@ spec:
                       - name
                       type: object
                     type: array
+                  storageCapacity:
+                    description: StorageCapacity enables/disables capacity tracking
+                    type: boolean
                   storageClass:
                     description: StorageClass is the specification for Storage Classes
                     items:
@@ -1554,6 +1557,9 @@ spec:
                       - name
                       type: object
                     type: array
+                  storageCapacity:
+                    description: StorageCapacity enables/disables capacity tracking
+                    type: boolean
                   storageClass:
                     description: StorageClass is the specification for Storage Classes
                     items:
@@ -2626,6 +2632,9 @@ spec:
                       - name
                       type: object
                     type: array
+                  storageCapacity:
+                    description: StorageCapacity enables/disables capacity tracking
+                    type: boolean
                   storageClass:
                     description: StorageClass is the specification for Storage Classes
                     items:
@@ -3475,6 +3484,9 @@ spec:
                       - name
                       type: object
                     type: array
+                  storageCapacity:
+                    description: StorageCapacity enables/disables capacity tracking
+                    type: boolean
                   storageClass:
                     description: StorageClass is the specification for Storage Classes
                     items:
@@ -4324,6 +4336,9 @@ spec:
                       - name
                       type: object
                     type: array
+                  storageCapacity:
+                    description: StorageCapacity enables/disables capacity tracking
+                    type: boolean
                   storageClass:
                     description: StorageClass is the specification for Storage Classes
                     items:
