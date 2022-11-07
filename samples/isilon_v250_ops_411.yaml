@@ -1,16 +1,16 @@
 apiVersion: storage.dell.com/v1
 kind: CSIIsilon
 metadata:
-  name: test-isilon
+  name: isilon
   namespace: test-isilon
 spec:
   driver:
     # Config version for CSI PowerScale v2.5.0 driver
     configVersion: v2.5.0
-    replicas: 1
+    replicas: 2
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
-    storageCapacity: false
+    fsGroupPolicy: ReadWriteOnceWithFSType
     common:
       # Image for CSI PowerScale driver v2.5.0
       image: "dellemc/csi-isilon:v2.5.0"
@@ -85,6 +85,12 @@ spec:
         - name: X_CSI_CUSTOM_TOPOLOGY_ENABLED
           value: "false"
 
+        # X_CSI_MAX_PATH_LIMIT: this parameter is used for setting the maximum Path length for the given volume.
+        # Default value: 192
+        # Examples: 192, 256
+        - name: X_CSI_MAX_PATH_LIMIT
+          value: "192"
+
     controller:
       envs:
       # X_CSI_ISI_QUOTA_ENABLED: Indicates whether the provisioner should attempt to set (later unset) quota
@@ -111,6 +117,24 @@ spec:
       - name: X_CSI_ISI_VOLUME_PATH_PERMISSIONS
         value: "0777"
 
+      # nodeSelector: Define node selection constraints for pods of controller deployment.
+      # For the pod to be eligible to run on a node, the node must have each
+      # of the indicated key-value pairs as labels.
+      # Leave as blank to consider all nodes
+      # Allowed values: map of key-value pairs
+      # Default value: None
+      nodeSelector:
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      #  node-role.kubernetes.io/control-plane: ""
+
+      # tolerations: Define tolerations for the controller deployment, if required.
+      # Default value: None
+      tolerations:
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      # - key: "node-role.kubernetes.io/control-plane"
+      #   operator: "Exists"
+      #   effect: "NoSchedule"
+
     node:
       envs:
       # X_CSI_MAX_VOLUMES_PER_NODE: Specify default value for maximum number of volumes that controller can publish to the node.
@@ -131,17 +155,46 @@ spec:
       - name: X_CSI_ALLOWED_NETWORKS
         value: ""
 
+      # nodeSelector: Define node selection constraints for pods of node daemonset
+      # For the pod to be eligible to run on a node, the node must have each
+      # of the indicated key-value pairs as labels.
+      # Leave as blank to consider all nodes
+      # Allowed values: map of key-value pairs
+      # Default value: None
+      nodeSelector:
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      #  node-role.kubernetes.io/control-plane: ""
+
+      # tolerations: Define tolerations for the node daemonset, if required.
+      # Default value: None
+      tolerations:
+      #  - key: "node.kubernetes.io/memory-pressure"
+      #    operator: "Exists"
+      #    effect: "NoExecute"
+      #  - key: "node.kubernetes.io/disk-pressure"
+      #    operator: "Exists"
+      #    effect: "NoExecute"
+      #  - key: "node.kubernetes.io/network-unavailable"
+      #    operator: "Exists"
+      #    effect: "NoExecute"
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      # tolerations:
+      # - key: "node-role.kubernetes.io/control-plane"
+      #   operator: "Exists"
+      #   effect: "NoSchedule"
+
     sideCars:
+      - name: common
+        args: ["--leader-election-lease-duration=15s", "--leader-election-renew-deadline=10s", "--leader-election-retry-period=5s"]
       - name: provisioner
         args: ["--volume-name-prefix=csipscale"]
-      - name: external-health-monitor
-        args: ["--monitor-interval=60s"]
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: csi-isilon-config-params
+  name: isilon-config-params
   namespace: test-isilon
 data:
   driver-config-params.yaml: |
     CSI_LOG_LEVEL: "debug"
+

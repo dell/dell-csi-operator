@@ -5,15 +5,15 @@ metadata:
   namespace: test-isilon
 spec:
   driver:
-    # Config version for CSI PowerScale v2.2.0 driver
-    configVersion: v2.2.0
+    # Config version for CSI PowerScale v2.5.0 driver
+    configVersion: v2.5.0
     replicas: 2
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     fsGroupPolicy: ReadWriteOnceWithFSType
     common:
-      # Image for CSI PowerScale driver v2.2.0
-      image: "dellemc/csi-isilon:v2.2.0"
+      # Image for CSI PowerScale driver v2.5.0
+      image: "dellemc/csi-isilon:v2.5.0"
       imagePullPolicy: IfNotPresent
       envs:
         # X_CSI_VERBOSE: Indicates what content of the OneFS REST API message should be logged in debug level logs
@@ -85,6 +85,12 @@ spec:
         - name: X_CSI_CUSTOM_TOPOLOGY_ENABLED
           value: "false"
 
+        # X_CSI_MAX_PATH_LIMIT: this parameter is used for setting the maximum Path length for the given volume.
+        # Default value: 192
+        # Examples: 192, 256
+        - name: X_CSI_MAX_PATH_LIMIT
+          value: "192"
+
     controller:
       envs:
       # X_CSI_ISI_QUOTA_ENABLED: Indicates whether the provisioner should attempt to set (later unset) quota
@@ -117,18 +123,23 @@ spec:
       # Leave as blank to consider all nodes
       # Allowed values: map of key-value pairs
       # Default value: None
-      # Examples:
-      #   node-role.kubernetes.io/master: ""
       nodeSelector:
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
       #  node-role.kubernetes.io/master: ""
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      #  node-role.kubernetes.io/control-plane: ""
 
       # tolerations: Define tolerations for the controller deployment, if required.
       # Default value: None
       tolerations:
-      #  - key: "node-role.kubernetes.io/master"
-      #    operator: "Equal"
-      #    value: "true"
-      #    effect: "NoSchedule"
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
+      # - key: "node-role.kubernetes.io/master"
+      #   operator: "Exists"
+      #   effect: "NoSchedule"
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      # - key: "node-role.kubernetes.io/control-plane"
+      #   operator: "Exists"
+      #   effect: "NoSchedule"
 
     node:
       envs:
@@ -156,10 +167,11 @@ spec:
       # Leave as blank to consider all nodes
       # Allowed values: map of key-value pairs
       # Default value: None
-      # Examples:
-      #   node-role.kubernetes.io/master: ""
       nodeSelector:
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
       #  node-role.kubernetes.io/master: ""
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      #  node-role.kubernetes.io/control-plane: ""
 
       # tolerations: Define tolerations for the node daemonset, if required.
       # Default value: None
@@ -173,6 +185,15 @@ spec:
       #  - key: "node.kubernetes.io/network-unavailable"
       #    operator: "Exists"
       #    effect: "NoExecute"
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
+      # - key: "node-role.kubernetes.io/master"
+      #   operator: "Exists"
+      #   effect: "NoSchedule"
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      # tolerations:
+      # - key: "node-role.kubernetes.io/control-plane"
+      #   operator: "Exists"
+      #   effect: "NoSchedule"
 
     sideCars:
       - name: common
