@@ -40,7 +40,7 @@ spec:
           value: "false"
         - name: X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE
           value: "false"
-        image: dellemc/csi-vxflexos:v2.4.0
+        image: dellemc/csi-vxflexos:v2.5.0
         imagePullPolicy: IfNotPresent
         name: driver
         args: 
@@ -128,7 +128,7 @@ spec:
               key: password
               name: sdc-repo-creds
               optional: true
-        image: dellemc/sdc:3.5.1.1-1
+        image: dellemc/sdc:3.6
         imagePullPolicy: IfNotPresent
         name: sdc
         resources: {}

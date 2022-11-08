@@ -104,7 +104,7 @@ drivers:
           - version: v123
           - version: v124
         attacher: k8s.gcr.io/sig-storage/csi-attacher:v3.5.0
-        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v3.2.0
+        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v3.2.1
         snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
         resizer: k8s.gcr.io/sig-storage/csi-resizer:v1.5.0
         registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1

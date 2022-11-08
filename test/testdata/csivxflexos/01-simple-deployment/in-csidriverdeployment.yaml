@@ -5,14 +5,14 @@ metadata:
   namespace: test-vxflexos
 spec:
   driver:
-    configVersion: v2.4.0
+    configVersion: v2.5.0
     replicas: 1
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     fsGroupPolicy: File
     storageCapacity: false
     common:
-      image: "dellemc/csi-vxflexos:v2.4.0"
+      image: "dellemc/csi-vxflexos:v2.5.0"
       imagePullPolicy: IfNotPresent
       envs:
         - name: X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT
@@ -34,7 +34,7 @@ spec:
        - name: external-health-monitor
          args: ["--monitor-interval=60s"]
     initContainers:
-      - image: dellemc/sdc:3.5.1.1-1
+      - image: dellemc/sdc:3.6
         imagePullPolicy: IfNotPresent
         name: sdc
         envs:
