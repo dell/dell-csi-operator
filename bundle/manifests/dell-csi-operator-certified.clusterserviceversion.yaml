@@ -346,7 +346,7 @@ metadata:
                     "value": "false"
                   }
                 ],
-                "image": "dellemc/csi-vxflexos:v2.4.0",
+                "image": "dellemc/csi-vxflexos:v2.5.0",
                 "imagePullPolicy": "IfNotPresent"
               },
               "configVersion": "v2.4.0",

@@ -2,7 +2,7 @@ apiVersion: storage.dell.com/v1
 kind: CSIVXFlexOS
 metadata:
   annotations:
-    storage.dell.com/CSIDriverConfigVersion: v2.4.0
+    storage.dell.com/CSIDriverConfigVersion: v2.5.0
     storage.dell.com/attacher.Image: k8s.gcr.io/sig-storage/csi-attacher:v3.5.0
     storage.dell.com/attacher.Image.IsDefault: "true"
     storage.dell.com/external-health-monitor.Image: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.6.0
@@ -31,15 +31,15 @@ spec:
         value: "true"
       - name: X_CSI_ALLOW_RWO_MULTI_POD_ACCESS
         value: "false"
-      image: dellemc/csi-vxflexos:v2.4.0
+      image: dellemc/csi-vxflexos:v2.5.0
       imagePullPolicy: IfNotPresent
-    configVersion: v2.4.0
+    configVersion: v2.5.0
     controller: {}
     initContainers:
     - envs:
       - name: MDM
         value: 10.247.32.32,10.247.90.21
-      image: dellemc/sdc:3.5.1.1-1
+      image: dellemc/sdc:3.6
       imagePullPolicy: IfNotPresent
       name: sdc
     node: {}
