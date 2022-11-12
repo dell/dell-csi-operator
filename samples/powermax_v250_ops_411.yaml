@@ -63,11 +63,10 @@ spec:
         - name: "X_CSI_TRANSPORT_PROTOCOL"
           value: ""
         # X_CSI_POWERMAX_PROXY_SERVICE_NAME: Refers to the name of the proxy service in kubernetes
-        # Set this to "powermax-reverseproxy" if you are installing the proxy
         # Allowed values: "powermax-reverseproxy"
-        # default values: "" <empty>
+        # default values: "powermax-reverseproxy"
         - name: "X_CSI_POWERMAX_PROXY_SERVICE_NAME"
-          value: ""
+          value: "powermax-reverseproxy"
         # X_CSI_GRPC_MAX_THREADS: Defines the maximum number of concurrent grpc requests.
         # Set this value to a higher number (max 50) if you are using the proxy
         # Allowed values: n, where n > 4
