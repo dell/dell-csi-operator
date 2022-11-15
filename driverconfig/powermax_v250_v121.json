@@ -269,6 +269,55 @@
         "SetForNode": true,
         "DefaultValueForController": "",
         "DefaultValueForNode": "/node-topology-config/topologyConfig.yaml"
+      },
+      { "Name": "X_CSI_VSPHERE_ENABLED",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "false",
+        "DefaultValueForNode": "false"
+      },
+      { "Name": "X_CSI_VSPHERE_PORTGROUP",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": ""
+      },
+      { "Name": "X_CSI_VSPHERE_HOSTGROUP",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": ""
+      },
+      { "Name": "X_CSI_VSPHERE_HOSTGROUP",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": ""
+      },
+      { "Name": "X_CSI_VCenter_HOST",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": ""
+      },
+      { "Name": "X_CSI_VCenter_USERNAME",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": ""
+      },
+      { "Name": "X_CSI_VCenter_PWD",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": ""
       }
     ],
     "driverNodeVolumes": [
