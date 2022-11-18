@@ -84,6 +84,18 @@ spec:
               value: "false"
             - name: X_CSI_POWERMAX_TOPOLOGY_CONFIG_PATH
               value: /node-topology-config/topologyConfig.yaml
+            - name: X_CSI_VSPHERE_ENABLED
+              value: "false"
+            - name: X_CSI_VSPHERE_PORTGROUP
+              value: ""
+            - name: X_CSI_VSPHERE_HOSTGROUP
+              value: ""
+            - name: X_CSI_VCenter_HOST
+              value: ""
+            - name: X_CSI_VCenter_USERNAME
+              value: ""
+            - name: X_CSI_VCenter_PWD
+              value: ""
             - name: X_CSI_POWERMAX_PORTGROUPS
               value: ""
           image: dellemc/csi-powermax:v2.5.0
