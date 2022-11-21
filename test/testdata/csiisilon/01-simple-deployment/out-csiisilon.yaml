@@ -51,6 +51,8 @@ spec:
         value: System
       - name: X_CSI_ISI_VOLUME_PATH_PERMISSIONS
         value: "0777"
+      - name: X_CSI_ISI_IGNORE_UNRESOLVABLE_HOSTS
+        value: "false"
     dnsPolicy: ClusterFirstWithHostNet
     node:
       envs:

@@ -58,6 +58,8 @@ spec:
           value: "false"
         - name: X_CSI_ISI_VOLUME_PATH_PERMISSIONS
           value: "0777"
+        - name: X_CSI_ISI_IGNORE_UNRESOLVABLE_HOSTS
+          value: "false"
         - name: X_CSI_HEALTH_MONITOR_ENABLED
           value: "false"
         - name: X_CSI_VERBOSE

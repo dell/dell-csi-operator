@@ -2,18 +2,18 @@ apiVersion: storage.dell.com/v1
 kind: CSIIsilon
 metadata:
   name: isilon
-  namespace: test-isilon
+  namespace: isilon
 spec:
   driver:
     # Config version for CSI PowerScale v2.5.0 driver
     configVersion: v2.5.0
-    replicas: 2
+    replicas: 1
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     fsGroupPolicy: ReadWriteOnceWithFSType
     common:
       # Image for CSI PowerScale driver v2.5.0
-      image: "dellemc/csi-isilon:v2.5.0"
+      image: "amaas-eos-mw1.cec.lab.emc.com:5028/csi-isilon/isilon:20221118054506"
       imagePullPolicy: IfNotPresent
       envs:
         # X_CSI_VERBOSE: Indicates what content of the OneFS REST API message should be logged in debug level logs
@@ -116,6 +116,16 @@ spec:
       # Examples: "0777", "777", "0755"
       - name: X_CSI_ISI_VOLUME_PATH_PERMISSIONS
         value: "0777"
+
+      # X_CSI_ISI_IGNORE_UNRESOLVABLE_HOSTS: Ignore unresolvable hosts on the OneFS
+      # When set to true, OneFS allows new host to add to existing export list though any of the existing hosts from the
+      # same exports are unresolvable/doesn't exist anymore.
+      # Allowed values:
+      #   true: ignore existing unresolvable hosts and append new host to the existing export
+      #   false: exhibits OneFS default behavior i.e. if any of existing hosts are unresolvable while adding new one it fails
+      # Default value: false
+      - name: X_CSI_ISI_IGNORE_UNRESOLVABLE_HOSTS
+        value: "true"
 
       # X_CSI_HEALTH_MONITOR_ENABLED: Enable/Disable health monitor of CSI volumes from Controller plugin- volume status, volume condition.
       # Install the 'external-health-monitor' sidecar accordingly.
@@ -225,7 +235,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: isilon-config-params
-  namespace: test-isilon
+  namespace: isilon
 data:
   driver-config-params.yaml: |
     CSI_LOG_LEVEL: "debug"
