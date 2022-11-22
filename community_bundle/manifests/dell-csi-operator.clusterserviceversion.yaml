@@ -366,7 +366,7 @@ metadata:
                       "value": "10.x.x.x,10.x.x.x"
                     }
                   ],
-                  "image": "dellemc/sdc:3.6",
+                  "image": "dellemc/sdc:3.6.0.6",
                   "imagePullPolicy": "IfNotPresent",
                   "name": "sdc"
                 }

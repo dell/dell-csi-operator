@@ -39,7 +39,7 @@ spec:
     - envs:
       - name: MDM
         value: 10.247.32.32,10.247.90.21
-      image: dellemc/sdc:3.6
+      image: dellemc/sdc:3.6.0.6
       imagePullPolicy: IfNotPresent
       name: sdc
     node: {}

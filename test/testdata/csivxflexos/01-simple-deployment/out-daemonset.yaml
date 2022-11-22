@@ -128,7 +128,7 @@ spec:
               key: password
               name: sdc-repo-creds
               optional: true
-        image: dellemc/sdc:3.6
+        image: dellemc/sdc:3.6.0.6
         imagePullPolicy: IfNotPresent
         name: sdc
         resources: {}

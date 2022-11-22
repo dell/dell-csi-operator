@@ -269,25 +269,25 @@ extensions:
   - name: sdc-monitor
     images:
       - version: v121
-        tag: dellemc/sdc:3.6
+        tag: dellemc/sdc:3.6.0.6
       - version: v122
-        tag: dellemc/sdc:3.6
+        tag: dellemc/sdc:3.6.0.6
       - version: v123
-        tag: dellemc/sdc:3.6
+        tag: dellemc/sdc:3.6.0.6
       - version: v124
-        tag: dellemc/sdc:3.6
+        tag: dellemc/sdc:3.6.0.6
       - version: v125
-        tag: dellemc/sdc:3.6
+        tag: dellemc/sdc:3.6.0.6
   - name: sdc
     images:
       - version: v121
-        tag: dellemc/sdc:3.6
+        tag: dellemc/sdc:3.6.0.6
       - version: v122
-        tag: dellemc/sdc:3.6
+        tag: dellemc/sdc:3.6.0.6
       - version: v123
-        tag: dellemc/sdc:3.6
+        tag: dellemc/sdc:3.6.0.6
       - version: v124
-        tag: dellemc/sdc:3.6
+        tag: dellemc/sdc:3.6.0.6
       - version: v125
-        tag: dellemc/sdc:3.6
+        tag: dellemc/sdc:3.6.0.6
 
