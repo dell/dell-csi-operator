@@ -34,7 +34,7 @@ spec:
        - name: external-health-monitor
          args: ["--monitor-interval=60s"]
     initContainers:
-      - image: dellemc/sdc:3.6
+      - image: dellemc/sdc:3.6.0.6
         imagePullPolicy: IfNotPresent
         name: sdc
         envs:
