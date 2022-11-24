@@ -52,10 +52,10 @@ metadata:
                     "value": "192"
                   }
                 ],
-                "image": "dellemc/csi-isilon:v2.4.0",
+                "image": "dellemc/csi-isilon:v2.5.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.4.0",
+              "configVersion": "v2.5.0",
               "controller": {
                 "envs": [
                   {
@@ -69,6 +69,10 @@ metadata:
                   {
                     "name": "X_CSI_ISI_VOLUME_PATH_PERMISSIONS",
                     "value": "0777"
+                  },
+                  {
+                    "name": "X_CSI_ISI_IGNORE_UNRESOLVABLE_HOSTS",
+                    "value": "false"
                   }
                 ],
                 "nodeSelector": null,
@@ -144,11 +148,35 @@ metadata:
                   },
                   {
                     "name": "X_CSI_POWERMAX_PROXY_SERVICE_NAME",
-                    "value": ""
+                    "value": "powermax-reverseproxy"
                   },
                   {
                     "name": "X_CSI_GRPC_MAX_THREADS",
                     "value": "4"
+                  },
+                  {
+                    "name": "X_CSI_VSPHERE_ENABLED",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_VSPHERE_PORTGROUP",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_VSPHERE_HOSTGROUP",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_VCenter_HOST",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_VCenter_USERNAME",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_VCenter_PWD",
+                    "value": ""
                   }
                 ],
                 "image": "dellemc/csi-powermax:v2.5.0",
@@ -270,7 +298,8 @@ metadata:
                 "nodeSelector": null,
                 "tolerations": null
               },
-              "replicas": 2
+              "replicas": 2,
+              "storageCapacity": true
             }
           }
         },
@@ -349,7 +378,7 @@ metadata:
                 "image": "dellemc/csi-vxflexos:v2.5.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.4.0",
+              "configVersion": "v2.5.0",
               "controller": {
                 "envs": null,
                 "nodeSelector": null,
@@ -1964,6 +1993,18 @@ spec:
           - create
           - get
           - list
+          - update
+          - watch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - csistoragecapacities
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
           - update
           - watch
         - apiGroups:

@@ -70,7 +70,7 @@ type CSIPowerStoreReconciler struct {
 // +kubebuilder:rbac:groups="security.openshift.io",resources=securitycontextconstraints,resourceNames=privileged,verbs=use
 // +kubebuilder:rbac:groups="storage.k8s.io",resources=csistoragecapacities,verbs=get;list;watch;create;update;patch;delete
 
-//Reconcile function reconciles a CSIPowerStore Object
+// Reconcile function reconciles a CSIPowerStore Object
 func (r *CSIPowerStoreReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	log := r.Log.WithValues("csipowerstore", req.NamespacedName)
 
