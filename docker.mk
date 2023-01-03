@@ -30,7 +30,7 @@ OPERATOR_IMAGE ?= dell-csi-operator
 BUNDLE_IMAGE ?= csiopbundle_ops_certified
 # Default Index Image name
 INDEX_IMAGE ?= dellemcregistry_certified
-SOURCE_INDEX_IMG ?= dellemc/dell-csi-operator/dellemcregistry_certified:v1.9.0
+SOURCE_INDEX_IMG ?= dellemc/dell-csi-operator/dellemcregistry_certified:v1.10.0
 
 
 # Operator Images
