@@ -88,13 +88,13 @@ spec:
               value: "false"
             - name: X_CSI_VSPHERE_PORTGROUP
               value: ""
-            - name: X_CSI_VSPHERE_HOSTGROUP
+            - name: X_CSI_VSPHERE_HOSTNAME
               value: ""
-            - name: X_CSI_VCenter_HOST
+            - name: X_CSI_VCENTER_HOST
               value: ""
-            - name: X_CSI_VCenter_USERNAME
+            - name: X_CSI_VCENTER_USERNAME
               value: ""
-            - name: X_CSI_VCenter_PWD
+            - name: X_CSI_VCENTER_PWD
               value: ""
             - name: X_CSI_POWERMAX_PORTGROUPS
               value: ""

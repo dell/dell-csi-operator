@@ -87,27 +87,27 @@ spec:
         # Default value: "" <empty>
         - name: "X_CSI_VSPHERE_PORTGROUP"
           value: ""
-        # X_CSI_VSPHERE_HOSTGROUP: An existing host group that driver will use for vSphere
-        # this hostGroup should contain initiators from all the ESXs/ESXi host where the cluster is deployed
-        # recommended format: csi-x-VC-HG, x can be anything of user choice
+        # X_CSI_VSPHERE_HOSTNAME: An existing host (initiator group) that driver will use for vSphere
+        # this host should contain initiators from all the ESXs/ESXi host where the cluster is deployed
+        # recommended format: csi-x-VC-HN, x can be anything of user choice
         # Allowed value: valid existing port group on the array
         # Default value: "" <empty>
-        - name: "X_CSI_VSPHERE_HOSTGROUP"
+        - name: "X_CSI_VSPHERE_HOSTNAME"
           value: ""
-        # X_CSI_VCenter_HOST: URL/endpoint of the vCenter where all the ESX are present
+        # X_CSI_VCENTER_HOST: URL/endpoint of the vCenter where all the ESX are present
         # Allowed value: valid vCenter host endpoint
         # Default value: "" <empty>
-        - name: "X_CSI_VCenter_HOST"
+        - name: "X_CSI_VCENTER_HOST"
           value: ""
-        # X_CSI_VCenter_USERNAME: username from the vCenter credentials
+        # X_CSI_VCENTER_USERNAME: username from the vCenter credentials
         # Allowed value: valid vCenter host username
         # Default value: "" <empty>
-        - name: "X_CSI_VCenter_USERNAME"
+        - name: "X_CSI_VCENTER_USERNAME"
           value: ""
-        # X_CSI_VCenter_PWD: password from the vCenter credentials
+        # X_CSI_VCENTER_PWD: password from the vCenter credentials
         # Allowed value: valid vCenter host password
         # Default value: "" <empty>
-        - name: "X_CSI_VCenter_PWD"
+        - name: "X_CSI_VCENTER_PWD"
           value: ""
     sideCars:
       # Uncomment the following to install 'external-health-monitor' sidecar to enable health monitor of CSI volumes from Controller plugin.
