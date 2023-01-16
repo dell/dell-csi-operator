@@ -4,6 +4,7 @@ supportedK8sVersions:
   - v123
   - v124
   - v125
+  - v126
 drivers:
   - name: powermax
     configVersions:
