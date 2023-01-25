@@ -117,6 +117,14 @@
         "DefaultValueForNode": ""
       },
       {
+        "Name": "X_CSI_ISI_IGNORE_UNRESOLVABLE_HOSTS",
+        "CSIEnvType": "Boolean",
+        "SetForController": true,
+        "SetForNode": false,
+        "DefaultValueForController": "false",
+        "DefaultValueForNode": ""
+      },
+      {
         "Name": "X_CSI_HEALTH_MONITOR_ENABLED",
         "CSIEnvType": "String",
         "SetForController": true,
