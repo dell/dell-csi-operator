@@ -5,8 +5,8 @@ metadata:
   namespace: test-powermax
 spec:
   driver:
-    # Config version for CSI PowerMax v2.3.0 driver
-    configVersion: v2.3.0
+    # Config version for CSI PowerMax v2.6.0 driver
+    configVersion: v2.6.0
     # replica: Define the number of PowerMax controller nodes
     # to deploy to the Kubernetes release
     # Allowed values: n, where n > 0
@@ -16,8 +16,8 @@ spec:
     forceUpdate: false
     fsGroupPolicy: ReadWriteOnceWithFSType
     common:
-      # Image for CSI PowerMax driver v2.3.0
-      image: dellemc/csi-powermax:v2.3.0
+      # Image for CSI PowerMax driver v2.6.0
+      image: dellemc/csi-powermax:v2.6.0
       # imagePullPolicy: Policy to determine if the image should be pulled prior to starting the container.
       # Allowed values:
       #  Always: Always pull the image.
@@ -63,17 +63,52 @@ spec:
         - name: "X_CSI_TRANSPORT_PROTOCOL"
           value: ""
         # X_CSI_POWERMAX_PROXY_SERVICE_NAME: Refers to the name of the proxy service in kubernetes
-        # Set this to "powermax-reverseproxy" if you are installing the proxy
         # Allowed values: "powermax-reverseproxy"
-        # default values: "" <empty>
+        # default values: "powermax-reverseproxy"
         - name: "X_CSI_POWERMAX_PROXY_SERVICE_NAME"
-          value: ""
+          value: "powermax-reverseproxy"
         # X_CSI_GRPC_MAX_THREADS: Defines the maximum number of concurrent grpc requests.
         # Set this value to a higher number (max 50) if you are using the proxy
         # Allowed values: n, where n > 4
         # default values: None
         - name: "X_CSI_GRPC_MAX_THREADS"
           value: "4"
+        # VMware/vSphere virtualization support
+        # set X_CSI_VSPHERE_ENABLED to true, if you to enable VMware virtualized environment support via RDM
+        # Allowed values:
+        #   "true" - vSphere volumes are enabled
+        #   "false" - vSphere volumes are disabled
+        # Default value: "false"
+        - name: "X_CSI_VSPHERE_ENABLED"
+          value: "false"
+        # X_CSI_VSPHERE_PORTGROUP: An existing portGroup that driver will use for vSphere
+        # recommended format: csi-x-VC-PG, x can be anything of user choice
+        # Allowed value: valid existing port group on the array
+        # Default value: "" <empty>
+        - name: "X_CSI_VSPHERE_PORTGROUP"
+          value: ""
+        # X_CSI_VSPHERE_HOSTNAME: An existing host (initiator group) that driver will use for vSphere
+        # this host should contain initiators from all the ESXs/ESXi host where the cluster is deployed
+        # recommended format: csi-x-VC-HN, x can be anything of user choice
+        # Allowed value: valid existing port group on the array
+        # Default value: "" <empty>
+        - name: "X_CSI_VSPHERE_HOSTNAME"
+          value: ""
+        # X_CSI_VCENTER_HOST: URL/endpoint of the vCenter where all the ESX are present
+        # Allowed value: valid vCenter host endpoint
+        # Default value: "" <empty>
+        - name: "X_CSI_VCENTER_HOST"
+          value: ""
+        # X_CSI_VCENTER_USERNAME: username from the vCenter credentials
+        # Allowed value: valid vCenter host username
+        # Default value: "" <empty>
+        - name: "X_CSI_VCENTER_USERNAME"
+          value: ""
+        # X_CSI_VCENTER_PWD: password from the vCenter credentials
+        # Allowed value: valid vCenter host password
+        # Default value: "" <empty>
+        - name: "X_CSI_VCENTER_PWD"
+          value: ""
     controller:
       # nodeSelector: Define node selection constraints for controller pods.
       # For the pod to be eligible to run on a node, the node must have each
@@ -82,8 +117,6 @@ spec:
       # Allowed values: map of key-value pairs
       # Default value: None
       nodeSelector:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
-      #  node-role.kubernetes.io/master: ""
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       #  node-role.kubernetes.io/control-plane: ""
 
@@ -92,10 +125,6 @@ spec:
       # Allowed values: map of key-value pairs
       # Default value: None
       tolerations:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
-      #  - key: "node-role.kubernetes.io/master"
-      #    operator: "Exists"
-      #    effect: "NoSchedule"
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       #  - key: "node-role.kubernetes.io/control-plane"
       #    operator: "Exists"
@@ -127,8 +156,6 @@ spec:
       # Allowed values: map of key-value pairs
       # Default value: None
       nodeSelector:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
-      #  node-role.kubernetes.io/master: ""
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       #  node-role.kubernetes.io/control-plane: ""
 
