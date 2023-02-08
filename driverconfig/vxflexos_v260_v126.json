@@ -74,22 +74,6 @@
           "SetForNode": true,
           "DefaultValueForController": "false",
           "DefaultValueForNode": "false"
-        },
-        {
-          "Name": "X_CSI_APPROVE_SDC_ENABLED",
-          "CSIEnvType": "Boolean",
-          "SetForController": false,
-          "SetForNode": true,
-          "DefaultValueForController": "",
-          "DefaultValueForNode": "false"
-        },
-        {
-          "Name": "X_CSI_RENAME_SDC_PREFIX",
-          "CSIEnvType": "Boolean",
-          "SetForController": false,
-          "SetForNode": true,
-          "DefaultValueForController": "",
-          "DefaultValueForNode": "false"
         }
       ],
   
