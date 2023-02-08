@@ -5,14 +5,12 @@ metadata:
   namespace: test-vxflexos
 spec:
   driver:
-    # Config version for CSI Powerflex v2.6.0 driver
     configVersion: v2.6.0
     replicas: 1
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     fsGroupPolicy: File
     common:
-      # Image for CSI Powerflex driver v2.6.0
       image: "dellemc/csi-vxflexos:v2.6.0"
       imagePullPolicy: IfNotPresent
       envs:
@@ -80,3 +78,14 @@ spec:
         envs:
           - name: MDM
             value: "10.x.x.x,10.x.x.x"  #provide MDM value
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vxflexos-config-params
+  namespace: test-vxflexos
+data:
+  driver-config-params.yaml: |
+    CSI_LOG_LEVEL: "debug"
+    CSI_LOG_FORMAT: "TEXT"
