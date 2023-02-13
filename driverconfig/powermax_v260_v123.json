@@ -211,8 +211,8 @@
         "CSIEnvType": "String",
         "SetForController": true,
         "SetForNode": true,
-        "DefaultValueForController": "none",
-        "DefaultValueForNode": "none"
+        "DefaultValueForController": "powermax-reverseproxy",
+        "DefaultValueForNode": "powermax-reverseproxy"
       },
       {
         "Name": "X_CSI_ReplicationContextPrefix",
@@ -269,6 +269,48 @@
         "SetForNode": true,
         "DefaultValueForController": "",
         "DefaultValueForNode": "/node-topology-config/topologyConfig.yaml"
+      },
+      { "Name": "X_CSI_VSPHERE_ENABLED",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "false",
+        "DefaultValueForNode": "false"
+      },
+      { "Name": "X_CSI_VSPHERE_PORTGROUP",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": ""
+      },
+      { "Name": "X_CSI_VSPHERE_HOSTNAME",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": ""
+      },
+      { "Name": "X_CSI_VCENTER_HOST",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": ""
+      },
+      { "Name": "X_CSI_VCENTER_USERNAME",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": ""
+      },
+      { "Name": "X_CSI_VCENTER_PWD",
+        "CSIEnvType": "String",
+        "SetForController": true,
+        "SetForNode": true,
+        "DefaultValueForController": "",
+        "DefaultValueForNode": ""
       }
     ],
     "driverNodeVolumes": [

@@ -21,7 +21,7 @@ import (
 	"path/filepath"
 
 	csiv1 "github.com/dell/dell-csi-operator/api/v1"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 // OpConfig - Represents the image & RBAC config used by Operator
