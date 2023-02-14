@@ -20,7 +20,7 @@ COPY pkg/ pkg/
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -o manager main.go
 
-FROM registry.access.redhat.com/ubi8/ubi-minimal@sha256:c5ffdf5938d73283cec018f2adf59f0ed9f8c376d93e415a27b16c3c6aad6f45
+FROM registry.access.redhat.com/ubi8/ubi-minimal@sha256:0214a28336e387c66493c61bb394e86a18f3bea8dbc46de74a26f173ff553c89
 
 RUN microdnf install yum \
     && yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical \
