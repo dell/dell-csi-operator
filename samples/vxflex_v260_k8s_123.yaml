@@ -51,6 +51,8 @@ spec:
       # Leave as blank to use all nodes
       # Allowed values: map of key-value pairs
       # Default value: None
+      # Examples:
+      #  node-role.kubernetes.io/control-plane: ""
       nodeSelector:
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       #  node-role.kubernetes.io/control-plane: ""
@@ -59,6 +61,10 @@ spec:
       # Leave as blank to install controller on worker nodes
       # Default value: None
       tolerations:
+       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint 
+      # - key: "node-role.kubernetes.io/master"   
+      #   operator: "Exists"
+      #   effect: "NoSchedule"
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       # - key: "node-role.kubernetes.io/control-plane"   
       #   operator: "Exists"
@@ -72,12 +78,13 @@ spec:
         #   false: disable checking of health condition of CSI volumes
         # Default value: false
         - name: X_CSI_HEALTH_MONITOR_ENABLED
-          value: "false"
-          
+          value: "false"    
       # "node.nodeSelector" defines what nodes would be selected for pods of node daemonset
       # Leave as blank to use all nodes
       # Allowed values: map of key-value pairs
       # Default value: None
+      # Examples:
+      #  node-role.kubernetes.io/control-plane: ""
       nodeSelector:
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       #  node-role.kubernetes.io/control-plane: ""
@@ -86,6 +93,10 @@ spec:
       # Leave as blank to install node driver only on worker nodes
       # Default value: None
       tolerations:
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
+      # - key: "node-role.kubernetes.io/master"   
+      #   operator: "Exists"
+      #   effect: "NoSchedule"
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       # - key: "node-role.kubernetes.io/control-plane"   
       #   operator: "Exists"
