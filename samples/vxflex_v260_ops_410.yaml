@@ -5,13 +5,13 @@ metadata:
   namespace: test-vxflexos
 spec:
   driver:
-    configVersion: v2.3.0
+    configVersion: v2.6.0
     replicas: 1
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     fsGroupPolicy: File
     common:
-      image: "dellemc/csi-vxflexos:v2.3.0"
+      image: "dellemc/csi-vxflexos:v2.6.0"
       imagePullPolicy: IfNotPresent
       envs:
         - name: X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT
@@ -38,8 +38,6 @@ spec:
       # Leave as blank to use all nodes
       # Allowed values: map of key-value pairs
       # Default value: None
-      # Examples:
-      #  node-role.kubernetes.io/control-plane: ""
       nodeSelector:
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
       #  node-role.kubernetes.io/master: ""
@@ -54,7 +52,7 @@ spec:
       # - key: "node-role.kubernetes.io/master"   
       #   operator: "Exists"
       #   effect: "NoSchedule"
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint 
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       # - key: "node-role.kubernetes.io/control-plane"   
       #   operator: "Exists"
       #   effect: "NoSchedule"
@@ -66,8 +64,6 @@ spec:
       # Leave as blank to use all nodes
       # Allowed values: map of key-value pairs
       # Default value: None
-      # Examples:
-      #  node-role.kubernetes.io/control-plane: ""
       nodeSelector:
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
       #  node-role.kubernetes.io/master: ""
@@ -82,7 +78,7 @@ spec:
       # - key: "node-role.kubernetes.io/master"   
       #   operator: "Exists"
       #   effect: "NoSchedule"
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint 
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       # - key: "node-role.kubernetes.io/control-plane"   
       #   operator: "Exists"
       #   effect: "NoSchedule"
