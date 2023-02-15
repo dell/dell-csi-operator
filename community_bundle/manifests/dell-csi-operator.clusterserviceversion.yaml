@@ -313,10 +313,10 @@ metadata:
           "spec": {
             "driver": {
               "common": {
-                "image": "dellemc/csi-unity:v2.5.0",
+                "image": "dellemc/csi-unity:v2.6.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.5.0",
+              "configVersion": "v2.6.0",
               "controller": {
                 "nodeSelector": null,
                 "tolerations": null
