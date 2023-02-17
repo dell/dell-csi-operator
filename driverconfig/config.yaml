@@ -116,7 +116,6 @@ drivers:
       - configVersion: v2.6.0
         useDefaults: true
         supportedVersions:
-          - version: v122
           - version: v124
           - version: v125
           - version: v126
