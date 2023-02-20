@@ -43,7 +43,7 @@
           "DefaultValueForController": "controller",
           "DefaultValueForNode": "node"
         },
-  {
+        {
           "Name": "X_CSI_ALLOW_RWO_MULTI_POD_ACCESS",
           "CSIEnvType": "Boolean",
           "SetForController": false,
@@ -82,6 +82,22 @@
           "SetForNode": true,
           "DefaultValueForController": "",
           "DefaultValueForNode": "false"
+        },
+        {
+          "Name": "X_CSI_RENAME_SDC_ENABLED",
+          "CSIEnvType": "Boolean",
+          "SetForController": false,
+          "SetForNode": true,
+          "DefaultValueForController": "",
+          "DefaultValueForNode": "false"
+        },
+        {
+          "Name": "X_CSI_RENAME_SDC_PREFIX",
+          "CSIEnvType": "String",
+          "SetForController": false,
+          "SetForNode": true,
+          "DefaultValueForController": "",
+          "DefaultValueForNode": ""
         }
       ],
   
