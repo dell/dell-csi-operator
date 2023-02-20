@@ -59,6 +59,13 @@ spec:
 
     node:
       envs:
+      # X_CSI_APPROVE_SDC_ENABLED: Enables/Disable SDC approval
+        # Allowed values:
+        #    true: enable SDC approval
+        #    false: disable SDC approval
+        # Default value: false
+        - name: X_CSI_APPROVE_SDC_ENABLED
+          value: "false"
 
       # "node.nodeSelector" defines what nodes would be selected for pods of node daemonset
       # Leave as blank to use all nodes

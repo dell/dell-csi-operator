@@ -74,9 +74,17 @@
           "SetForNode": true,
           "DefaultValueForController": "false",
           "DefaultValueForNode": "false"
+        },
+        {
+          "Name": "X_CSI_APPROVE_SDC_ENABLED",
+          "CSIEnvType": "Boolean",
+          "SetForController": false,
+          "SetForNode": true,
+          "DefaultValueForController": "",
+          "DefaultValueForNode": "false"
         }
       ],
-  
+      
       "driverArgs": [
       "--array-config=/vxflexos-config/config",
       "--driver-config-params=/vxflexos-config-params/driver-config-params.yaml"
