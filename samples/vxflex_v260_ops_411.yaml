@@ -62,8 +62,8 @@ spec:
           value: "false"
         # X_CSI_RENAME_SDC_ENABLED: Enable/Disable rename of SDC
         # Allowed values:
-        #       #   true: enable renaming
-        #       #   false: disable renaming
+        #   true: enable renaming
+        #   false: disable renaming
         # Default value: false
         - name: X_CSI_RENAME_SDC_ENABLED
           value: "false"
