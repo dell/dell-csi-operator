@@ -36,11 +36,17 @@ spec:
           value: "/certs"
         - name: X_CSI_HEALTH_MONITOR_ENABLED
           value: "false"
+        - name: X_CSI_APPROVE_SDC_ENABLED
+          value: "false"
+        - name: X_CSI_RENAME_SDC_ENABLED
+          value: "false"
+        - name: X_CSI_RENAME_SDC_PREFIX
+          value: ""
         - name: X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT
           value: "false"
         - name: X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE
           value: "false"
-        image: dellemc/csi-vxflexos:v2.5.0
+        image: dellemc/csi-vxflexos:v2.6.0
         imagePullPolicy: IfNotPresent
         name: driver
         args: 
@@ -88,7 +94,7 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: spec.nodeName
-        image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.0
+        image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
         imagePullPolicy: IfNotPresent
         name: registrar
         resources: {}

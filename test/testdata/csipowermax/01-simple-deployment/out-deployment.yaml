@@ -100,7 +100,7 @@ spec:
               value: ""
             - name: X_CSI_VCENTER_PWD
               value: ""
-          image: dellemc/csi-powermax:v2.5.0
+          image: dellemc/csi-powermax:v2.6.0
           imagePullPolicy: IfNotPresent
           name: driver
           resources: {}
@@ -125,7 +125,7 @@ spec:
           env:
             - name: ADDRESS
               value: /var/run/csi/csi.sock
-          image: k8s.gcr.io/sig-storage/csi-snapshotter:v6.1.0
+          image: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.1
           imagePullPolicy: IfNotPresent
           name: snapshotter
           resources: {}
@@ -149,7 +149,7 @@ spec:
           env:
             - name: ADDRESS
               value: /var/run/csi/csi.sock
-          image: k8s.gcr.io/sig-storage/csi-provisioner:v3.3.0
+          image: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
           imagePullPolicy: IfNotPresent
           name: provisioner
           resources: {}
@@ -168,7 +168,7 @@ spec:
           env:
             - name: ADDRESS
               value: /var/run/csi/csi.sock
-          image: k8s.gcr.io/sig-storage/csi-attacher:v4.0.0
+          image: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
           imagePullPolicy: IfNotPresent
           name: attacher
           resources: {}
@@ -186,7 +186,7 @@ spec:
           env:
             - name: ADDRESS
               value: /var/run/csi/csi.sock
-          image: k8s.gcr.io/sig-storage/csi-resizer:v1.6.0
+          image: k8s.gcr.io/sig-storage/csi-resizer:v1.7.0
           imagePullPolicy: IfNotPresent
           name: resizer
           resources: {}

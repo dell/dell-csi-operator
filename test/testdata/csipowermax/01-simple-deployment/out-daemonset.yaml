@@ -98,7 +98,7 @@ spec:
               value: ""
             - name: X_CSI_POWERMAX_PORTGROUPS
               value: ""
-          image: dellemc/csi-powermax:v2.5.0
+          image: dellemc/csi-powermax:v2.6.0
           imagePullPolicy: IfNotPresent
           name: driver
           resources: {}
@@ -145,7 +145,7 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: spec.nodeName
-          image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.0
+          image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
           imagePullPolicy: IfNotPresent
           name: registrar
           resources: {}

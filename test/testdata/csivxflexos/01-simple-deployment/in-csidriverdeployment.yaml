@@ -5,14 +5,14 @@ metadata:
   namespace: test-vxflexos
 spec:
   driver:
-    configVersion: v2.5.0
+    configVersion: v2.6.0
     replicas: 1
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     fsGroupPolicy: File
     storageCapacity: false
     common:
-      image: "dellemc/csi-vxflexos:v2.5.0"
+      image: "dellemc/csi-vxflexos:v2.6.0"
       imagePullPolicy: IfNotPresent
       envs:
         - name: X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT
@@ -23,6 +23,14 @@ spec:
           value: "true"
         - name: X_CSI_ALLOW_RWO_MULTI_POD_ACCESS
           value: "false"
+    node:
+      envs:
+        - name: X_CSI_APPROVE_SDC_ENABLED
+          value: "false"
+        - name: X_CSI_RENAME_SDC_ENABLED
+          value: "false"
+        - name: X_CSI_RENAME_SDC_PREFIX
+          value: ""
     sideCars:
     # Uncomment the following section if you want to run the monitoring sidecar
     #  - name: sdc-monitor
