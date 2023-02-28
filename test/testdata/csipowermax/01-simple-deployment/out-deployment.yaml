@@ -97,9 +97,15 @@ spec:
             - name: X_CSI_VCENTER_HOST
               value: ""
             - name: X_CSI_VCENTER_USERNAME
-              value: ""
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: vcenter-creds
             - name: X_CSI_VCENTER_PWD
-              value: ""
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: vcenter-creds
           image: dellemc/csi-powermax:v2.6.0
           imagePullPolicy: IfNotPresent
           name: driver

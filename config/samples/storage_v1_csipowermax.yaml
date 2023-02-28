@@ -99,16 +99,6 @@ spec:
         # Default value: "" <empty>
         - name: "X_CSI_VCENTER_HOST"
           value: ""
-        # X_CSI_VCENTER_USERNAME: username from the vCenter credentials
-        # Allowed value: valid vCenter host username
-        # Default value: "" <empty>
-        - name: "X_CSI_VCENTER_USERNAME"
-          value: ""
-        # X_CSI_VCENTER_PWD: password from the vCenter credentials
-        # Allowed value: valid vCenter host password
-        # Default value: "" <empty>
-        - name: "X_CSI_VCENTER_PWD"
-          value: ""
     controller:
       # nodeSelector: Define node selection constraints for controller pods.
       # For the pod to be eligible to run on a node, the node must have each

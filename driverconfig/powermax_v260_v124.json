@@ -299,18 +299,18 @@
         "DefaultValueForNode": ""
       },
       { "Name": "X_CSI_VCENTER_USERNAME",
-        "CSIEnvType": "String",
+        "CSIEnvType": "EnvSecretReference",
         "SetForController": true,
         "SetForNode": true,
-        "DefaultValueForController": "",
-        "DefaultValueForNode": ""
+        "DefaultValueForController": "username/vcenter-creds",
+        "DefaultValueForNode": "username/vcenter-creds"
       },
       { "Name": "X_CSI_VCENTER_PWD",
-        "CSIEnvType": "String",
+        "CSIEnvType": "EnvSecretReference",
         "SetForController": true,
         "SetForNode": true,
-        "DefaultValueForController": "",
-        "DefaultValueForNode": ""
+        "DefaultValueForController": "password/vcenter-creds",
+        "DefaultValueForNode": "password/vcenter-creds"
       }
     ],
     "driverNodeVolumes": [
