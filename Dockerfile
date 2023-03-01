@@ -19,7 +19,7 @@ COPY pkg/ pkg/
 # Build
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -o manager main.go
-
+# Tag corresponding to digest ab03679e683010d485ef0399e056b09a38d7843ba4a36ee7dec337dd0037f7a7 is redhat/ubi8-minimal:8.7-1085
 FROM registry.access.redhat.com/ubi8/ubi-minimal@sha256:ab03679e683010d485ef0399e056b09a38d7843ba4a36ee7dec337dd0037f7a7
 
 RUN microdnf install yum \
