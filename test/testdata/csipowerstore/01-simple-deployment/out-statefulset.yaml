@@ -54,7 +54,7 @@ spec:
               value: csi
             - name: X_CSI_FC_PORTS_FILTER_FILE_PATH
               value: /etc/fc-ports-filter
-          image: dellemc/csi-powerstore:v2.5.0
+          image: dellemc/csi-powerstore:v2.6.0
           imagePullPolicy: IfNotPresent
           name: driver
           resources: {}
@@ -84,7 +84,7 @@ spec:
           env:
             - name: ADDRESS
               value: /var/run/csi/csi.sock
-          image: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.7.0
+          image: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
           imagePullPolicy: IfNotPresent
           name: external-health-monitor
           resources: {}
@@ -103,10 +103,21 @@ spec:
             - --default-fstype=ext4
             - --feature-gates=Topology=true
             - --extra-create-metadata
+            - --enable-capacity=true
+            - --capacity-ownerref-level=2
+            - --capacity-poll-interval=5m
           env:
             - name: ADDRESS
               value: /var/run/csi/csi.sock
-          image: k8s.gcr.io/sig-storage/csi-provisioner:v3.3.0
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          image: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
           imagePullPolicy: IfNotPresent
           name: provisioner
           resources: {}
@@ -126,7 +137,7 @@ spec:
           env:
             - name: ADDRESS
               value: /var/run/csi/csi.sock
-          image: k8s.gcr.io/sig-storage/csi-attacher:v4.0.0
+          image: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
           imagePullPolicy: IfNotPresent
           name: attacher
           resources: {}
@@ -143,7 +154,7 @@ spec:
           env:
             - name: ADDRESS
               value: /var/run/csi/csi.sock
-          image: k8s.gcr.io/sig-storage/csi-resizer:v1.6.0
+          image: k8s.gcr.io/sig-storage/csi-resizer:v1.7.0
           imagePullPolicy: IfNotPresent
           name: resizer
           resources: {}
@@ -160,7 +171,7 @@ spec:
           env:
             - name: ADDRESS
               value: /var/run/csi/csi.sock
-          image: k8s.gcr.io/sig-storage/csi-snapshotter:v6.1.0
+          image: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.1
           imagePullPolicy: IfNotPresent
           name: snapshotter
           resources: {}
