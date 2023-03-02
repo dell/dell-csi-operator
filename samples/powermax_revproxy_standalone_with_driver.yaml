@@ -136,7 +136,32 @@ spec:
           # default values: None
         - name: X_CSI_GRPC_MAX_THREADS
           value: "4"
-
+        # VMware/vSphere virtualization support
+        # set X_CSI_VSPHERE_ENABLED to true, if you to enable VMware virtualized environment support via RDM
+        # Allowed values:
+        #   "true" - vSphere volumes are enabled
+        #   "false" - vSphere volumes are disabled
+        # Default value: "false"
+        - name: "X_CSI_VSPHERE_ENABLED"
+          value: "false"
+        # X_CSI_VSPHERE_PORTGROUP: An existing portGroup that driver will use for vSphere
+        # recommended format: csi-x-VC-PG, x can be anything of user choice
+        # Allowed value: valid existing port group on the array
+        # Default value: "" <empty>
+        - name: "X_CSI_VSPHERE_PORTGROUP"
+          value: ""
+        # X_CSI_VSPHERE_HOSTNAME: An existing host (initiator group) that driver will use for vSphere
+        # this host should contain initiators from all the ESXs/ESXi host where the cluster is deployed
+        # recommended format: csi-x-VC-HN, x can be anything of user choice
+        # Allowed value: valid existing port group on the array
+        # Default value: "" <empty>
+        - name: "X_CSI_VSPHERE_HOSTNAME"
+          value: ""
+        # X_CSI_VCENTER_HOST: URL/endpoint of the vCenter where all the ESX are present
+        # Allowed value: valid vCenter host endpoint
+        # Default value: "" <empty>
+        - name: "X_CSI_VCENTER_HOST"
+          value: ""
     controller:
       envs:
         # X_CSI_HEALTH_MONITOR_ENABLED: Enable/Disable health monitor of CSI volumes from node plugin- volume usage, volume condition
@@ -236,3 +261,16 @@ data:
       - nodeName: "node3"
         rules:
           - "*:*"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: vcenter-creds
+  # Set driver namespace
+  namespace: test-powermax
+type: Opaque
+data:
+  # set username to the base64 encoded username
+  username: YWRtaW4=
+  # set password to the base64 encoded password
+  password: YWRtaW4=
