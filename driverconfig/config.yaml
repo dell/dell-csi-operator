@@ -188,7 +188,7 @@ csiSideCars:
       - version: v121
         tag: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
       - version: v122
-        tag: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
+        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.5.0
       - version: v123
         tag: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
       - version: v124
@@ -202,7 +202,7 @@ csiSideCars:
       - version: v121
         tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
       - version: v122
-        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
+        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.2.1
       - version: v123
         tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
       - version: v124
@@ -216,7 +216,7 @@ csiSideCars:
       - version: v121
         tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.1
       - version: v122
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.1
+        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
       - version: v123
         tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.1
       - version: v124
@@ -230,7 +230,7 @@ csiSideCars:
       - version: v121
         tag: k8s.gcr.io/sig-storage/csi-resizer:v1.7.0
       - version: v122
-        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.7.0
+        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.5.0
       - version: v123
         tag: k8s.gcr.io/sig-storage/csi-resizer:v1.7.0
       - version: v124
@@ -244,7 +244,7 @@ csiSideCars:
       - version: v121
         tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
       - version: v122
-        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
+        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1
       - version: v123
         tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
       - version: v124
@@ -258,7 +258,7 @@ csiSideCars:
       - version: v121
         tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
       - version: v122
-        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.6.0
       - version: v123
         tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
       - version: v124
