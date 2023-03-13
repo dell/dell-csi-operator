@@ -10,7 +10,7 @@ require (
 	github.com/onsi/gomega v1.15.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.0
-	golang.org/x/net v0.6.0
+	golang.org/x/net v0.8.0
 	gopkg.in/yaml.v2 v2.4.0
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/api v0.22.1
@@ -62,9 +62,9 @@ require (
 	go.uber.org/zap v1.19.0 // indirect
 	golang.org/x/crypto v0.0.0-20220411220226-7b82a4e95df4 // indirect
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d // indirect
-	golang.org/x/sys v0.5.0 // indirect
-	golang.org/x/term v0.5.0 // indirect
-	golang.org/x/text v0.7.0 // indirect
+	golang.org/x/sys v0.6.0 // indirect
+	golang.org/x/term v0.6.0 // indirect
+	golang.org/x/text v0.8.0 // indirect
 	golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac // indirect
 	gomodules.xyz/jsonpatch/v2 v2.2.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
