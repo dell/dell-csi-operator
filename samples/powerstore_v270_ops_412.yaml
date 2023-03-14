@@ -5,26 +5,33 @@ metadata:
   namespace: test-powerstore
 spec:
   driver:
-    # Config version for CSI PowerStore v2.4.0 driver
-    configVersion: v2.4.0
+    # Config version for CSI PowerStore v2.7.0 driver
+    configVersion: v2.7.0
     # Controller count
     replicas: 2
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     fsGroupPolicy: ReadWriteOnceWithFSType
+    storageCapacity: true
     common:
-      # Image for CSI PowerStore driver v2.4.0
-      image: "dellemc/csi-powerstore:v2.4.0"
+      # Image for CSI PowerStore driver v2.7.0
+      image: "dellemc/csi-powerstore:v2.7.0"
       imagePullPolicy: IfNotPresent
       envs:
         - name: X_CSI_POWERSTORE_NODE_NAME_PREFIX
           value: "csi"
         - name: X_CSI_FC_PORTS_FILTER_FILE_PATH
           value: "/etc/fc-ports-filter"
+    sideCars:
+      # Uncomment the following to configure how often external-provisioner polls the driver to detect changed capacity
+      # Configure when the storageCapacity is set as "true"
+      # Allowed values: 1m,2m,3m,...,10m,...,60m etc. Default value: 5m
+      #- name: provisioner
+      #  args: ["--capacity-poll-interval=5m"]
     controller:
       envs:
         # X_CSI_NFS_ACLS: enables setting permissions on NFS mount directory
-        # This value will be the default value if a storage class and array config in secret 
+        # This value will be the default value if a storage class and array config in secret
         # do not contain the NFS ACL (nfsAcls) parameter specified
         # Permissions can be specified in two formats:
         #   1) Unix mode (NFSv3)
@@ -40,7 +47,7 @@ spec:
         # nfsAcls: "0777"
         - name: X_CSI_NFS_ACLS
           value: "0777"
-                
+                  
       # nodeSelector: Define node selection constraints for controller pods.
       # For the pod to be eligible to run on a node, the node must have each
       # of the indicated key-value pairs as labels.
@@ -48,8 +55,6 @@ spec:
       # Allowed values: map of key-value pairs
       # Default value: None
       nodeSelector:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
-      #  node-role.kubernetes.io/master: ""
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       #  node-role.kubernetes.io/control-plane: ""
 
@@ -57,10 +62,6 @@ spec:
       # Leave as blank to install controller on worker nodes
       # Default value: None
       tolerations:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
-      # - key: "node-role.kubernetes.io/master"
-      #   operator: "Exists"
-      #   effect: "NoSchedule"
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       # - key: "node-role.kubernetes.io/control-plane"
       #   operator: "Exists"
@@ -79,8 +80,6 @@ spec:
       # Allowed values: map of key-value pairs
       # Default value: None
       nodeSelector:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
-      #  node-role.kubernetes.io/master: ""
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       #  node-role.kubernetes.io/control-plane: ""
 
@@ -88,10 +87,6 @@ spec:
       # Leave as blank to install controller on worker nodes
       # Default value: None
       tolerations:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
-      # - key: "node-role.kubernetes.io/master"
-      #   operator: "Exists"
-      #   effect: "NoSchedule"
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       # - key: "node-role.kubernetes.io/control-plane"
       #   operator: "Exists"

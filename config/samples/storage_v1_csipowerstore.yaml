@@ -5,8 +5,8 @@ metadata:
   namespace: test-powerstore
 spec:
   driver:
-    # Config version for CSI PowerStore v2.6.0 driver
-    configVersion: v2.6.0
+    # Config version for CSI PowerStore v2.7.0 driver
+    configVersion: v2.7.0
     # Controller count
     replicas: 2
     dnsPolicy: ClusterFirstWithHostNet
@@ -14,14 +14,20 @@ spec:
     fsGroupPolicy: ReadWriteOnceWithFSType
     storageCapacity: true
     common:
-      # Image for CSI PowerStore driver v2.6.0
-      image: "dellemc/csi-powerstore:v2.6.0"
+      # Image for CSI PowerStore driver v2.7.0
+      image: "dellemc/csi-powerstore:v2.7.0"
       imagePullPolicy: IfNotPresent
       envs:
         - name: X_CSI_POWERSTORE_NODE_NAME_PREFIX
           value: "csi"
         - name: X_CSI_FC_PORTS_FILTER_FILE_PATH
           value: "/etc/fc-ports-filter"
+    sideCars:
+      # Uncomment the following to configure how often external-provisioner polls the driver to detect changed capacity
+      # Configure when the storageCapacity is set as "true"
+      # Allowed values: 1m,2m,3m,...,10m,...,60m etc. Default value: 5m
+      #- name: provisioner
+      #  args: ["--capacity-poll-interval=5m"]
     controller:
       envs:
         # X_CSI_NFS_ACLS: enables setting permissions on NFS mount directory
