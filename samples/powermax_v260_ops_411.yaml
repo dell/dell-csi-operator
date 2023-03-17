@@ -1,4 +1,7 @@
 apiVersion: storage.dell.com/v1
+
+
+
 kind: CSIPowerMax
 metadata:
   name: test-powermax
