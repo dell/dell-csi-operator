@@ -150,6 +150,13 @@ drivers:
         external-health-monitor: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.6.0
   - name: powerstore
     configVersions:
+      - configVersion: v2.7.0
+        useDefaults: true
+        supportedVersions:
+          - version: v124
+          - version: v125
+          - version: v126
+          - version: v127
       - configVersion: v2.6.0
         useDefaults: true
         supportedVersions:
