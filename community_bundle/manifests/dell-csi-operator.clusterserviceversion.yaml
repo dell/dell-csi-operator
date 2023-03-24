@@ -291,6 +291,7 @@ metadata:
                 "tolerations": null
               },
               "replicas": 2,
+              "sideCars": null,
               "storageCapacity": true
             }
           }
@@ -393,7 +394,20 @@ metadata:
                 }
               ],
               "node": {
-                "envs": null,
+                "envs": [
+                  {
+                    "name": "X_CSI_APPROVE_SDC_ENABLED",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_RENAME_SDC_ENABLED",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_RENAME_SDC_PREFIX",
+                    "value": "sdc-test"
+                  }
+                ],
                 "nodeSelector": null,
                 "tolerations": null
               },
