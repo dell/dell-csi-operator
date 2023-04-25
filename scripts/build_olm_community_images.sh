@@ -16,9 +16,9 @@ SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 ROOTDIR="$(dirname "$SCRIPTDIR")"
 
 # This should be updated with every release
-OPERATOR_VERSION="1.11.0"
+OPERATOR_VERSION="1.12.0"
 DEFAULT_REPO=dellemc/dell-csi-operator
-SOURCE_INDEX_IMG=dellemc/dell-csi-operator/dellemcregistry_community:v1.10.0
+SOURCE_INDEX_IMG=dellemc/dell-csi-operator/dellemcregistry_community:v1.11.0
 
 # Using docker for building the images as there were some issues with podman
 command -v docker
