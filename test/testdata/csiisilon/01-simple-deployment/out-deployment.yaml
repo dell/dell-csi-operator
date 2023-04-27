@@ -103,7 +103,7 @@ spec:
         env:
         - name: ADDRESS
           value: /var/run/csi/csi.sock
-        image: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
+        image: registry.k8s.io/sig-storage/csi-provisioner:v3.4.0
         imagePullPolicy: IfNotPresent
         name: provisioner
         resources: {}
@@ -142,7 +142,7 @@ spec:
         env:
         - name: ADDRESS
           value: /var/run/csi/csi.sock
-        image: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
+        image: registry.k8s.io/sig-storage/csi-attacher:v4.2.0
         imagePullPolicy: IfNotPresent
         name: attacher
         resources: {}
@@ -160,7 +160,7 @@ spec:
         env:
         - name: ADDRESS
           value: /var/run/csi/csi.sock
-        image: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.1
+        image: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
         imagePullPolicy: IfNotPresent
         name: snapshotter
         resources: {}
@@ -177,7 +177,7 @@ spec:
         env:
         - name: ADDRESS
           value: /var/run/csi/csi.sock
-        image: k8s.gcr.io/sig-storage/csi-resizer:v1.7.0
+        image: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
         imagePullPolicy: IfNotPresent
         name: resizer
         resources: {}
