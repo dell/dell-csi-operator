@@ -5,15 +5,15 @@ metadata:
   namespace: test-isilon
 spec:
   driver:
-    # Config version for CSI PowerScale v2.4.0 driver
-    configVersion: v2.4.0
+    # Config version for CSI PowerScale v2.7.0 driver
+    configVersion: v2.7.0
     replicas: 2
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     fsGroupPolicy: ReadWriteOnceWithFSType
     common:
-      # Image for CSI PowerScale driver v2.4.0
-      image: "dellemc/csi-isilon:v2.4.0"
+      # Image for CSI PowerScale driver v2.7.0
+      image: "dellemc/csi-isilon:v2.7.0"
       imagePullPolicy: IfNotPresent
       envs:
         # X_CSI_VERBOSE: Indicates what content of the OneFS REST API message should be logged in debug level logs
@@ -117,13 +117,14 @@ spec:
       - name: X_CSI_ISI_VOLUME_PATH_PERMISSIONS
         value: "0777"
 
-      # X_CSI_HEALTH_MONITOR_ENABLED: Enable/Disable health monitor of CSI volumes from Controller plugin- volume status, volume condition.
-      # Install the 'external-health-monitor' sidecar accordingly.
+      # X_CSI_ISI_IGNORE_UNRESOLVABLE_HOSTS: Ignore unresolvable hosts on the OneFS
+      # When set to true, OneFS allows new host to add to existing export list though any of the existing hosts from the
+      # same exports are unresolvable/doesn't exist anymore.
       # Allowed values:
-      #   true: enable checking of health condition of CSI volumes
-      #   false: disable checking of health condition of CSI volumes
+      #   true: ignore existing unresolvable hosts and append new host to the existing export
+      #   false: exhibits OneFS default behavior i.e. if any of existing hosts are unresolvable while adding new one it fails
       # Default value: false
-      - name: X_CSI_HEALTH_MONITOR_ENABLED
+      - name: X_CSI_ISI_IGNORE_UNRESOLVABLE_HOSTS
         value: "false"
 
       # nodeSelector: Define node selection constraints for pods of controller deployment.
@@ -138,13 +139,8 @@ spec:
 
       # tolerations: Define tolerations for the controller deployment, if required.
       # Default value: None
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
       tolerations:
-      # - key: "node-role.kubernetes.io/master"
-      #   operator: "Exists"
-      #   effect: "NoSchedule"
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
-      # tolerations:
       # - key: "node-role.kubernetes.io/control-plane"
       #   operator: "Exists"
       #   effect: "NoSchedule"
@@ -169,14 +165,6 @@ spec:
       - name: X_CSI_ALLOWED_NETWORKS
         value: ""
 
-      # X_CSI_HEALTH_MONITOR_ENABLED: Enable/Disable health monitor of CSI volumes from node plugin- volume usage, volume condition
-      # Allowed values:
-      #   true: enable checking of health condition of CSI volumes
-      #   false: disable checking of health condition of CSI volumes
-      # Default value: false
-      - name: X_CSI_HEALTH_MONITOR_ENABLED
-        value: "false"
-
       # nodeSelector: Define node selection constraints for pods of node daemonset
       # For the pod to be eligible to run on a node, the node must have each
       # of the indicated key-value pairs as labels.
@@ -189,7 +177,6 @@ spec:
 
       # tolerations: Define tolerations for the node daemonset, if required.
       # Default value: None
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
       tolerations:
       #  - key: "node.kubernetes.io/memory-pressure"
       #    operator: "Exists"
@@ -200,9 +187,6 @@ spec:
       #  - key: "node.kubernetes.io/network-unavailable"
       #    operator: "Exists"
       #    effect: "NoExecute"
-      # - key: "node-role.kubernetes.io/master"
-      #   operator: "Exists"
-      #   effect: "NoSchedule"
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       # tolerations:
       # - key: "node-role.kubernetes.io/control-plane"
@@ -214,10 +198,6 @@ spec:
         args: ["--leader-election-lease-duration=15s", "--leader-election-renew-deadline=10s", "--leader-election-retry-period=5s"]
       - name: provisioner
         args: ["--volume-name-prefix=csipscale"]
-      # Uncomment the following to install 'external-health-monitor' sidecar to enable health monitor of CSI volumes from Controller plugin.
-      # Also set the env variable controller.envs.X_CSI_HEALTH_MONITOR_ENABLED to "true".
-      #- name: external-health-monitor
-      #  args: ["--monitor-interval=60s"]
 ---
 apiVersion: v1
 kind: ConfigMap
