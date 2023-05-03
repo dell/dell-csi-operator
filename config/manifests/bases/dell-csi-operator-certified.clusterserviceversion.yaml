@@ -6,13 +6,13 @@ metadata:
     capabilities: Seamless Upgrades
     categories: Storage
     certified: "true"
-    containerImage: docker.io/dellemc/dell-csi-operator:v1.11.0
+    containerImage: docker.io/dellemc/dell-csi-operator:v1.12.0
     olm.properties: '[{"type": "olm.maxOpenShiftVersion", "value": "4.11"}]'
     operators.operatorframework.io/builder: operator-sdk-v1.15.0
     operators.operatorframework.io/project_layout: go.kubebuilder.io/v3
     repository: https://github.com/dell/dell-csi-operator
     support: Dell Technologies
-  name: dell-csi-operator-certified.v1.11.0
+  name: dell-csi-operator-certified.v1.12.0
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -1350,8 +1350,8 @@ spec:
   minKubeVersion: 1.21.0
   provider:
     name: Dell Technologies
-  replaces: dell-csi-operator-certified.v1.10.0
+  replaces: dell-csi-operator-certified.v1.11.0
   skips:
   - dell-csi-operator-certified.v1.1.0
   - dell-csi-operator-certified.v1.2.0
-  version: 1.11.0
+  version: 1.12.0
