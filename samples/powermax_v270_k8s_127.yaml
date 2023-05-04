@@ -1,66 +1,3 @@
-# This sample has been provided to show how to install CSI PowerMax driver with
-# CSI PowerMax ReverseProxy in the standalone mode which provides
-# the ability to connect to multiple Unisphere servers to managed multiple PowerMax arrays
-apiVersion: storage.dell.com/v1
-kind: CSIPowerMaxRevProxy
-metadata:
-  name: powermax-reverseproxy
-  namespace: test-powermax
-spec:
-  # image: Define the container images used for the reverse proxy
-  # Default value: None
-  # Example: "csipowermax-reverseproxy:v2.6.0"
-  image: dellemc/csipowermax-reverseproxy:v2.6.0
-  # imagePullPolicy: Policy to determine if the image should be pulled prior to starting the container.
-  # Allowed values:
-  #  Always: Always pull the image.
-  #  IfNotPresent: Only pull the image if it does not already exist on the node.
-  #  Never: Never pull the image.
-  # Default value: None
-  imagePullPolicy: IfNotPresent
-  # "tlsSecret" defines the TLS secret that is created with certificate
-  # and its associated key
-  # Default value: None
-  # Example: "csirevproxy-tls-secret"
-  tlsSecret: csirevproxy-tls-secret
-  config:
-    # Mode for the proxy - "StandAlone"
-    mode: StandAlone
-    standAloneConfig:
-      storageArrays:
-        - storageArrayId: "000000000001"
-          # Unisphere server managing the PowerMax array
-          primaryURL: https://unisphere-1-addr:8443
-          # proxyCredentialSecrets are used by the clients of the proxy to connect to it
-          # If using proxy in the stand alone mode, then the driver must be provided the
-          # same secret.
-          # The format of the proxy credential secret are exactly the same as the unisphere credential secret
-          # For using the proxy with the driver, use the same proxy credential secrets for
-          # all the managed storage arrays
-          proxyCredentialSecrets:
-            - proxy-creds
-        - storageArrayId: "000000000002"
-          primaryURL: https://unisphere-2-addr:8443
-          # An optional backup Unisphere server managing the same array
-          # This can be used by the proxy to fall back to in case the primary
-          # Unisphere is inaccessible temporarily
-          backupURL: unisphere-3-addr:8443
-          proxyCredentialSecrets:
-            - proxy-creds
-      managementServers:
-        - url: https://unisphere-1-addr:8443
-          # Secret containing the credentials of the Unisphere server
-          arrayCredentialSecret: unsiphere-1-creds
-          skipCertificateValidation: true
-        - url: https://unisphere-2-addr:8443
-          arrayCredentialSecret: unsiphere-2-creds
-          skipCertificateValidation: true
-        - url: https://unisphere-3-addr:8443
-          arrayCredentialSecret: unsiphere-3-creds
-          skipCertificateValidation: true
-
----
-# This driver manifest is configured with the same set of arrays as the reverseproxy above
 apiVersion: storage.dell.com/v1
 kind: CSIPowerMax
 metadata:
@@ -94,47 +31,47 @@ spec:
         # Examples: "000000000001", "000000000002"
         - name: X_CSI_MANAGED_ARRAYS
           value: "000000000000,000000000001"
-          # X_CSI_POWERMAX_ENDPOINT: Address of the Unisphere server that is managing the PowerMax arrays
-          # Default value: None
-          # Example: https://0.0.0.1:8443
+        # X_CSI_POWERMAX_ENDPOINT: Address of the Unisphere server that is managing the PowerMax arrays
+        # Default value: None
+        # Example: https://0.0.0.1:8443
         - name: X_CSI_POWERMAX_ENDPOINT
           value: "https://0.0.0.0:8443/"
-          # X_CSI_K8S_CLUSTER_PREFIX: Define a prefix that is appended onto
-          # all resources created in the Array
-          # This should be unique per K8s/CSI deployment
-          # maximum length of this value is 3 characters
-          # Default value: None
-          # Examples: "XYZ", "EMC"
+        # X_CSI_K8S_CLUSTER_PREFIX: Define a prefix that is appended onto
+        # all resources created in the Array
+        # This should be unique per K8s/CSI deployment
+        # maximum length of this value is 3 characters
+        # Default value: None
+        # Examples: "XYZ", "EMC"
         - name: X_CSI_K8S_CLUSTER_PREFIX
           value: "XYZ"
-          # X_CSI_POWERMAX_PORTGROUPS: Define the set of existing port groups that the driver will use.
-          # It is a comma separated list of portgroup names.
-          # Required only in case of iSCSI port groups
-          # Allowed values: iSCSI Port Group names
-          # Default value: None
-          # Examples: "pg1", "pg1, pg2"
-        - name: X_CSI_POWERMAX_PORTGROUPS
+        # X_CSI_POWERMAX_PORTGROUPS: Define the set of existing port groups that the driver will use.
+        # It is a comma separated list of portgroup names.
+        # Required only in case of iSCSI port groups
+        # Allowed values: iSCSI Port Group names
+        # Default value: None
+        # Examples: "pg1", "pg1, pg2"
+        - name: "X_CSI_POWERMAX_PORTGROUPS"
           value: ""
-          # "X_CSI_TRANSPORT_PROTOCOL" can be "FC" or "FIBRE" for fibrechannel,
-          # "ISCSI" for iSCSI, or "" for autoselection.
-          # Allowed values:
-          #   "FC"    - Fiber Channel protocol
-          #   "FIBER" - Fiber Channel protocol
-          #   "ISCSI" - iSCSI protocol
-          #   ""      - Automatic selection of transport protocol
-          # Default value: "" <empty>
-        - name: X_CSI_TRANSPORT_PROTOCOL
+        # "X_CSI_TRANSPORT_PROTOCOL" can be "FC" or "FIBRE" for fibrechannel,
+        # "ISCSI" for iSCSI, or "" for autoselection.
+        # Allowed values:
+        #   "FC"    - Fiber Channel protocol
+        #   "FIBER" - Fiber Channel protocol
+        #   "ISCSI" - iSCSI protocol
+        #   ""      - Automatic selection of transport protocol
+        # Default value: "" <empty>
+        - name: "X_CSI_TRANSPORT_PROTOCOL"
           value: ""
         # X_CSI_POWERMAX_PROXY_SERVICE_NAME: Refers to the name of the proxy service in kubernetes
         # Allowed values: "powermax-reverseproxy"
         # default values: "powermax-reverseproxy"
-        - name: X_CSI_POWERMAX_PROXY_SERVICE_NAME
+        - name: "X_CSI_POWERMAX_PROXY_SERVICE_NAME"
           value: "powermax-reverseproxy"
-          # X_CSI_GRPC_MAX_THREADS: Defines the maximum number of concurrent grpc requests.
-          # Set this value to a higher number (max 50) if you are using the proxy
-          # Allowed values: n, where n > 4
-          # default values: None
-        - name: X_CSI_GRPC_MAX_THREADS
+        # X_CSI_GRPC_MAX_THREADS: Defines the maximum number of concurrent grpc requests.
+        # Set this value to a higher number (max 50) if you are using the proxy
+        # Allowed values: n, where n > 4
+        # default values: None
+        - name: "X_CSI_GRPC_MAX_THREADS"
           value: "4"
         # VMware/vSphere virtualization support
         # set X_CSI_VSPHERE_ENABLED to true, if you to enable VMware virtualized environment support via RDM
@@ -162,18 +99,45 @@ spec:
         # Default value: "" <empty>
         - name: "X_CSI_VCENTER_HOST"
           value: ""
+    sideCars:
+      # Uncomment the following to install 'external-health-monitor' sidecar to enable health monitor of CSI volumes from Controller plugin.
+      # Also set the env variable controller.envs.X_CSI_HEALTH_MONITOR_ENABLED to "true" for controller plugin.
+      # Also set the env variable node.envs.X_CSI_HEALTH_MONITOR_ENABLED to "true" for node plugin.
+      #- name: external-health-monitor
+      #  args: ["--monitor-interval=300s"]
+
     controller:
       envs:
-        # X_CSI_HEALTH_MONITOR_ENABLED: Enable/Disable health monitor of CSI volumes from node plugin- volume usage, volume condition
+        # X_CSI_HEALTH_MONITOR_ENABLED: Determines if the controller plugin will monitor health of CSI volumes- volume status, volume condition
+        # Install the 'external-health-monitor' sidecar accordingly.
         # Allowed values:
         #   true: enable checking of health condition of CSI volumes
         #   false: disable checking of health condition of CSI volumes
         # Default value: false
         - name: X_CSI_HEALTH_MONITOR_ENABLED
           value: "false"
+      # nodeSelector: Define node selection constraints for controller pods.
+      # For the pod to be eligible to run on a node, the node must have each
+      # of the indicated key-value pairs as labels.
+      # Leave as blank to consider all nodes
+      # Allowed values: map of key-value pairs
+      # Default value: None
+      nodeSelector:
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      #  node-role.kubernetes.io/control-plane: ""
+
+      # tolerations: Define tolerations that would be applied to controller deployment
+      # Leave as blank to install controller on worker nodes
+      # Allowed values: map of key-value pairs
+      # Default value: None
+      tolerations:
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      #  - key: "node-role.kubernetes.io/control-plane"
+      #    operator: "Exists"
+      #    effect: "NoSchedule"
     node:
       envs:
-        # X_CSI_POWERMAX_ISCSI_ENABLE_CHAP: Determine if the driver is going to configure
+        # X_CSI_POWERMAX_ISCSI_ENABLE_CHAP: Determine if the node plugin is going to configure
         # ISCSI node databases on the nodes with the CHAP credentials
         # If enabled, the CHAP secret must be provided in the credentials secret
         # and set to the key "chapsecret"
@@ -181,7 +145,7 @@ spec:
         #   "true"  - CHAP is enabled
         #   "false" - CHAP is disabled
         # Default value: "false"
-        - name: X_CSI_POWERMAX_ISCSI_ENABLE_CHAP
+        - name: "X_CSI_POWERMAX_ISCSI_ENABLE_CHAP"
           value: "false"
         # X_CSI_HEALTH_MONITOR_ENABLED: Enable/Disable health monitor of CSI volumes from node plugin- volume usage, volume condition
         # Allowed values:
@@ -198,13 +162,31 @@ spec:
         # Default value: false
         - name: X_CSI_TOPOLOGY_CONTROL_ENABLED
           value: "false"
+      # nodeSelector: Define node selection constraints for node pods.
+      # For the pod to be eligible to run on a node, the node must have each
+      # of the indicated key-value pairs as labels.
+      # Leave as blank to consider all nodes
+      # Allowed values: map of key-value pairs
+      # Default value: None
+      nodeSelector:
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      #  node-role.kubernetes.io/control-plane: ""
 
-    sideCars:
-      # Uncomment the following to install 'external-health-monitor' sidecar to enable health monitor of CSI volumes from Controller plugin.
-      # Also set the env variable controller.envs.X_CSI_HEALTH_MONITOR_ENABLED to "true" for controller plugin.
-      # Also set the env variable node.envs.X_CSI_HEALTH_MONITOR_ENABLED to "true" for node plugin.
-      #- name: external-health-monitor
-      #  args: ["--monitor-interval=300s"]
+      # tolerations: Define tolerations that would be applied to node daemonset
+      # Add/Remove tolerations as per requirement
+      # Leave as blank if you wish to not apply any tolerations
+      # Allowed values: map of key-value pairs
+      # Default value: None
+      tolerations:
+        - key: "node.kubernetes.io/memory-pressure"
+          operator: "Exists"
+          effect: "NoExecute"
+        - key: "node.kubernetes.io/disk-pressure"
+          operator: "Exists"
+          effect: "NoExecute"
+        - key: "node.kubernetes.io/network-unavailable"
+          operator: "Exists"
+          effect: "NoExecute"
 ---
 apiVersion: v1
 kind: ConfigMap
