@@ -153,7 +153,7 @@ drivers:
   - name: powerstore
     configVersions:
       - configVersion: v2.7.0
-        useDefaults: false
+        useDefaults: true
         supportedVersions:
           - version: v124
           - version: v125
