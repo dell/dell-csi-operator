@@ -368,10 +368,10 @@ metadata:
                     "value": "false"
                   }
                 ],
-                "image": "dellemc/csi-vxflexos:v2.6.0",
+                "image": "dellemc/csi-vxflexos:v2.7.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.6.0",
+              "configVersion": "v2.7.0",
               "controller": {
                 "envs": null,
                 "nodeSelector": null,
