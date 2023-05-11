@@ -5,15 +5,15 @@ metadata:
   namespace: test-isilon
 spec:
   driver:
-    # Config version for CSI PowerScale v2.6.0 driver
-    configVersion: v2.6.0
+    # Config version for CSI PowerScale v2.7.0 driver
+    configVersion: v2.7.0
     replicas: 1
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     storageCapacity: false
     common:
-      # Image for CSI PowerScale driver v2.6.0
-      image: "dellemc/csi-isilon:v2.6.0"
+      # Image for CSI PowerScale driver v2.7.0
+      image: "dellemc/csi-isilon:v2.7.0"
       imagePullPolicy: IfNotPresent
       envs:
         # X_CSI_VERBOSE: Indicates what content of the OneFS REST API message should be logged in debug level logs
