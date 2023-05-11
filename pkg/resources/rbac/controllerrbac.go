@@ -152,7 +152,7 @@ func NewControllerClusterRole(instance csiv1.CSIDriver, customClusterRoleName bo
 			Verbs:     []string{"create", "get", "list", "watch", "delete", "update"},
 		})
 	}
-	if driverType == "powerstore" {
+	if driverType == "powerstore" || driverType == "isilon" {
 		clusterRole.Rules = append(clusterRole.Rules, rbacv1.PolicyRule{
 			APIGroups: []string{"storage.k8s.io"},
 			Resources: []string{"csistoragecapacities"},
