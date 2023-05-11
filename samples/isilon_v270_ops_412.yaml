@@ -198,3 +198,13 @@ spec:
         args: ["--leader-election-lease-duration=15s", "--leader-election-renew-deadline=10s", "--leader-election-retry-period=5s"]
       - name: provisioner
         args: ["--volume-name-prefix=csipscale"]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: isilon-config-params
+  namespace: test-isilon
+data:
+  driver-config-params.yaml: |
+    CSI_LOG_LEVEL: "debug"
+
