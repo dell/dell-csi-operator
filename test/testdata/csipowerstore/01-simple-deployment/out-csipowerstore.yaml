@@ -16,7 +16,7 @@ metadata:
     storage.dell.com/resizer.Image.IsDefault: "true"
     storage.dell.com/snapshotter.Image: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
     storage.dell.com/snapshotter.Image.IsDefault: "true"
-    storage.dell.com/external-health-monitor.Image: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+    storage.dell.com/external-health-monitor.Image: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
     storage.dell.com/external-health-monitor.Image.IsDefault: "true"
   finalizers:
     - "finalizer.dell.emc.com"
@@ -42,7 +42,7 @@ spec:
     replicas: 1
     dnsPolicy: ClusterFirstWithHostNet
     sideCars:
-      - image: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+      - image: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
         imagePullPolicy: IfNotPresent
         name: external-health-monitor
         args: ["--monitor-interval=60s"]

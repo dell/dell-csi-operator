@@ -84,7 +84,7 @@ spec:
           env:
             - name: ADDRESS
               value: /var/run/csi/csi.sock
-          image: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+          image: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
           imagePullPolicy: IfNotPresent
           name: external-health-monitor
           resources: {}
