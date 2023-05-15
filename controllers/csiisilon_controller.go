@@ -66,6 +66,7 @@ type CSIIsilonReconciler struct {
 // +kubebuilder:rbac:groups="storage.k8s.io",resources=volumeattachments/status,verbs=patch
 // +kubebuilder:rbac:groups="coordination.k8s.io",resources=leases,verbs=get;list;watch;create;update;delete
 // +kubebuilder:rbac:groups="security.openshift.io",resources=securitycontextconstraints,resourceNames=privileged,verbs=use
+// +kubebuilder:rbac:groups="storage.k8s.io",resources=csistoragecapacities,verbs=get;list;watch;create;update;patch;delete
 
 // Reconcile function reconciles a CSIIsilon object
 func (r *CSIIsilonReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {

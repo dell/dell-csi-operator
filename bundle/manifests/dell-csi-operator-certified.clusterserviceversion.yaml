@@ -52,10 +52,10 @@ metadata:
                     "value": "192"
                   }
                 ],
-                "image": "dellemc/csi-isilon:v2.6.0",
+                "image": "dellemc/csi-isilon:v2.7.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.6.0",
+              "configVersion": "v2.7.0",
               "controller": {
                 "envs": [
                   {
