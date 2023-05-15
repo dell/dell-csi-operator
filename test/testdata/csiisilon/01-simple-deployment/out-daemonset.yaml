@@ -64,7 +64,7 @@ spec:
           value: /ifs/data/csi
         - name: X_CSI_ISI_NO_PROBE_ON_START
           value: "false"
-        image: dellemc/csi-isilon:v2.6.0
+        image: dellemc/csi-isilon:v2.7.0
         imagePullPolicy: IfNotPresent
         name: driver
         resources: {}

@@ -2,8 +2,8 @@ apiVersion: storage.dell.com/v1
 kind: CSIIsilon
 metadata:
   annotations:
-    storage.dell.com/CSIDriverConfigVersion: v2.6.0
-    storage.dell.com/attacher.Image: registry.k8s.io/sig-storage/csi-attacher:v4.2.0
+    storage.dell.com/CSIDriverConfigVersion: v2.7.0
+    storage.dell.com/attacher.Image: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
     storage.dell.com/attacher.Image.IsDefault: "true"
     storage.dell.com/provisioner.Image: registry.k8s.io/sig-storage/csi-provisioner:v3.4.0
     storage.dell.com/provisioner.Image.IsDefault: "true"
@@ -40,9 +40,9 @@ spec:
         value: "0"
       - name: X_CSI_CUSTOM_TOPOLOGY_ENABLED
         value: "false"
-      image: dellemc/csi-isilon:v2.6.0
+      image: dellemc/csi-isilon:v2.7.0
       imagePullPolicy: IfNotPresent
-    configVersion: v2.6.0
+    configVersion: v2.7.0
     controller:
       envs:
       - name: X_CSI_ISI_QUOTA_ENABLED

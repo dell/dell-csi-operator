@@ -117,6 +117,14 @@
         "DefaultValueForNode": ""
       },
       {
+        "Name": "X_CSI_ISI_IGNORE_UNRESOLVABLE_HOSTS",
+        "CSIEnvType": "Boolean",
+        "SetForController": true,
+        "SetForNode": false,
+        "DefaultValueForController": "false",
+        "DefaultValueForNode": ""
+      },
+      {
         "Name": "X_CSI_HEALTH_MONITOR_ENABLED",
         "CSIEnvType": "String",
         "SetForController": true,
@@ -285,12 +293,31 @@
           "--worker-threads=6",
           "--v=5",
           "--volume-name-prefix=csipscale",
-          "--leader-election"
+          "--leader-election",
+          "--enable-capacity=true",
+          "--capacity-ownerref-level=2",
+          "--capacity-poll-interval=5m"
         ],
         "envs": [
           {
             "name": "ADDRESS",
             "value": "/var/run/csi/csi.sock"
+          },
+          {
+            "name": "NAMESPACE",
+            "valueFrom": {
+              "fieldRef": {
+                "fieldPath": "metadata.namespace"
+              }
+            }
+          },
+          {
+            "name": "POD_NAME",
+            "valueFrom": {
+              "fieldRef": {
+                "fieldPath": "metadata.name"
+              }
+            }
           }
         ],
         "volumeMounts": [

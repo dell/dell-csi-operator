@@ -104,7 +104,7 @@ spec:
                   name: vcenter-creds
             - name: X_CSI_POWERMAX_PORTGROUPS
               value: ""
-          image: dellemc/csi-powermax:v2.6.0
+          image: dellemc/csi-powermax:v2.7.0
           imagePullPolicy: IfNotPresent
           name: driver
           resources: {}

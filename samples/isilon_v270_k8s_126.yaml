@@ -5,15 +5,16 @@ metadata:
   namespace: test-isilon
 spec:
   driver:
-    # Config version for CSI PowerScale v2.4.0 driver
-    configVersion: v2.4.0
+    # Config version for CSI PowerScale v2.7.0 driver
+    configVersion: v2.7.0
     replicas: 2
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     fsGroupPolicy: ReadWriteOnceWithFSType
+    storageCapacity: true
     common:
-      # Image for CSI PowerScale driver v2.4.0
-      image: "dellemc/csi-isilon:v2.4.0"
+      # Image for CSI PowerScale driver v2.7.0
+      image: "dellemc/csi-isilon:v2.7.0"
       imagePullPolicy: IfNotPresent
       envs:
         # X_CSI_VERBOSE: Indicates what content of the OneFS REST API message should be logged in debug level logs
@@ -117,6 +118,16 @@ spec:
       - name: X_CSI_ISI_VOLUME_PATH_PERMISSIONS
         value: "0777"
 
+      # X_CSI_ISI_IGNORE_UNRESOLVABLE_HOSTS: Ignore unresolvable hosts on the OneFS
+      # When set to true, OneFS allows new host to add to existing export list though any of the existing hosts from the
+      # same exports are unresolvable/doesn't exist anymore.
+      # Allowed values:
+      #   true: ignore existing unresolvable hosts and append new host to the existing export
+      #   false: exhibits OneFS default behavior i.e. if any of existing hosts are unresolvable while adding new one it fails
+      # Default value: false
+      - name: X_CSI_ISI_IGNORE_UNRESOLVABLE_HOSTS
+        value: "false"
+
       # X_CSI_HEALTH_MONITOR_ENABLED: Enable/Disable health monitor of CSI volumes from Controller plugin- volume status, volume condition.
       # Install the 'external-health-monitor' sidecar accordingly.
       # Allowed values:
@@ -138,13 +149,8 @@ spec:
 
       # tolerations: Define tolerations for the controller deployment, if required.
       # Default value: None
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
       tolerations:
-      # - key: "node-role.kubernetes.io/master"
-      #   operator: "Exists"
-      #   effect: "NoSchedule"
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
-      # tolerations:
       # - key: "node-role.kubernetes.io/control-plane"
       #   operator: "Exists"
       #   effect: "NoSchedule"
@@ -189,7 +195,6 @@ spec:
 
       # tolerations: Define tolerations for the node daemonset, if required.
       # Default value: None
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
       tolerations:
       #  - key: "node.kubernetes.io/memory-pressure"
       #    operator: "Exists"
@@ -200,11 +205,7 @@ spec:
       #  - key: "node.kubernetes.io/network-unavailable"
       #    operator: "Exists"
       #    effect: "NoExecute"
-      # - key: "node-role.kubernetes.io/master"
-      #   operator: "Exists"
-      #   effect: "NoSchedule"
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
-      # tolerations:
       # - key: "node-role.kubernetes.io/control-plane"
       #   operator: "Exists"
       #   effect: "NoSchedule"
@@ -218,6 +219,13 @@ spec:
       # Also set the env variable controller.envs.X_CSI_HEALTH_MONITOR_ENABLED to "true".
       #- name: external-health-monitor
       #  args: ["--monitor-interval=60s"]
+
+      # Uncomment the following to configure how often external-provisioner polls the driver to detect changed capacity
+      # Configure when the storageCapacity is set as "true"
+      # Allowed values: 1m,2m,3m,...,10m,...,60m etc. Default value: 5m
+      #- name: provisioner
+      #  args: ["--capacity-poll-interval=5m"]
+
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -227,4 +235,3 @@ metadata:
 data:
   driver-config-params.yaml: |
     CSI_LOG_LEVEL: "debug"
-
