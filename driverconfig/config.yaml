@@ -281,6 +281,10 @@ extensions:
         tag: dellemc/sdc:3.6.0.6
       - version: v125
         tag: dellemc/sdc:3.6.0.6
+      - version: v126
+        tag: dellemc/sdc:3.6.0.6
+      - version: v127
+        tag: dellemc/sdc:3.6.0.6
   - name: sdc
     images:
       - version: v121
@@ -292,5 +296,9 @@ extensions:
       - version: v124
         tag: dellemc/sdc:3.6.0.6
       - version: v125
+        tag: dellemc/sdc:3.6.0.6
+      - version: v126
+        tag: dellemc/sdc:3.6.0.6
+      - version: v127
         tag: dellemc/sdc:3.6.0.6
 
