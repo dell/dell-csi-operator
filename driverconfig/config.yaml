@@ -23,12 +23,12 @@ drivers:
           - version: v124
           - version: v125
           - version: v126
-        attacher: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
-        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
-        snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.1
-        resizer: k8s.gcr.io/sig-storage/csi-resizer:v1.7.0
-        registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
-        external-health-monitor: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        attacher: registry.k8s.io/sig-storage/csi-attacher:v4.2.0
+        provisioner: registry.k8s.io/sig-storage/csi-provisioner:v3.4.0
+        snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
+        resizer: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
+        registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
+        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
       - configVersion: v2.5.0
         useDefaults: false
         supportedVersions:
@@ -36,12 +36,12 @@ drivers:
           - version: v123
           - version: v124
           - version: v125
-        attacher: k8s.gcr.io/sig-storage/csi-attacher:v4.0.0
-        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v3.3.0
-        snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v6.1.0
-        resizer: k8s.gcr.io/sig-storage/csi-resizer:v1.6.0
-        registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.0
-        external-health-monitor: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.7.0
+        attacher: registry.k8s.io/sig-storage/csi-attacher:v4.0.0
+        provisioner: registry.k8s.io/sig-storage/csi-provisioner:v3.3.0
+        snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.1.0
+        resizer: registry.k8s.io/sig-storage/csi-resizer:v1.6.0
+        registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.0
+        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.7.0
   - name: unity
     configVersions:
       - configVersion: v2.6.0
@@ -58,12 +58,12 @@ drivers:
           - version: v123
           - version: v124
           - version: v125
-        attacher: k8s.gcr.io/sig-storage/csi-attacher:v4.0.0
-        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v3.3.0
-        snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v6.1.0
-        resizer: k8s.gcr.io/sig-storage/csi-resizer:v1.6.0
-        registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.0
-        external-health-monitor: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.7.0
+        attacher: registry.k8s.io/sig-storage/csi-attacher:v4.0.0
+        provisioner: registry.k8s.io/sig-storage/csi-provisioner:v3.3.0
+        snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.1.0
+        resizer: registry.k8s.io/sig-storage/csi-resizer:v1.6.0
+        registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.0
+        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.7.0
       - configVersion: v2.4.0
         useDefaults: false
         supportedVersions:
@@ -71,12 +71,12 @@ drivers:
           - version: v122
           - version: v123
           - version: v124
-        attacher: k8s.gcr.io/sig-storage/csi-attacher:v3.5.0
-        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v3.2.0
-        snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
-        resizer: k8s.gcr.io/sig-storage/csi-resizer:v1.5.0
-        registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1
-        external-health-monitor: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.6.0
+        attacher: registry.k8s.io/sig-storage/csi-attacher:v3.5.0
+        provisioner: registry.k8s.io/sig-storage/csi-provisioner:v3.2.0
+        snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.0.1
+        resizer: registry.k8s.io/sig-storage/csi-resizer:v1.5.0
+        registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.5.1
+        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.6.0
   - name: vxflexos
     configVersions:
       - configVersion: v2.7.0
@@ -94,12 +94,12 @@ drivers:
           - version: v124
           - version: v125
           - version: v126
-        attacher: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
-        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
-        snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.1
-        resizer: k8s.gcr.io/sig-storage/csi-resizer:v1.7.0
-        registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
-        external-health-monitor: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        attacher: registry.k8s.io/sig-storage/csi-attacher:v4.2.0
+        provisioner: registry.k8s.io/sig-storage/csi-provisioner:v3.4.0
+        snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
+        resizer: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
+        registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
+        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
       - configVersion: v2.5.0
         useDefaults: false
         supportedVersions:
@@ -107,12 +107,12 @@ drivers:
           - version: v123
           - version: v124
           - version: v125
-        attacher: k8s.gcr.io/sig-storage/csi-attacher:v4.0.0
-        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v3.3.0
-        snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v6.1.0
-        resizer: k8s.gcr.io/sig-storage/csi-resizer:v1.6.0
-        registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.0
-        external-health-monitor: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.7.0
+        attacher: registry.k8s.io/sig-storage/csi-attacher:v4.0.0
+        provisioner: registry.k8s.io/sig-storage/csi-provisioner:v3.3.0
+        snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.1.0
+        resizer: registry.k8s.io/sig-storage/csi-resizer:v1.6.0
+        registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.0
+        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.7.0
   - name: isilon
     configVersions:
       - configVersion: v2.7.0
@@ -131,12 +131,12 @@ drivers:
           - version: v124
           - version: v125
           - version: v126
-        attacher: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
-        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
-        snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.1
-        resizer: k8s.gcr.io/sig-storage/csi-resizer:v1.7.0
-        registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
-        external-health-monitor: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        attacher: registry.k8s.io/sig-storage/csi-attacher:v4.2.0
+        provisioner: registry.k8s.io/sig-storage/csi-provisioner:v3.4.0
+        snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
+        resizer: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
+        registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
+        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
       - configVersion: v2.5.0
         useDefaults: false
         supportedVersions:
@@ -144,12 +144,12 @@ drivers:
           - version: v123
           - version: v124
           - version: v125
-        attacher: k8s.gcr.io/sig-storage/csi-attacher:v4.0.0
-        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v3.3.0
-        snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v6.1.0
-        resizer: k8s.gcr.io/sig-storage/csi-resizer:v1.6.0
-        registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.0
-        external-health-monitor: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.7.0
+        attacher: registry.k8s.io/sig-storage/csi-attacher:v4.0.0
+        provisioner: registry.k8s.io/sig-storage/csi-provisioner:v3.3.0
+        snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.1.0
+        resizer: registry.k8s.io/sig-storage/csi-resizer:v1.6.0
+        registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.0
+        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.7.0
   - name: powerstore
     configVersions:
       - configVersion: v2.7.0
@@ -166,12 +166,12 @@ drivers:
           - version: v124
           - version: v125
           - version: v126
-        attacher: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
-        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
-        snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.1
-        resizer: k8s.gcr.io/sig-storage/csi-resizer:v1.7.0
-        registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
-        external-health-monitor: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0    
+        attacher: registry.k8s.io/sig-storage/csi-attacher:v4.2.0
+        provisioner: registry.k8s.io/sig-storage/csi-provisioner:v3.4.0
+        snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
+        resizer: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
+        registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
+        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0    
       - configVersion: v2.5.0
         useDefaults: false
         supportedVersions:
@@ -179,109 +179,109 @@ drivers:
           - version: v123
           - version: v124
           - version: v125
-        attacher: k8s.gcr.io/sig-storage/csi-attacher:v4.0.0
-        provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v3.3.0
-        snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v6.1.0
-        resizer: k8s.gcr.io/sig-storage/csi-resizer:v1.6.0
-        registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.0
-        external-health-monitor: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.7.0
+        attacher: registry.k8s.io/sig-storage/csi-attacher:v4.0.0
+        provisioner: registry.k8s.io/sig-storage/csi-provisioner:v3.3.0
+        snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.1.0
+        resizer: registry.k8s.io/sig-storage/csi-resizer:v1.6.0
+        registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.0
+        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.7.0
 csiSideCars:
   - name: attacher
     images:
       - version: v121
-        tag: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
+        tag: registry.k8s.io/sig-storage/csi-attacher:v4.2.0
       - version: v122
-        tag: k8s.gcr.io/sig-storage/csi-attacher:v3.5.0
+        tag: registry.k8s.io/sig-storage/csi-attacher:v3.5.0
       - version: v123
-        tag: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
+        tag: registry.k8s.io/sig-storage/csi-attacher:v4.2.0
       - version: v124
-        tag: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
+        tag: registry.k8s.io/sig-storage/csi-attacher:v4.2.0
       - version: v125
-        tag: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
+        tag: registry.k8s.io/sig-storage/csi-attacher:v4.2.0
       - version: v126
-        tag: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
+        tag: registry.k8s.io/sig-storage/csi-attacher:v4.2.0
       - version: v127
-        tag: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
+        tag: registry.k8s.io/sig-storage/csi-attacher:v4.2.0
   - name: provisioner
     images:
       - version: v121
-        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
+        tag: registry.k8s.io/sig-storage/csi-provisioner:v3.4.0
       - version: v122
-        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.2.1
+        tag: registry.k8s.io/sig-storage/csi-provisioner:v3.2.1
       - version: v123
-        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
+        tag: registry.k8s.io/sig-storage/csi-provisioner:v3.4.0
       - version: v124
-        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
+        tag: registry.k8s.io/sig-storage/csi-provisioner:v3.4.0
       - version: v125
-        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
+        tag: registry.k8s.io/sig-storage/csi-provisioner:v3.4.0
       - version: v126
-        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
+        tag: registry.k8s.io/sig-storage/csi-provisioner:v3.4.0
       - version: v127
-        tag: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
+        tag: registry.k8s.io/sig-storage/csi-provisioner:v3.4.0
   - name: snapshotter
     images:
       - version: v121
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.1
+        tag: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
       - version: v122
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.0.1
+        tag: registry.k8s.io/sig-storage/csi-snapshotter:v6.0.1
       - version: v123
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.1
+        tag: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
       - version: v124
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.1
+        tag: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
       - version: v125
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.1
+        tag: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
       - version: v126
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.1
+        tag: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
       - version: v127
-        tag: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.1
+        tag: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
   - name: resizer
     images:
       - version: v121
-        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.7.0
+        tag: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
       - version: v122
-        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.5.0
+        tag: registry.k8s.io/sig-storage/csi-resizer:v1.5.0
       - version: v123
-        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.7.0
+        tag: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
       - version: v124
-        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.7.0
+        tag: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
       - version: v125
-        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.7.0
+        tag: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
       - version: v126
-        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.7.0
+        tag: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
       - version: v127
-        tag: k8s.gcr.io/sig-storage/csi-resizer:v1.7.0
+        tag: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
   - name: registrar
     images:
       - version: v121
-        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
+        tag: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
       - version: v122
-        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.1
+        tag: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.5.1
       - version: v123
-        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
+        tag: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
       - version: v124
-        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
+        tag: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
       - version: v125
-        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
+        tag: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
       - version: v126
-        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
+        tag: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
       - version: v127
-        tag: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
+        tag: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
   - name: external-health-monitor
     images:
       - version: v121
-        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        tag: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
       - version: v122
-        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.6.0
+        tag: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.6.0
       - version: v123
-        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        tag: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
       - version: v124
-        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        tag: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
       - version: v125
-        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        tag: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
       - version: v126
-        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        tag: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
       - version: v127
-        tag: gcr.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        tag: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
 extensions:
   - name: sdc-monitor
     images:
