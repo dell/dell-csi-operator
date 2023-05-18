@@ -428,6 +428,27 @@
         ]
       },
       {
+        "name": "csi-metadata-retriever",
+        "args": [
+          "--csi-address=$(ADDRESS)",
+          "--timeout=15s",
+          "--v=5",
+          "--leader-election"
+        ],
+        "envs": [
+          {
+            "name": "CSI_RETRIEVER_ENDPOINT",
+            "value": "/var/run/csi/csi_retriever.sock"
+          }
+        ],
+        "volumeMounts": [
+          {
+            "mountPath": "/var/run/csi",
+            "name": "socket-dir"
+          }
+        ]
+      },
+      {
         "name": "resizer",
         "args": [
           "--csi-address=$(ADDRESS)",

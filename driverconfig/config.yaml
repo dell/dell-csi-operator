@@ -282,6 +282,22 @@ csiSideCars:
         tag: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
       - version: v127
         tag: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+  - name: csi-metadata-retriever
+    images:
+      - version: v121
+        tag: dellemc/csi-metadata-retriever:v1.3.0
+      - version: v122
+        tag: dellemc/csi-metadata-retriever:v1.3.0
+      - version: v123
+        tag: dellemc/csi-metadata-retriever:v1.3.0
+      - version: v124
+        tag: dellemc/csi-metadata-retriever:v1.3.0
+      - version: v125
+        tag: dellemc/csi-metadata-retriever:v1.3.0
+      - version: v126
+        tag: dellemc/csi-metadata-retriever:v1.3.0
+      - version: v127
+        tag: dellemc/csi-metadata-retriever:v1.3.0
 extensions:
   - name: sdc-monitor
     images:
