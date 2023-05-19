@@ -2,7 +2,7 @@ apiVersion: storage.dell.com/v1
 kind: CSIIsilon
 metadata:
   name: isilon
-  namespace: isilon
+  namespace: test-isilon
 spec:
   driver:
     # Config version for CSI PowerScale v2.7.0 driver
@@ -14,7 +14,7 @@ spec:
     storageCapacity: true
     common:
       # Image for CSI PowerScale driver v2.7.0
-      image: "amaas-eos-mw1.cec.lab.emc.com:5028/csi-isilon/isilon:20230510195217"
+      image: "dellemc/csi-isilon:v2.7.0"
       imagePullPolicy: IfNotPresent
       envs:
         # X_CSI_VERBOSE: Indicates what content of the OneFS REST API message should be logged in debug level logs
@@ -231,7 +231,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: isilon-config-params
-  namespace: isilon
+  namespace: test-isilon
 data:
   driver-config-params.yaml: |
     CSI_LOG_LEVEL: "debug"
