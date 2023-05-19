@@ -5,7 +5,7 @@ metadata:
   namespace: test-unity
 spec:
   driver:
-    configVersion: v2.4.0
+    configVersion: v2.7.0
     replicas: 2
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
@@ -16,10 +16,10 @@ spec:
     #   File: kubernetes may use fsGroup to change permissions and ownership of the volume 
     #   to match user requested fsGroup in the pod's security policy regardless of fstype or access mode.
     #   None: volumes will be mounted with no modifications.
-    # Default value: ReadWriteOnceWithFSType
+    # Default value: ReadWriteOnceWithFSType    
     fsGroupPolicy: ReadWriteOnceWithFSType
     common:
-      image: "dellemc/csi-unity:v2.4.0"
+      image: "dellemc/csi-unity:v2.7.0"
       imagePullPolicy: IfNotPresent
     sideCars:
       - name: provisioner
@@ -48,8 +48,6 @@ spec:
       # Allowed values: map of key-value pairs
       # Default value: None
       nodeSelector:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
-      #  node-role.kubernetes.io/master: ""
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       #  node-role.kubernetes.io/control-plane: ""
 
@@ -57,10 +55,6 @@ spec:
       # Leave as blank to install controller on worker nodes
       # Default value: None
       tolerations:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
-      #  - key: "node-role.kubernetes.io/master"
-      #    operator: "Exists"
-      #    effect: "NoSchedule"
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       #  - key: "node-role.kubernetes.io/control-plane"
       #    operator: "Exists"
@@ -82,18 +76,12 @@ spec:
       # Allowed values: map of key-value pairs
       # Default value: None
       nodeSelector:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
-      #  node-role.kubernetes.io/master: ""
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       #  node-role.kubernetes.io/control-plane: ""
 
       # tolerations: Define tolerations for the node daemonset, if required.
       # Default value: None
       tolerations:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/master taint
-      #  - key: "node-role.kubernetes.io/master"
-      #    operator: "Exists"
-      #    effect: "NoSchedule"
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
       #  - key: "node-role.kubernetes.io/control-plane"
       #    operator: "Exists"
