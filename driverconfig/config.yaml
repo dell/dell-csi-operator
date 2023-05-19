@@ -28,7 +28,7 @@ drivers:
         snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
         resizer: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
         registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
-        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        external-health-monitor: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.8.0
       - configVersion: v2.5.0
         useDefaults: false
         supportedVersions:
@@ -41,7 +41,7 @@ drivers:
         snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.1.0
         resizer: registry.k8s.io/sig-storage/csi-resizer:v1.6.0
         registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.0
-        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.7.0
+        external-health-monitor: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.7.0
   - name: unity
     configVersions:
       - configVersion: v2.6.0
@@ -63,7 +63,7 @@ drivers:
         snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.1.0
         resizer: registry.k8s.io/sig-storage/csi-resizer:v1.6.0
         registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.0
-        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.7.0
+        external-health-monitor: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.7.0
       - configVersion: v2.4.0
         useDefaults: false
         supportedVersions:
@@ -76,7 +76,7 @@ drivers:
         snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.0.1
         resizer: registry.k8s.io/sig-storage/csi-resizer:v1.5.0
         registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.5.1
-        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.6.0
+        external-health-monitor: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.6.0
   - name: vxflexos
     configVersions:
       - configVersion: v2.7.0
@@ -99,7 +99,7 @@ drivers:
         snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
         resizer: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
         registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
-        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        external-health-monitor: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.8.0
       - configVersion: v2.5.0
         useDefaults: false
         supportedVersions:
@@ -112,7 +112,7 @@ drivers:
         snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.1.0
         resizer: registry.k8s.io/sig-storage/csi-resizer:v1.6.0
         registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.0
-        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.7.0
+        external-health-monitor: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.7.0
   - name: isilon
     configVersions:
       - configVersion: v2.7.0
@@ -136,7 +136,7 @@ drivers:
         snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
         resizer: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
         registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
-        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        external-health-monitor: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.8.0
       - configVersion: v2.5.0
         useDefaults: false
         supportedVersions:
@@ -149,7 +149,7 @@ drivers:
         snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.1.0
         resizer: registry.k8s.io/sig-storage/csi-resizer:v1.6.0
         registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.0
-        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.7.0
+        external-health-monitor: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.7.0
   - name: powerstore
     configVersions:
       - configVersion: v2.7.0
@@ -171,7 +171,7 @@ drivers:
         snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
         resizer: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
         registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
-        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0    
+        external-health-monitor: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.8.0    
       - configVersion: v2.5.0
         useDefaults: false
         supportedVersions:
@@ -184,7 +184,7 @@ drivers:
         snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.1.0
         resizer: registry.k8s.io/sig-storage/csi-resizer:v1.6.0
         registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.0
-        external-health-monitor: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.7.0
+        external-health-monitor: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.7.0
 csiSideCars:
   - name: attacher
     images:
@@ -269,19 +269,19 @@ csiSideCars:
   - name: external-health-monitor
     images:
       - version: v121
-        tag: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        tag: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.8.0
       - version: v122
-        tag: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.6.0
+        tag: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.6.0
       - version: v123
-        tag: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        tag: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.8.0
       - version: v124
-        tag: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        tag: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.8.0
       - version: v125
-        tag: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        tag: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.8.0
       - version: v126
-        tag: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        tag: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.8.0
       - version: v127
-        tag: registry.k8s.io/k8s-staging-sig-storage/csi-external-health-monitor-controller:v0.8.0
+        tag: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.8.0
 extensions:
   - name: sdc-monitor
     images:
