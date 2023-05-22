@@ -5,7 +5,7 @@ metadata:
   namespace: test-unity
 spec:
   driver:
-    configVersion: v2.4.0
+    configVersion: v2.7.0
     replicas: 2
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
@@ -19,7 +19,7 @@ spec:
     # Default value: ReadWriteOnceWithFSType    
     fsGroupPolicy: ReadWriteOnceWithFSType
     common:
-      image: "dellemc/csi-unity:v2.4.0"
+      image: "dellemc/csi-unity:v2.7.0"
       imagePullPolicy: IfNotPresent
     sideCars:
       - name: provisioner
@@ -104,7 +104,7 @@ metadata:
   namespace: test-unity
 data:
   driver-config-params.yaml: |
-    CSI_LOG_LEVEL: "info"
+    CSI_LOG_LEVEL: "debug"
     ALLOW_RWO_MULTIPOD_ACCESS: "false"
     MAX_UNITY_VOLUMES_PER_NODE: "0"
     SYNC_NODE_INFO_TIME_INTERVAL: "15"

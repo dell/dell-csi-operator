@@ -44,13 +44,26 @@ drivers:
         external-health-monitor: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.7.0
   - name: unity
     configVersions:
-      - configVersion: v2.6.0
+      - configVersion: v2.7.0
         useDefaults: true
+        supportedVersions:
+          - version: v124
+          - version: v125
+          - version: v126
+          - version: v127
+      - configVersion: v2.6.0
+        useDefaults: false
         supportedVersions:
           - version: v123
           - version: v124
           - version: v125
           - version: v126
+        attacher: registry.k8s.io/sig-storage/csi-attacher:v4.2.0
+        provisioner: registry.k8s.io/sig-storage/csi-provisioner:v3.4.0
+        snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
+        resizer: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
+        registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
+        external-health-monitor: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.8.0
       - configVersion: v2.5.0
         useDefaults: false
         supportedVersions:
@@ -64,19 +77,6 @@ drivers:
         resizer: registry.k8s.io/sig-storage/csi-resizer:v1.6.0
         registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.0
         external-health-monitor: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.7.0
-      - configVersion: v2.4.0
-        useDefaults: false
-        supportedVersions:
-          - version: v121
-          - version: v122
-          - version: v123
-          - version: v124
-        attacher: registry.k8s.io/sig-storage/csi-attacher:v3.5.0
-        provisioner: registry.k8s.io/sig-storage/csi-provisioner:v3.2.0
-        snapshotter: registry.k8s.io/sig-storage/csi-snapshotter:v6.0.1
-        resizer: registry.k8s.io/sig-storage/csi-resizer:v1.5.0
-        registrar: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.5.1
-        external-health-monitor: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.6.0
   - name: vxflexos
     configVersions:
       - configVersion: v2.7.0
