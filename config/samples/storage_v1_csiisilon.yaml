@@ -5,15 +5,15 @@ metadata:
   namespace: test-isilon
 spec:
   driver:
-    # Config version for CSI PowerScale v2.6.0 driver
-    configVersion: v2.6.0
+    # Config version for CSI PowerScale v2.7.0 driver
+    configVersion: v2.7.0
     replicas: 2
     dnsPolicy: ClusterFirstWithHostNet
     forceUpdate: false
     fsGroupPolicy: ReadWriteOnceWithFSType
     common:
-      # Image for CSI PowerScale driver v2.6.0
-      image: "dellemc/csi-isilon:v2.6.0"
+      # Image for CSI PowerScale driver v2.7.0
+      image: "dellemc/csi-isilon:v2.7.0"
       imagePullPolicy: IfNotPresent
       envs:
         # X_CSI_VERBOSE: Indicates what content of the OneFS REST API message should be logged in debug level logs
@@ -188,9 +188,10 @@ spec:
       #    operator: "Exists"
       #    effect: "NoExecute"
       # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
-      #  - key: "node-role.kubernetes.io/control-plane"
-      #    operator: "Exists"
-      #    effect: "NoSchedule"
+      # tolerations:
+      # - key: "node-role.kubernetes.io/control-plane"
+      #   operator: "Exists"
+      #   effect: "NoSchedule"
 
     sideCars:
       - name: common

@@ -121,7 +121,7 @@ func (suite *ControllerTestSuite) SetupSuite() {
 			reconciler: &controllers.CSIPowerStoreReconciler{
 				Log: ctrl.Log.WithName("controllers").WithName("CSIPowerStore"),
 			},
-			k8sVersion: "v125",
+			k8sVersion: "v127",
 			findCR: func(inObjects []runtime.Object) (string, string) {
 				for _, o := range inObjects {
 					if cr, ok := o.(*v1.CSIPowerStore); ok {
@@ -149,7 +149,7 @@ func (suite *ControllerTestSuite) SetupSuite() {
 			reconciler: &controllers.CSIVXFlexOSReconciler{
 				Log: ctrl.Log.WithName("controllers").WithName("CSIVXFlexOS"),
 			},
-			k8sVersion: "v125",
+			k8sVersion: "v127",
 			findCR: func(inObjects []runtime.Object) (string, string) {
 				for _, o := range inObjects {
 					if cr, ok := o.(*v1.CSIVXFlexOS); ok {
@@ -202,7 +202,7 @@ func (suite *ControllerTestSuite) SetupSuite() {
 			reconciler: &controllers.CSIIsilonReconciler{
 				Log: ctrl.Log.WithName("controllers").WithName("CSIIsilon"),
 			},
-			k8sVersion: "v125",
+			k8sVersion: "v127",
 			findCR: func(inObjects []runtime.Object) (string, string) {
 				for _, o := range inObjects {
 					if cr, ok := o.(*v1.CSIIsilon); ok {

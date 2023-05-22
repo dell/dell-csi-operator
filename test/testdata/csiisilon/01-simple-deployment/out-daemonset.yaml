@@ -64,7 +64,7 @@ spec:
           value: /ifs/data/csi
         - name: X_CSI_ISI_NO_PROBE_ON_START
           value: "false"
-        image: dellemc/csi-isilon:v2.6.0
+        image: dellemc/csi-isilon:v2.7.0
         imagePullPolicy: IfNotPresent
         name: driver
         resources: {}
@@ -106,7 +106,7 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: spec.nodeName
-        image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
+        image: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
         imagePullPolicy: IfNotPresent
         name: registrar
         resources: {}

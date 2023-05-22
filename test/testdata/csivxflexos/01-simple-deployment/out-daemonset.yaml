@@ -46,7 +46,7 @@ spec:
           value: "false"
         - name: X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE
           value: "false"
-        image: dellemc/csi-vxflexos:v2.6.0
+        image: dellemc/csi-vxflexos:v2.7.0
         imagePullPolicy: IfNotPresent
         name: driver
         args: 
@@ -94,7 +94,7 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: spec.nodeName
-        image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.3
+        image: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
         imagePullPolicy: IfNotPresent
         name: registrar
         resources: {}

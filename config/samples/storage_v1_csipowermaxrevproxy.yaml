@@ -6,8 +6,8 @@ metadata:
 spec:
   # image: Define the container images used for the reverse proxy
   # Default value: None
-  # Example: "csipowermax-reverseproxy:v2.5.0"
-  image: dellemc/csipowermax-reverseproxy:v2.5.0
+  # Example: "csipowermax-reverseproxy:v2.6.0"
+  image: dellemc/csipowermax-reverseproxy:v2.6.0
   # imagePullPolicy: Policy to determine if the image should be pulled prior to starting the container.
   # Allowed values:
   #  Always: Always pull the image.

@@ -52,10 +52,10 @@ metadata:
                     "value": "192"
                   }
                 ],
-                "image": "dellemc/csi-isilon:v2.6.0",
+                "image": "dellemc/csi-isilon:v2.7.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.6.0",
+              "configVersion": "v2.7.0",
               "controller": {
                 "envs": [
                   {
@@ -169,17 +169,9 @@ metadata:
                   {
                     "name": "X_CSI_VCENTER_HOST",
                     "value": ""
-                  },
-                  {
-                    "name": "X_CSI_VCENTER_USERNAME",
-                    "value": ""
-                  },
-                  {
-                    "name": "X_CSI_VCENTER_PWD",
-                    "value": ""
                   }
                 ],
-                "image": "dellemc/csi-powermax:v2.6.0",
+                "image": "dellemc/csi-powermax:v2.7.0",
                 "imagePullPolicy": "IfNotPresent"
               },
               "configVersion": "v2.6.0",
@@ -246,7 +238,7 @@ metadata:
               },
               "mode": "Linked"
             },
-            "image": "dellemc/csipowermax-reverseproxy:v2.4.0",
+            "image": "dellemc/csipowermax-reverseproxy:v2.6.0",
             "imagePullPolicy": "IfNotPresent",
             "tlsSecret": "csirevproxy-tls-secret"
           }
@@ -271,10 +263,10 @@ metadata:
                     "value": "/etc/fc-ports-filter"
                   }
                 ],
-                "image": "dellemc/csi-powerstore:v2.6.0",
+                "image": "dellemc/csi-powerstore:v2.7.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.6.0",
+              "configVersion": "v2.7.0",
               "controller": {
                 "envs": [
                   {
@@ -299,6 +291,7 @@ metadata:
                 "tolerations": null
               },
               "replicas": 2,
+              "sideCars": null,
               "storageCapacity": true
             }
           }
@@ -375,10 +368,10 @@ metadata:
                     "value": "false"
                   }
                 ],
-                "image": "dellemc/csi-vxflexos:v2.6.0",
+                "image": "dellemc/csi-vxflexos:v2.7.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.6.0",
+              "configVersion": "v2.7.0",
               "controller": {
                 "envs": null,
                 "nodeSelector": null,
@@ -401,7 +394,20 @@ metadata:
                 }
               ],
               "node": {
-                "envs": null,
+                "envs": [
+                  {
+                    "name": "X_CSI_APPROVE_SDC_ENABLED",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_RENAME_SDC_ENABLED",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_RENAME_SDC_PREFIX",
+                    "value": "sdc-test"
+                  }
+                ],
                 "nodeSelector": null,
                 "tolerations": null
               },
@@ -428,13 +434,13 @@ metadata:
     capabilities: Seamless Upgrades
     categories: Storage
     certified: "true"
-    containerImage: docker.io/dellemc/dell-csi-operator:v1.11.0
+    containerImage: docker.io/dellemc/dell-csi-operator:v1.12.0
     olm.properties: '[{"type": "olm.maxOpenShiftVersion", "value": "4.11"}]'
     operators.operatorframework.io/builder: operator-sdk-v1.14.0+git
     operators.operatorframework.io/project_layout: go.kubebuilder.io/v3
     repository: https://github.com/dell/dell-csi-operator
     support: Dell Technologies
-  name: dell-csi-operator-certified.v1.11.0
+  name: dell-csi-operator-certified.v1.12.0
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -2057,7 +2063,7 @@ spec:
                 env:
                 - name: OPERATOR_DRIVERS
                   value: unity,powermax,isilon,vxflexos,powerstore
-                image: docker.io/dellemc/dell-csi-operator:v1.11.0
+                image: docker.io/dellemc/dell-csi-operator:v1.12.0
                 imagePullPolicy: Always
                 name: dell-csi-operator-controller
                 resources: {}
@@ -2117,8 +2123,8 @@ spec:
   minKubeVersion: 1.21.0
   provider:
     name: Dell Technologies
-  replaces: dell-csi-operator-certified.v1.10.0
+  replaces: dell-csi-operator-certified.v1.11.0
   skips:
   - dell-csi-operator-certified.v1.1.0
   - dell-csi-operator-certified.v1.2.0
-  version: 1.11.0
+  version: 1.12.0

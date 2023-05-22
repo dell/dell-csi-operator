@@ -238,6 +238,8 @@ func GetSideCarTypeFromName(sideCarName string) (csiv1.ImageType, error) {
 		return csiv1.ImageTypeSdcmonitor, nil
 	case csiv1.Healthmonitor:
 		return csiv1.ImageTypeHealthmonitor, nil
+	case csiv1.MetadataRetriever:
+		return csiv1.ImageTypeMetadataRetriever, nil
 	}
 	return "", fmt.Errorf("invalid image type specified")
 }
