@@ -92,16 +92,6 @@ spec:
               value: ""
             - name: X_CSI_VCENTER_HOST
               value: ""
-            - name: X_CSI_VCENTER_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  key: username
-                  name: vcenter-creds
-            - name: X_CSI_VCENTER_PWD
-              valueFrom:
-                secretKeyRef:
-                  key: password
-                  name: vcenter-creds
             - name: X_CSI_POWERMAX_PORTGROUPS
               value: ""
           image: dellemc/csi-powermax:v2.7.0

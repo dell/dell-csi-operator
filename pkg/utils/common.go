@@ -465,6 +465,16 @@ func GetNodeEnv(driver csiv1.CSIDriver, driverConfig *ctrlconfig.Config) []corev
 				envs = removeEnvVar(envs, "X_CSI_POWERMAX_ISCSI_CHAP_PASSWORD")
 			}
 		}
+
+		vsphereEnvName := "X_CSI_VSPHERE_ENABLED"
+		vsphereEnv, err := getEnvVar(vsphereEnvName, envs)
+		if err == nil {
+			if vsphereEnv.Value == "" || strings.Compare(strings.ToUpper(vsphereEnv.Value), "FALSE") == 0 {
+				// Remove the vsphere secret env
+				envs = removeEnvVar(envs, "X_CSI_VCENTER_USERNAME")
+				envs = removeEnvVar(envs, "X_CSI_VCENTER_PWD")
+			}
+		}
 	}
 	return envs
 }
@@ -489,6 +499,18 @@ func GetControllerEnv(driver csiv1.CSIDriver, driverConfig *ctrlconfig.Config) [
 		}
 	}
 	envs = mergeEnvironmentVars(envs, GetCustomEnvVars(driver, driverConfig.ConfigVersion, envs))
+	// Code only for PowerMax
+	if driver.GetDriverType() == csiv1.PowerMax && driverConfig.ConfigVersion != "v1" {
+		vsphereEnvName := "X_CSI_VSPHERE_ENABLED"
+		vsphereEnv, err := getEnvVar(vsphereEnvName, envs)
+		if err == nil {
+			if vsphereEnv.Value == "" || strings.Compare(strings.ToUpper(vsphereEnv.Value), "FALSE") == 0 {
+				// Remove the vsphere secret env
+				envs = removeEnvVar(envs, "X_CSI_VCENTER_USERNAME")
+				envs = removeEnvVar(envs, "X_CSI_VCENTER_PWD")
+			}
+		}
+	}
 	return envs
 }
 
