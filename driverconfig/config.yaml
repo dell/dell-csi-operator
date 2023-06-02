@@ -189,7 +189,7 @@ csiSideCars:
   - name: attacher
     images:
       - version: v121
-        tag: rregistry.k8s.io/sig-storage/csi-attacher:v4.3.0
+        tag: registry.k8s.io/sig-storage/csi-attacher:v4.3.0
       - version: v122
         tag: registry.k8s.io/sig-storage/csi-attacher:v3.5.0
       - version: v123
