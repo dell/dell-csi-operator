@@ -3,17 +3,17 @@ kind: CSIVXFlexOS
 metadata:
   annotations:
     storage.dell.com/CSIDriverConfigVersion: v2.7.0
-    storage.dell.com/attacher.Image: registry.k8s.io/sig-storage/csi-attacher:v4.2.0
+    storage.dell.com/attacher.Image: registry.k8s.io/sig-storage/csi-attacher:v4.3.0
     storage.dell.com/attacher.Image.IsDefault: "true"
-    storage.dell.com/external-health-monitor.Image: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.8.0
+    storage.dell.com/external-health-monitor.Image: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.9.0
     storage.dell.com/external-health-monitor.Image.IsDefault: "true"
-    storage.dell.com/provisioner.Image: registry.k8s.io/sig-storage/csi-provisioner:v3.4.0
+    storage.dell.com/provisioner.Image: registry.k8s.io/sig-storage/csi-provisioner:v3.5.0
     storage.dell.com/provisioner.Image.IsDefault: "true"
-    storage.dell.com/registrar.Image: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
+    storage.dell.com/registrar.Image: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.8.0
     storage.dell.com/registrar.Image.IsDefault: "true"
-    storage.dell.com/resizer.Image: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
+    storage.dell.com/resizer.Image: registry.k8s.io/sig-storage/csi-resizer:v1.8.0
     storage.dell.com/resizer.Image.IsDefault: "true"
-    storage.dell.com/snapshotter.Image: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
+    storage.dell.com/snapshotter.Image: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.2
     storage.dell.com/snapshotter.Image.IsDefault: "true"
   name: test-vxflexos
   namespace: test-vxflexos
@@ -56,22 +56,22 @@ spec:
     sideCars:
     - args: 
         - --monitor-interval=60s
-      image: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.8.0
+      image: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.9.0
       imagePullPolicy: IfNotPresent
       name: external-health-monitor
-    - image: registry.k8s.io/sig-storage/csi-provisioner:v3.4.0
+    - image: registry.k8s.io/sig-storage/csi-provisioner:v3.5.0
       imagePullPolicy: IfNotPresent
       name: provisioner
-    - image: registry.k8s.io/sig-storage/csi-attacher:v4.2.0
+    - image: registry.k8s.io/sig-storage/csi-attacher:v4.3.0
       imagePullPolicy: IfNotPresent
       name: attacher
-    - image: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.1
+    - image: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.2
       imagePullPolicy: IfNotPresent
       name: snapshotter 
-    - image: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.6.3
+    - image: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.8.0
       imagePullPolicy: IfNotPresent
       name: registrar
-    - image: registry.k8s.io/sig-storage/csi-resizer:v1.7.0
+    - image: registry.k8s.io/sig-storage/csi-resizer:v1.8.0
       imagePullPolicy: IfNotPresent
       name: resizer
 status:
