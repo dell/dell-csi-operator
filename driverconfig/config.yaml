@@ -286,10 +286,6 @@ csiSideCars:
     images:
       - version: v121
         tag: dellemc/csi-metadata-retriever:v1.4.0
-      - version: v122
-        tag: dellemc/csi-metadata-retriever:v1.4.0
-      - version: v123
-        tag: dellemc/csi-metadata-retriever:v1.4.0
       - version: v124
         tag: dellemc/csi-metadata-retriever:v1.4.0
       - version: v125
