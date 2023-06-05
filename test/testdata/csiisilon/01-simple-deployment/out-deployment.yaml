@@ -189,7 +189,7 @@ spec:
         env:
         - name: CSI_RETRIEVER_ENDPOINT
           value: /var/run/csi/csi_retriever.sock
-        image: dellemc/csi-metadata-retriever:v1.3.0
+        image: dellemc/csi-metadata-retriever:v1.4.0
         imagePullPolicy: IfNotPresent
         name: csi-metadata-retriever
         resources: {}

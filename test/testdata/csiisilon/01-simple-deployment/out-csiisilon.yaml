@@ -15,7 +15,7 @@ metadata:
     storage.dell.com/snapshotter.Image.IsDefault: "true"
     storage.dell.com/external-health-monitor.Image: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.9.0
     storage.dell.com/external-health-monitor.Image.IsDefault: "true"
-    storage.dell.com/csi-metadata-retriever.Image: dellemc/csi-metadata-retriever:v1.3.0
+    storage.dell.com/csi-metadata-retriever.Image: dellemc/csi-metadata-retriever:v1.4.0
     storage.dell.com/csi-metadata-retriever.Image.IsDefault: "true"
   creationTimestamp: null
   finalizers:
@@ -82,7 +82,7 @@ spec:
     - image: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.8.0
       imagePullPolicy: IfNotPresent
       name: registrar
-    - image: dellemc/csi-metadata-retriever:v1.3.0
+    - image: dellemc/csi-metadata-retriever:v1.4.0
       imagePullPolicy: IfNotPresent
       name: csi-metadata-retriever
     - image: registry.k8s.io/sig-storage/csi-resizer:v1.8.0
