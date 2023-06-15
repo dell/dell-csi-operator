@@ -111,7 +111,8 @@ metadata:
                   ],
                   "name": "provisioner"
                 }
-              ]
+              ],
+              "storageCapacity": true
             }
           }
         },
@@ -174,7 +175,7 @@ metadata:
                 "image": "dellemc/csi-powermax:v2.7.0",
                 "imagePullPolicy": "IfNotPresent"
               },
-              "configVersion": "v2.6.0",
+              "configVersion": "v2.7.0",
               "controller": {
                 "nodeSelector": null,
                 "tolerations": null
@@ -284,7 +285,7 @@ metadata:
                 "envs": [
                   {
                     "name": "X_CSI_POWERSTORE_ENABLE_CHAP",
-                    "value": "true"
+                    "value": "false"
                   }
                 ],
                 "nodeSelector": null,
@@ -435,7 +436,6 @@ metadata:
     categories: Storage
     certified: "true"
     containerImage: docker.io/dellemc/dell-csi-operator:v1.12.0
-    olm.properties: '[{"type": "olm.maxOpenShiftVersion", "value": "4.11"}]'
     operators.operatorframework.io/builder: operator-sdk-v1.14.0+git
     operators.operatorframework.io/project_layout: go.kubebuilder.io/v3
     repository: https://github.com/dell/dell-csi-operator
