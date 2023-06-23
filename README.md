@@ -12,9 +12,7 @@
  limitations under the License.
 -->
 
-{{% pageinfo color="primary" %}}
 The Dell CSI Operator is no longer actively maintained or supported. It will be deprecated in CSM 1.9. It is highly recommended that you use CSM Operator going forward.
-{{% /pageinfo %}}
 
 - [Dell CSI Operator](#dell-csi-operator)
   - [Supported Platforms](#supported-platforms)
