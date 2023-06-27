@@ -1,5 +1,5 @@
 <!--
- Copyright © 2022 Dell Inc. or its subsidiaries. All Rights Reserved.
+ Copyright © 2022 - 2023 Dell Inc. or its subsidiaries. All Rights Reserved.
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -11,6 +11,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
+
+The Dell CSI Operator is no longer actively maintained or supported. It will be deprecated in CSM 1.9. It is highly recommended that you use CSM Operator going forward.
+
 - [Dell CSI Operator](#dell-csi-operator)
   - [Supported Platforms](#supported-platforms)
   - [Installation](#installation)
